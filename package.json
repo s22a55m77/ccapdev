@@ -1,0 +1,12 @@
+{
+  "name": "ccapdev",
+  "scripts": {
+    "front:dev": "pnpm run --filter=front dev",
+    "format:check": "pnpm exec prettier . --check",
+    "format:fix": "pnpm exec prettier . --write"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.6"
+  }
+}
