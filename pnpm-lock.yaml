@@ -24,6 +24,7 @@ importers:
       eslint-plugin-react-refresh: ^0.4.3
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-hook-form: ^7.46.1
       react-router-dom: ^6.16.0
       typescript: ^5.0.2
       vite: ^4.4.5
@@ -32,6 +33,7 @@ importers:
       axios: 1.5.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.46.1_react@18.2.0
       react-router-dom: 6.16.0_biqbaboplfbrettd7655fr4n2y
     devDependencies:
       '@types/react': 18.2.21
@@ -1584,6 +1586,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.46.1_react@18.2.0:
+    resolution: {integrity: sha512-0GfI31LRTBd5tqbXMGXT1Rdsv3rnvy0FjEk8Gn9/4tp6+s77T7DPZuGEpBRXOauL+NhyGT5iaXzdIM2R6F/E+w==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-refresh/0.14.0:
