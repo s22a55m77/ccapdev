@@ -73,3 +73,21 @@ export function updateUserProfile({
 //TODO POST /restroom
 
 //TODO POST /restroom/rate
+
+
+
+// TODO POST /restroom/review
+
+// TODO PATCH /restroom/review/update
+
+// TODO DELETE / restroom/review/delete
+
+// TODO POST /restroom/comment
+
+// TODO PATCH /restroom/comment/update
+
+// TODO DELETE /restroom/comment/delete
+
+// TODO POST /restroom/comment/vote
+
+// TODO GET /
