@@ -5,7 +5,7 @@ import LoginData = API.LoginData;
 export function login({
   username,
   password,
-}: API.LoginParams): Promise<LoginData> {
+}: API.LoginParams): Promise<API.LoginData> {
   return APIClient.post<API.LoginResponse>('/auth/login', {
     username,
     password,
