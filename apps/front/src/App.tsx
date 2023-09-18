@@ -1,34 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Grid from '@mui/material/Unstable_Grid2';
+import {Outlet} from "react-router-dom";
+import Navbar from "./components/Navbar";
+import {createTheme, ThemeProvider, PaletteColorOptions} from "@mui/material";
+
+declare module '@mui/material/styles' {
+  interface CustomPalette {
+    green: PaletteColorOptions;
+  }
+  interface Palette extends CustomPalette {}
+  interface PaletteOptions extends CustomPalette {}
+}
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    green: true;
+  }
+}
+
+
+const { palette } = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor: any) => augmentColor({ color: { main: mainColor } });
+const theme = createTheme({
+  palette: {
+    green: createColor('#04AA6D'),
+  }
+})
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ThemeProvider theme={theme}>
+      <div className={'container'}>
+        <Grid container spacing={0}>
+          <Grid md={12}>
+            <div className={'navbar'}>
+              <Navbar />
+            </div>
+          </Grid>
+          <Grid md={2}>
+            <div className={'side'}>
+              Side
+            </div>
+          </Grid>
+          <Grid md={10}>
+            <div>
+              <Outlet />
+            </div>
+          </Grid>
+        </Grid>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </ThemeProvider>
   )
 }
 
