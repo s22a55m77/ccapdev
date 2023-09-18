@@ -6,7 +6,5 @@
 }
 
 .side {
-    margin: 0;
     height: calc(100vh - 67px);
-    background-color: aqua;
 }

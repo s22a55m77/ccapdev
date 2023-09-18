@@ -3,6 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import {Outlet} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import {createTheme, ThemeProvider, PaletteColorOptions} from "@mui/material";
+import Sidebar from "./components/Sidebar";
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
@@ -30,7 +31,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div className={'container'}>
+      <div>
         <Grid container spacing={0}>
           <Grid md={12}>
             <div className={'navbar'}>
@@ -39,7 +40,7 @@ function App() {
           </Grid>
           <Grid md={2}>
             <div className={'side'}>
-              Side
+              <Sidebar />
             </div>
           </Grid>
           <Grid md={10}>
