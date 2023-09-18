@@ -2,6 +2,7 @@
   "name": "ccapdev",
   "scripts": {
     "front:dev": "pnpm run --filter=front dev",
+    "front:dev:mock": "pnpm run --filter=front dev:mock",
     "format:check": "pnpm exec prettier . --check",
     "format:fix": "pnpm exec prettier . --write"
   },
