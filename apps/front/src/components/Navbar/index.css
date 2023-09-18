@@ -1,0 +1,20 @@
+.image {
+    margin-left: 50px;
+}
+
+.flex {
+    display: flex;
+}
+
+.v-center {
+    margin: auto;
+}
+
+.m-10{
+    margin-left: 10px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+}
