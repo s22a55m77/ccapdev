@@ -1,6 +1,7 @@
 .main-container {
     background-color: #FAFAFA;
     padding: 40px 35px;
+    min-height: calc(100vh - 67px);
 }
 
 .flex {
@@ -35,62 +36,22 @@
     transition: 0.2s;
 }
 
-.card-container {
-    margin-top: 30px;
+.menu-button {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
 }
 
-.card {
-    padding: 25px;
-}
-
-.card-content {
-    margin-top: 5px;
-    color: #000;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 300;
+.text-wrap {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-}
-
-.tags {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-    vertical-align: center;
-}
-
-.tag {
-    width: 40px;
-    height: 20px;
-    background-color: #EAEAEA;
-    border-radius: 5px;
+.menu-button span {
     font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    color: #808080;
-    line-height: 20px;
-    letter-spacing: 0.5px;
-    text-align: center;
 }
 
-.activity {
-    padding-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-.activity-content {
-    color: #808080;
-    display: flex;
-    gap: 2px;
-    font-size: 13px;
-    line-height: 20px;
-    align-items: center;
+.green {
+    color: #04AA6D;
 }
