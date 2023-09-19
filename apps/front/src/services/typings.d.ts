@@ -29,6 +29,7 @@ declare namespace API {
 
   type UserData = {
     id: string;
+    username;
     reviews: number;
     yearsInDLSU: number;
     description: string;
@@ -49,16 +50,12 @@ declare namespace API {
 
   type UpdateUserProfileResponse = BaseResponse<UserData>;
 
-  type RestroomListData = {
-    id: string;
-    title: string;
-    tags: string[];
-    building: string;
-    floor: number;
-    rating: number;
-    restroomImageIds: string[];
-    gender: 'MALE' | 'FEMALE';
-  }[];
+  interface RestroomList
+    extends Omit<RestroomData, 'locationImageIds' | 'commentsIds'> {
+    totalComments: number;
+  }
+
+  type RestroomListData = RestroomList[];
 
   type RestroomListQuery = {
     building?: string;
@@ -80,6 +77,10 @@ declare namespace API {
     restroomImageIds: string[];
     commentsIds: string[];
     gender: 'MALE' | 'FEMALE';
+    createdByUser: string;
+    createdAt: string;
+    downVote: number;
+    upVote: number;
   };
 
   type RestroomDetailResponse = BaseResponse<RestroomData>;

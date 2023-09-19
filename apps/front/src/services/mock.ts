@@ -34,6 +34,7 @@ export default function configureMock(mock: MockAdapter) {
     200,
     createResponse<API.UserData>({
       id: '1',
+      username: 'user1',
       reviews: 1,
       yearsInDLSU: 1,
       description: 'this is a short description',
@@ -53,6 +54,7 @@ export default function configureMock(mock: MockAdapter) {
     200,
     createResponse<API.UserData>({
       id: '1',
+      username: 'user1',
       reviews: 1,
       yearsInDLSU: 2,
       description: 'this is the new description',
@@ -74,16 +76,28 @@ export default function configureMock(mock: MockAdapter) {
         rating: 4,
         restroomImageIds: ['1'],
         gender: 'MALE',
+        createdByUser: 'user1',
+        createdAt: 'September 18, 2023',
+        downVote: 2,
+        upVote: 2,
+        totalComments: 1,
+        location: 'location description',
       },
       {
         id: '2',
         title: 'Restroom 2',
-        tags: ['tag1', 'tag2'],
+        tags: ['tag4', 'tag3'],
         building: 'building 2',
         floor: 3,
         rating: 2,
         restroomImageIds: ['2'],
         gender: 'FEMALE',
+        createdByUser: 'user1',
+        createdAt: 'September 19, 2023',
+        downVote: 2,
+        upVote: 2,
+        totalComments: 1,
+        location: 'location description',
       },
     ];
 
@@ -130,11 +144,15 @@ export default function configureMock(mock: MockAdapter) {
         locationImageIds: ['3'],
         commentsIds: ['1'],
         gender: 'MALE',
+        createdByUser: 'user1',
+        createdAt: 'September 18, 2023',
+        downVote: 2,
+        upVote: 2,
       },
       {
         id: '2',
         title: 'Restroom 2',
-        tags: ['tag1', 'tag2'],
+        tags: ['tag3', 'tag4'],
         building: 'building 2',
         floor: 3,
         rating: 2,
@@ -143,6 +161,10 @@ export default function configureMock(mock: MockAdapter) {
         locationImageIds: ['4'],
         commentsIds: ['2'],
         gender: 'FEMALE',
+        createdByUser: 'user1',
+        createdAt: 'September 19, 2023',
+        downVote: 2,
+        upVote: 2,
       },
     ];
 
@@ -179,6 +201,10 @@ export default function configureMock(mock: MockAdapter) {
       restroomImageIds: config.data.restroomImageIds,
       commentsIds: [],
       gender: config.data.gender,
+      createdByUser: 'User1',
+      createdAt: 'September 19, 2023',
+      downVote: 2,
+      upVote: 2,
     };
 
     const response: API.CreateRestroomResponse = createResponse(restroom);
@@ -201,6 +227,10 @@ export default function configureMock(mock: MockAdapter) {
         locationImageIds: ['3'],
         commentsIds: ['1'],
         gender: 'MALE',
+        createdByUser: 'user1',
+        createdAt: 'September 19, 2023',
+        downVote: 2,
+        upVote: 2,
       },
       {
         id: '2',
@@ -214,6 +244,10 @@ export default function configureMock(mock: MockAdapter) {
         locationImageIds: ['4'],
         commentsIds: ['2'],
         gender: 'FEMALE',
+        createdByUser: '1',
+        createdAt: 'September 18, 2023',
+        downVote: 2,
+        upVote: 2,
       },
     ];
 
