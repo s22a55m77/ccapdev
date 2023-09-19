@@ -8,3 +8,9 @@
 .side {
     height: calc(100vh - 67px);
 }
+
+@media only screen and (max-width: 899px) {
+    .side {
+        height: 300px;
+    }
+}

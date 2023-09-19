@@ -33,17 +33,17 @@ function App() {
     <ThemeProvider theme={theme}>
       <div>
         <Grid container spacing={0}>
-          <Grid md={12}>
+          <Grid xs={12}>
             <div className={'navbar'}>
               <Navbar />
             </div>
           </Grid>
-          <Grid md={2}>
+          <Grid xs={12} md={2}>
             <div className={'side'}>
               <Sidebar />
             </div>
           </Grid>
-          <Grid md={10}>
+          <Grid xs={12} md={10}>
             <div>
               <Outlet />
             </div>
