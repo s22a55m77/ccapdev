@@ -59,22 +59,78 @@ export function updateUserProfile({
   ).then((res) => res.data.data);
 }
 
-//TODO GET /user/profile/pic
+// PATCH /user/profile/pic
+export function updateProfilePic(
+  file: File,
+): Promise<API.UpdateProfilePicData> {
+  return APIClient.patch<API.UpdateProfilePicResponse>(
+    '/user/profile/pic',
+    { file },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: localStorage.getItem('token'),
+      },
+    },
+  ).then((res) => res.data.data);
+}
 
-//TODO PATCH /user/profile/pic
-
-//TODO GET /restroom
+// GET /restroom
 // query building
 // query floor
 // query sort
+export function getRestroomList({
+  building,
+  rating,
+  floor,
+}: API.RestroomListQuery): Promise<API.RestroomListData> {
+  return APIClient.get<API.RestroomListResponse>('/restroom', {
+    params: {
+      building,
+      rating,
+      floor,
+    },
+  }).then((res) => res.data.data);
+}
 
-//TODO GET /restroom/:id
+// GET /restroom/:id
+export function getRestroomDetail(id: string): Promise<API.RestroomData> {
+  return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`).then(
+    (res) => res.data.data,
+  );
+}
 
-//TODO POST /restroom
+// POST /restroom
+export function createRestroom({
+  location,
+  locationImageIds,
+  restroomImageIds,
+  building,
+  floor,
+  gender,
+  tags,
+}: API.CreateRestroomParams): Promise<API.RestroomData> {
+  return APIClient.post<API.CreateRestroomResponse>('/restroom', {
+    location,
+    locationImageIds,
+    restroomImageIds,
+    building,
+    floor,
+    gender,
+    tags,
+  }).then((res) => res.data.data);
+}
 
-//TODO POST /restroom/rate
-
-
+// POST /restroom/rate
+export function rateRestroom({
+  restroomId,
+  rating,
+}: API.RateRestroomParams): Promise<API.RestroomData> {
+  return APIClient.post<API.RateRestroomResponse>('/restroom/rate', {
+    restroomId,
+    rating,
+  }).then((res) => res.data.data);
+}
 
 // TODO POST /restroom/review
 

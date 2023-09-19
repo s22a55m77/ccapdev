@@ -1,0 +1,94 @@
+.restroom-container {
+    margin-top: 30px;
+}
+
+.restroom {
+    padding: 25px;
+}
+
+.restroom-content {
+    margin-top: 15px;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.restroom-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.restroom-tags {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    vertical-align: center;
+}
+
+.restroom-tag {
+    width: 40px;
+    height: 20px;
+    background-color: #EAEAEA;
+    border-radius: 5px;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    color: #808080;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.restroom-activity {
+    padding-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.restroom-activity-content {
+    color: #808080;
+    display: flex;
+    gap: 2px;
+    font-size: 13px;
+    line-height: 20px;
+    align-items: center;
+}
+
+.comments {
+    color: #808080;
+    margin: 20px;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.comment-input-card {
+    width: 100%;
+}
+
+.comment-input{
+    padding: 0px 447px 9px 0px;
+    margin: auto;
+    width: 100%;
+}
+
+.submit-box {
+    margin-top: 10px;
+    display: flex;
+    justify-content: end;
+}
+
+.reply-content {
+    margin-top: 5px;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+.reply-card {
+    padding: 25px;
+    border-left: 5px solid #05DC8D;
+}

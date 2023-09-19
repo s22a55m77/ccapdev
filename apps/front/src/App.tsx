@@ -8,6 +8,7 @@ import Sidebar from "./components/Sidebar";
 declare module '@mui/material/styles' {
   interface CustomPalette {
     green: PaletteColorOptions;
+    darkGreen: PaletteColorOptions
   }
   interface Palette extends CustomPalette {}
   interface PaletteOptions extends CustomPalette {}
@@ -15,6 +16,7 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     green: true;
+    darkGreen: true
   }
 }
 
@@ -25,6 +27,7 @@ const createColor = (mainColor: any) => augmentColor({ color: { main: mainColor 
 const theme = createTheme({
   palette: {
     green: createColor('#04AA6D'),
+    darkGreen: createColor('#04AA6D')
   }
 })
 
@@ -33,17 +36,17 @@ function App() {
     <ThemeProvider theme={theme}>
       <div>
         <Grid container spacing={0}>
-          <Grid md={12}>
+          <Grid xs={12}>
             <div className={'navbar'}>
               <Navbar />
             </div>
           </Grid>
-          <Grid md={2}>
+          <Grid xs={12} md={2}>
             <div className={'side'}>
               <Sidebar />
             </div>
           </Grid>
-          <Grid md={10}>
+          <Grid xs={12} md={10}>
             <div>
               <Outlet />
             </div>
