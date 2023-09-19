@@ -132,15 +132,15 @@ export function rateRestroom({
 
 // TODO POST /restroom/review
 
-// TODO PATCH /restroom/review/update
+// TODO PATCH /restroom/review
 
-// TODO DELETE / restroom/review/delete
+// TODO DELETE / restroom/review
 
 // TODO POST /restroom/comment
 
-// TODO PATCH /restroom/comment/update
+// TODO PATCH /restroom/comment
 
-// TODO DELETE /restroom/comment/delete
+// TODO DELETE /restroom/comment
 
 // TODO POST /restroom/comment/vote
 
