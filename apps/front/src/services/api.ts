@@ -108,6 +108,7 @@ export function createRestroom({
   building,
   floor,
   gender,
+  tags,
 }: API.CreateRestroomParams): Promise<API.RestroomData> {
   return APIClient.post<API.CreateRestroomResponse>('/restroom', {
     location,
@@ -116,6 +117,7 @@ export function createRestroom({
     building,
     floor,
     gender,
+    tags,
   }).then((res) => res.data.data);
 }
 

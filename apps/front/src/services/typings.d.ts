@@ -91,6 +91,7 @@ declare namespace API {
     building: string;
     floor: number;
     gender: 'MALE' | 'FEMALE';
+    tags: string[];
   };
 
   type CreateRestroomResponse = BaseResponse<RestroomData>;

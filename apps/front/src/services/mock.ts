@@ -174,7 +174,7 @@ export default function configureMock(mock: MockAdapter) {
       floor: config.data.floor,
       location: config.data.location,
       rating: 2,
-      tags: [],
+      tags: config.data.tags,
       locationImageIds: config.data.locationImageIds,
       restroomImageIds: config.data.restroomImageIds,
       commentsIds: [],
