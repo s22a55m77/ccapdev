@@ -2,6 +2,7 @@ import {Avatar, Card, CardContent, CardHeader} from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import './RestroomCard.css';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 export default function RestroomCard() {
   return (
@@ -28,6 +29,7 @@ export default function RestroomCard() {
               </div>
               <div className={'activity'}>
                 <div className={'activity-content'}><ChatBubbleOutlineIcon fontSize={'inherit'}/> 1 </div>
+                <div className={'activity-content'}><ArrowDownwardIcon fontSize={'inherit'}/> 1 </div>
                 <div className={'activity-content'}><ArrowUpwardIcon fontSize={'inherit'}/> 1 </div>
               </div>
             </footer>

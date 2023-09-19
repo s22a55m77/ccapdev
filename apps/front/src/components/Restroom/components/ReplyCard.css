@@ -1,0 +1,58 @@
+.reply-content {
+    margin-top: 5px;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+.reply-card {
+    padding: 25px;
+    border-left: 5px solid #05DC8D;
+    margin-top: 15px;
+}
+
+.reply-border-blue {
+    border-left: 5px solid #1682FD;
+}
+
+.reply-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reply-vote {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    vertical-align: center;
+}
+
+.reply-activity-vote {
+    color: #808080;
+    display: flex;
+    gap: 2px;
+    font-size: 13px;
+    line-height: 20px;
+    align-items: center;
+}
+
+.reply-activity {
+    font-size: 12px;
+}
+
+.reply-user {
+    color: #808080;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.reply-input-box {
+    width: 50vw;
+    padding: 10px;
+}
+
+.reply-submit {
+    margin-top: 10px;
+}
