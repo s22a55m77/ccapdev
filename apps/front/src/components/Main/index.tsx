@@ -5,9 +5,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Button, Menu, MenuItem, Radio } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
-import { getRestroomList } from '../../services/api.ts';
+import {getRestroomList} from '../../services/api.ts';
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,6 +37,20 @@ export default function Main() {
     setAnchorMenuEl(anchorEl);
     setAnchorEl(null);
   };
+
+  const handleBuildingRadioClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if ((e.target as HTMLInputElement).value == selectedBuilding)
+      setSelectedBuilding('')
+    else
+      setSelectedBuilding((e.target as HTMLInputElement).value)
+  }
+
+  const handleFloorRadioClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if ((e.target as HTMLInputElement).value == selectedFloor)
+      setSelectedFloor('')
+    else
+      setSelectedFloor((e.target as HTMLInputElement).value)
+  }
 
   useEffect(() => {
     getRestroomList({}).then((data) => setRestroomList(data));
@@ -116,7 +130,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedBuilding === 'Gokongwei'}
-            onChange={(e) => setSelectedBuilding(e.target.value)}
+            onClick={(e) => handleBuildingRadioClick(e)}
             name="building"
             value="Gokongwei"
             size="small"
@@ -138,7 +152,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedBuilding === 'Razon'}
-            onChange={(e) => setSelectedBuilding(e.target.value)}
+            onClick={(e) => handleBuildingRadioClick(e)}
             name="building"
             value="Razon"
             size="small"
@@ -160,7 +174,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedBuilding === 'Henry Sy'}
-            onChange={(e) => setSelectedBuilding(e.target.value)}
+            onClick={(e) => handleBuildingRadioClick(e)}
             name="building"
             value="Henry Sy"
             size="small"
@@ -193,7 +207,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedFloor === '1'}
-            onChange={(e) => setSelectedFloor(e.target.value)}
+            onClick={(e) => handleFloorRadioClick(e)}
             name="floor"
             value="1"
             size="small"
@@ -209,7 +223,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedFloor === '2'}
-            onChange={(e) => setSelectedFloor(e.target.value)}
+            onClick={(e) => handleFloorRadioClick(e)}
             name="floor"
             value="2"
             size="small"
@@ -225,7 +239,7 @@ export default function Main() {
         >
           <Radio
             checked={selectedFloor === '3'}
-            onChange={(e) => setSelectedFloor(e.target.value)}
+            onClick={(e) => handleFloorRadioClick(e)}
             name="floor"
             value="3"
             size="small"
