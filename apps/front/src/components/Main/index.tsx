@@ -31,7 +31,6 @@ export default function Main() {
   const handleFilterClose = () => {
     setAnchorEl(null);
     setAnchorMenuEl(null);
-    setSelectedBuilding('');
   };
 
   const handleMenuClick = () => {
