@@ -59,7 +59,7 @@ declare namespace API {
 
   type RestroomListQuery = {
     building?: string;
-    rating?: 'ASC' | 'DESC';
+    sort: 'RATING' | 'NEW';
     floor?: number;
   };
 

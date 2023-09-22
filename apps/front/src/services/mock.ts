@@ -78,8 +78,8 @@ export default function configureMock(mock: MockAdapter) {
         gender: 'MALE',
         createdByUser: 'user1',
         createdAt: 'September 18, 2023',
-        downVote: 2,
-        upVote: 2,
+        downVote: 1,
+        upVote: 1,
         totalComments: 1,
         location: 'location description',
       },
@@ -113,13 +113,18 @@ export default function configureMock(mock: MockAdapter) {
       );
     }
 
-    if (config.params.rating) {
-      if (config.params.rating === 'ASC') {
-        restrooms = restrooms.slice().sort((a, b) => a.rating - b.rating);
+    if (config.params.sort) {
+      if (config.params.sort === 'RATING') {
+        restrooms = restrooms.slice().sort((a, b) => b.rating - a.rating);
       }
 
-      if (config.params.rating === 'DESC') {
-        restrooms = restrooms.slice().sort((a, b) => b.rating - a.rating);
+      if (config.params.sort === 'NEW') {
+        restrooms = restrooms.slice().sort((a, b) => {
+          const dateA: Date = new Date(a.createdAt);
+          const dateB: Date = new Date(b.createdAt);
+
+          return dateB.valueOf() - dateA.valueOf();
+        });
       }
     }
 

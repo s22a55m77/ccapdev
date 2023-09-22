@@ -81,13 +81,13 @@ export function updateProfilePic(
 // query sort
 export function getRestroomList({
   building,
-  rating,
+  sort,
   floor,
 }: API.RestroomListQuery): Promise<API.RestroomListData> {
   return APIClient.get<API.RestroomListResponse>('/restroom', {
     params: {
       building,
-      rating,
+      sort,
       floor,
     },
   }).then((res) => res.data.data);
