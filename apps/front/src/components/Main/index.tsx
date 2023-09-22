@@ -5,9 +5,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Button, Menu, MenuItem, Radio } from '@mui/material';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
-import {getRestroomList} from '../../services/api.ts';
+import { getRestroomList } from '../../services/api.ts';
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -22,6 +22,11 @@ export default function Main() {
   const [restroomList, setRestroomList] = useState<API.RestroomListData>(
     [],
   );
+
+  // this control the params of getRestroomList
+  const [query, setQuery] = useState<API.RestroomListQuery>({
+    sort: 'NEW',
+  });
 
   const handleFilterClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -38,47 +43,73 @@ export default function Main() {
     setAnchorEl(null);
   };
 
-  const handleBuildingRadioClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if ((e.target as HTMLInputElement).value == selectedBuilding)
-      setSelectedBuilding('')
-    else
-      setSelectedBuilding((e.target as HTMLInputElement).value)
-  }
+  const handleBuildingRadioClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const building = (e.target as HTMLInputElement).value;
 
-  const handleFloorRadioClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if ((e.target as HTMLInputElement).value == selectedFloor)
-      setSelectedFloor('')
-    else
-      setSelectedFloor((e.target as HTMLInputElement).value)
-  }
+    if (building == selectedBuilding) {
+      setSelectedBuilding('');
+      setQuery({ ...query, building: undefined });
+    } else {
+      setSelectedBuilding(building);
+      setQuery({ ...query, building });
+    }
+  };
+
+  const handleFloorRadioClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const floor = (e.target as HTMLInputElement).value;
+
+    if (floor == selectedFloor) {
+      setSelectedFloor('');
+      setQuery({ ...query, floor: undefined });
+    } else {
+      setSelectedFloor(floor);
+      setQuery({ ...query, floor: Number(floor) });
+    }
+  };
 
   useEffect(() => {
-    getRestroomList({}).then((data) => setRestroomList(data));
-  }, []);
+    getRestroomList(query).then((data) => setRestroomList(data));
+  }, [query]);
 
   return (
     <div className={'main-container'}>
       <div id={'tabs'} className={'flex'}>
-        <button className={'tab-button tab-button-active'}>
+        <button
+          className={`tab-button ${
+            query.sort === 'NEW' ? 'tab-button-active' : ''
+          }`}
+          onClick={() => setQuery({ ...query, sort: 'NEW' })}
+        >
           <div style={{ display: 'flex' }}>
             <AccessTimeIcon
               fontSize={'inherit'}
               style={{ marginRight: 5 }}
-            />{' '}
+            />
             New
           </div>
         </button>
-        <button className={'tab-button'}>
+        <button
+          className={`tab-button ${
+            query.sort === 'RATING' ? 'tab-button-active' : ''
+          }`}
+          onClick={() => setQuery({ ...query, sort: 'RATING' })}
+        >
           <div style={{ display: 'flex' }}>
             <CallMadeIcon
               fontSize={'inherit'}
               style={{ marginRight: 5 }}
-            />{' '}
+            />
             Top
           </div>
         </button>
         <button
-          className={'tab-button'}
+          className={`tab-button ${
+            query.building || query.floor ? 'tab-button-active' : ''
+          }`}
           id="basic-button"
           onClick={handleFilterClick}
         >
@@ -86,7 +117,7 @@ export default function Main() {
             <FilterAltIcon
               fontSize={'inherit'}
               style={{ marginRight: 5 }}
-            />{' '}
+            />
             Filter
           </div>
         </button>
@@ -96,6 +127,7 @@ export default function Main() {
         return (
           <RestroomCard
             key={restroom.id}
+            id={restroom.id}
             title={restroom.title}
             tags={restroom.tags}
             rating={restroom.rating}

@@ -69,25 +69,25 @@ export default function configureMock(mock: MockAdapter) {
     let restrooms: API.RestroomListData = [
       {
         id: '1',
-        title: 'Restroom 1',
+        title: 'Gokongwei - 1st Floor - Male',
         tags: ['tag1', 'tag2'],
-        building: 'building 1',
+        building: 'Gokongwei',
         floor: 1,
         rating: 4,
         restroomImageIds: ['1'],
         gender: 'MALE',
         createdByUser: 'user1',
         createdAt: 'September 18, 2023',
-        downVote: 2,
-        upVote: 2,
+        downVote: 1,
+        upVote: 1,
         totalComments: 1,
         location: 'location description',
       },
       {
         id: '2',
-        title: 'Restroom 2',
+        title: 'Razon - 3rd Floor - Female',
         tags: ['tag4', 'tag3'],
-        building: 'building 2',
+        building: 'Razon',
         floor: 3,
         rating: 2,
         restroomImageIds: ['2'],
@@ -113,13 +113,18 @@ export default function configureMock(mock: MockAdapter) {
       );
     }
 
-    if (config.params.rating) {
-      if (config.params.rating === 'ASC') {
-        restrooms = restrooms.slice().sort((a, b) => a.rating - b.rating);
+    if (config.params.sort) {
+      if (config.params.sort === 'RATING') {
+        restrooms = restrooms.slice().sort((a, b) => b.rating - a.rating);
       }
 
-      if (config.params.rating === 'DESC') {
-        restrooms = restrooms.slice().sort((a, b) => b.rating - a.rating);
+      if (config.params.sort === 'NEW') {
+        restrooms = restrooms.slice().sort((a, b) => {
+          const dateA: Date = new Date(a.createdAt);
+          const dateB: Date = new Date(b.createdAt);
+
+          return dateB.valueOf() - dateA.valueOf();
+        });
       }
     }
 
@@ -134,9 +139,9 @@ export default function configureMock(mock: MockAdapter) {
     let restrooms: API.RestroomData[] = [
       {
         id: '1',
-        title: 'Restroom 1',
+        title: 'Gokongwei - 1st Floor - Male',
         tags: ['tag1', 'tag2'],
-        building: 'building 1',
+        building: 'Gokongwei',
         floor: 1,
         rating: 4,
         restroomImageIds: ['1'],
@@ -151,9 +156,9 @@ export default function configureMock(mock: MockAdapter) {
       },
       {
         id: '2',
-        title: 'Restroom 2',
+        title: 'Razon - 3rd Floor - Female',
         tags: ['tag3', 'tag4'],
-        building: 'building 2',
+        building: 'Razon',
         floor: 3,
         rating: 2,
         restroomImageIds: ['2'],
