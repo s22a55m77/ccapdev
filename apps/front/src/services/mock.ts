@@ -69,9 +69,9 @@ export default function configureMock(mock: MockAdapter) {
     let restrooms: API.RestroomListData = [
       {
         id: '1',
-        title: 'Restroom 1',
+        title: 'Gokongwei - 1st Floor - Male',
         tags: ['tag1', 'tag2'],
-        building: 'building 1',
+        building: 'Gokongwei',
         floor: 1,
         rating: 4,
         restroomImageIds: ['1'],
@@ -85,9 +85,9 @@ export default function configureMock(mock: MockAdapter) {
       },
       {
         id: '2',
-        title: 'Restroom 2',
+        title: 'Razon - 3rd Floor - Female',
         tags: ['tag4', 'tag3'],
-        building: 'building 2',
+        building: 'Razon',
         floor: 3,
         rating: 2,
         restroomImageIds: ['2'],
@@ -139,9 +139,9 @@ export default function configureMock(mock: MockAdapter) {
     let restrooms: API.RestroomData[] = [
       {
         id: '1',
-        title: 'Restroom 1',
+        title: 'Gokongwei - 1st Floor - Male',
         tags: ['tag1', 'tag2'],
-        building: 'building 1',
+        building: 'Gokongwei',
         floor: 1,
         rating: 4,
         restroomImageIds: ['1'],
@@ -156,9 +156,9 @@ export default function configureMock(mock: MockAdapter) {
       },
       {
         id: '2',
-        title: 'Restroom 2',
+        title: 'Razon - 3rd Floor - Female',
         tags: ['tag3', 'tag4'],
-        building: 'building 2',
+        building: 'Razon',
         floor: 3,
         rating: 2,
         restroomImageIds: ['2'],

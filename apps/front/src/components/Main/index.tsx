@@ -46,17 +46,29 @@ export default function Main() {
   const handleBuildingRadioClick = (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    if ((e.target as HTMLInputElement).value == selectedBuilding)
+    const building = (e.target as HTMLInputElement).value;
+
+    if (building == selectedBuilding) {
       setSelectedBuilding('');
-    else setSelectedBuilding((e.target as HTMLInputElement).value);
+      setQuery({ ...query, building: undefined });
+    } else {
+      setSelectedBuilding(building);
+      setQuery({ ...query, building });
+    }
   };
 
   const handleFloorRadioClick = (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    if ((e.target as HTMLInputElement).value == selectedFloor)
+    const floor = (e.target as HTMLInputElement).value;
+
+    if (floor == selectedFloor) {
       setSelectedFloor('');
-    else setSelectedFloor((e.target as HTMLInputElement).value);
+      setQuery({ ...query, floor: undefined });
+    } else {
+      setSelectedFloor(floor);
+      setQuery({ ...query, floor: Number(floor) });
+    }
   };
 
   useEffect(() => {
@@ -95,7 +107,9 @@ export default function Main() {
           </div>
         </button>
         <button
-          className={'tab-button'}
+          className={`tab-button ${
+            query.building || query.floor ? 'tab-button-active' : ''
+          }`}
           id="basic-button"
           onClick={handleFilterClick}
         >
