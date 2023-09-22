@@ -109,4 +109,23 @@ declare namespace API {
   };
 
   type UpdateProfilePicResponse = BaseResponse<UpdateProfilePicData>;
+
+
+  type CreateRestroomReviewParams = {
+    restroomId: string;
+    commentTo: string | null;  // comment ID to which it comments to
+    content: string;
+  }
+
+  type CreateRestroomReviewResponse = BaseResponse<RestroomData>;
+
+  type UpdateRestroomReviewParams = {
+    commentId: string;
+    content: string;
+  }
+
+  type ChangeVoteStatusParams = {
+    newStatus: number;    // 0-none, 1-upvote, 2-downvote
+    commentId: string;
+  }
 }

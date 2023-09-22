@@ -133,17 +133,45 @@ export function rateRestroom({
 }
 
 // TODO POST /restroom/review
+export function createRestroomReview({
+  restroomId,
+  commentTo,
+  content,
+}: API.CreateRestroomReviewParams): Promise<API.RestroomData> {
+  return APIClient.post<API.CreateRestroomReviewResponse>('/restroom/review', {
+    restroomId,
+    commentTo,
+    content,
+  }).then((res) => res.data.data);
+}
 
 // TODO PATCH /restroom/review
+export function updateRestroomReview({
+  commentId,
+  content,
+}: API.UpdateRestroomReviewParams): Promise<API.RestroomData> {
+  return APIClient.patch<API.CreateRestroomReviewResponse>('/restroom/review', {
+    commentId,
+    content,
+  }).then((res) => res.data.data);
+}
 
-// TODO DELETE / restroom/review
+// TODO DELETE / restroom/review/${commentId}
+export function deleteRestroomReview(commentId: string): Promise<void> {
+  return APIClient.delete(`/restroom/review/${commentId}`)
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error('Failed to delete the review.');
+      }
+    });
+}
 
-// TODO POST /restroom/comment
+// TODO POST /restroom/review/vote
+export function changeVoteStatus({
+  newStatus,
+  commentId,
+}: API.ChangeVoteStatusParams): Promise<void> {
+  return APIClient.delete(`/restroom/review?commentid=${commentId}&status=${newStatus}`)
+    .then(() => {});     // TODO: return what?
+}
 
-// TODO PATCH /restroom/comment
-
-// TODO DELETE /restroom/comment
-
-// TODO POST /restroom/vote
-
-// TODO GET /
