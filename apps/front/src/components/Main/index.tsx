@@ -117,7 +117,7 @@ export default function Main() {
             <FilterAltIcon
               fontSize={'inherit'}
               style={{ marginRight: 5 }}
-            />{' '}
+            />
             Filter
           </div>
         </button>
