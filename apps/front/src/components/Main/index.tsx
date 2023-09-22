@@ -127,6 +127,7 @@ export default function Main() {
         return (
           <RestroomCard
             key={restroom.id}
+            id={restroom.id}
             title={restroom.title}
             tags={restroom.tags}
             rating={restroom.rating}

@@ -3,13 +3,15 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './RestroomCard.css';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { Link } from 'react-router-dom';
 
 type RestroomCardProps = Omit<
   API.RestroomListData[0],
-  'id' | 'building' | 'gender' | 'floor'
+  'building' | 'gender' | 'floor'
 >;
 
 export default function RestroomCard({
+  id,
   title,
   tags,
   rating,
@@ -32,9 +34,11 @@ export default function RestroomCard({
             subheader={createdAt}
           />
           <CardContent>
-            <div id="title">
-              <b>{title}</b>
-            </div>
+            <Link to={`/restroom/${id}`}>
+              <div id="title">
+                <b>{title}</b>
+              </div>
+            </Link>
             <div className={'card-content'}> {location} </div>
             {/*TODO MCO2*/}
             <img
