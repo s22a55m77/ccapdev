@@ -3,7 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import Main from './pages/Main';
 import Restroom from './pages/Restroom';
-import CreateRestroom from './pages/CreateRestroom';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import RestroomForm from './pages/CreateRestroom/restroom-form.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -19,12 +21,17 @@ const router = createBrowserRouter([
       },
       {
         path: '/submit-restroom',
-        element: <CreateRestroom />,
+        element: <RestroomForm />,
       },
     ],
   },
   {
     path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
 ]);
 
