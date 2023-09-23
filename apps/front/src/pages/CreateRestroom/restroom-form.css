@@ -260,7 +260,11 @@ button:hover{
 }
 
 .availbox {
-    margin-top: 5px;
+    margin-top: 10px;
+    display:relative;
+    align-items: center;
+    justify-content: center;
+    width:100%;
 }
 
 .availbox .availability input{
@@ -273,16 +277,12 @@ button:hover{
     font-size: 12px;
 }
 
-.availability:not(:last-child){
-    margin-right: 20px;
-}
-
 .availability label {
     background-color: #e0e0e0; 
     border-radius: 5px; 
     padding: 5px 10px; 
     margin-bottom: 5px; 
-    margin-right: 20px;
+    margin-right: 10px;
     cursor: pointer; 
     transition: background-color 0.3s; 
 }
