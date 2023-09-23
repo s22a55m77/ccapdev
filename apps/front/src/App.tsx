@@ -1,14 +1,18 @@
-import './App.css'
+import './App.css';
 import Grid from '@mui/material/Unstable_Grid2';
-import {Outlet} from "react-router-dom";
-import Navbar from "./components/Navbar";
-import {createTheme, ThemeProvider, PaletteColorOptions} from "@mui/material";
-import Sidebar from "./components/Sidebar";
+import { Outlet } from 'react-router-dom';
+import Navbar from './pages/Navbar';
+import {
+  createTheme,
+  ThemeProvider,
+  PaletteColorOptions,
+} from '@mui/material';
+import Sidebar from './pages/Sidebar';
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
     green: PaletteColorOptions;
-    darkGreen: PaletteColorOptions
+    darkGreen: PaletteColorOptions;
   }
   interface Palette extends CustomPalette {}
   interface PaletteOptions extends CustomPalette {}
@@ -16,20 +20,20 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     green: true;
-    darkGreen: true
+    darkGreen: true;
   }
 }
 
-
 const { palette } = createTheme();
 const { augmentColor } = palette;
-const createColor = (mainColor: any) => augmentColor({ color: { main: mainColor } });
+const createColor = (mainColor: any) =>
+  augmentColor({ color: { main: mainColor } });
 const theme = createTheme({
   palette: {
     green: createColor('#04AA6D'),
-    darkGreen: createColor('#04AA6D')
-  }
-})
+    darkGreen: createColor('#04AA6D'),
+  },
+});
 
 function App() {
   return (
@@ -54,7 +58,7 @@ function App() {
         </Grid>
       </div>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.9",
     "add": "^2.0.6",
+    "ahooks": "^3.7.8",
     "axios": "^1.5.0",
     "axios-mock-adapter": "^1.22.0",
     "cross-env": "^7.0.3",

@@ -8,6 +8,7 @@ import { Button, Menu, MenuItem, Radio } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
 import { getRestroomList } from '../../services/api.ts';
+import { useRequest } from 'ahooks';
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -19,13 +20,17 @@ export default function Main() {
   const open = Boolean(anchorEl);
   const openMenu = Boolean(anchorMenuEl);
 
-  const [restroomList, setRestroomList] = useState<API.RestroomListData>(
-    [],
-  );
-
   // this control the params of getRestroomList
   const [query, setQuery] = useState<API.RestroomListQuery>({
     sort: 'NEW',
+  });
+
+  const {
+    data: restroomList,
+    run,
+    error,
+  } = useRequest(getRestroomList, {
+    defaultParams: [query],
   });
 
   const handleFilterClick = (
@@ -72,7 +77,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    getRestroomList(query).then((data) => setRestroomList(data));
+    run(query);
   }, [query]);
 
   return (
@@ -123,25 +128,26 @@ export default function Main() {
         </button>
       </div>
 
-      {restroomList.map((restroom) => {
-        return (
-          <RestroomCard
-            key={restroom.id}
-            id={restroom.id}
-            title={restroom.title}
-            tags={restroom.tags}
-            rating={restroom.rating}
-            restroomImageIds={restroom.restroomImageIds}
-            createdByUser={restroom.createdByUser}
-            createdAt={restroom.createdAt}
-            downVote={restroom.downVote}
-            upVote={restroom.upVote}
-            totalComments={restroom.totalComments}
-            location={restroom.location}
-          />
-        );
-      })}
-
+      {restroomList &&
+        restroomList.map((restroom) => {
+          return (
+            <RestroomCard
+              key={restroom.id}
+              id={restroom.id}
+              title={restroom.title}
+              tags={restroom.tags}
+              rating={restroom.rating}
+              restroomImageIds={restroom.restroomImageIds}
+              createdByUser={restroom.createdByUser}
+              createdAt={restroom.createdAt}
+              downVote={restroom.downVote}
+              upVote={restroom.upVote}
+              totalComments={restroom.totalComments}
+              location={restroom.location}
+            />
+          );
+        })}
+      {error && <span>Something go wrong</span>}
       {/*  MENU Building*/}
       <Menu
         id="filter-menu"
