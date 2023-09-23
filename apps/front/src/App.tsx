@@ -46,7 +46,7 @@ function App() {
             </div>
           </Grid>
           <Grid xs={12} md={2} lg={2}>
-            <div className={'side'} style={{overflow: 'hidden'}}>
+            <div className={'side'} style={{ overflow: 'hidden' }}>
               <Sidebar />
             </div>
           </Grid>
