@@ -2,6 +2,7 @@ import {Avatar, Button, Card, CardContent, CardHeader, Popover, Rating, TextFiel
 import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
 import ThumbDownAltTwoToneIcon from '@mui/icons-material/ThumbDownAltTwoTone';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import { motion } from 'framer-motion';
 import './ReplyCard.css'
 import {useState} from "react";
 
@@ -20,55 +21,88 @@ export default function ReplyCard() {
   return (
     <div id={'cards'} className={'card-container'}>
       {/*Main Reply*/}
-      <Card sx={{maxWidth: '100%'}} className={'reply-card'}>
-        {/*fix me */}
-        <CardHeader
-          avatar={
-            <Avatar />
-          }
-          title="Placeholder"
-          subheader="September 18, 2023"
-        />
-        <CardContent>
-          <div className='reply-rating'>
-            <Rating name="read-only" value={5} readOnly/>
-          </div>
-          <div className={'reply-content'}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
-          <footer className={'reply-footer'}>
-            <div className={'reply-vote'}>
-              <div className={'reply-activity-vote'}><ThumbDownAltTwoToneIcon color={'inherit'} fontSize={'inherit'}/> 1 </div>
-              <div className={'reply-activity-vote'}><ThumbUpAltTwoToneIcon color={'primary'} fontSize={'inherit'}/> 1 </div>
+      <motion.div
+        initial={{ opacity: 0, x: -50}}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card sx={{maxWidth: '100%'}} className={'reply-card'}>
+          {/*fix me */}
+          <CardHeader
+            avatar={
+              <Avatar />
+            }
+            title="Placeholder"
+            subheader="September 18, 2023"
+          />
+          <CardContent>
+            <div className='reply-rating'>
+              <Rating name="read-only" value={5} readOnly/>
             </div>
-            <div className={'reply-activity'}>
-              <Button onClick={handleReplyClick}>
-                <SubdirectoryArrowRightIcon fontSize={'inherit'} style={{marginRight: 5}}/>
-                Reply
-              </Button>
-            </div>
-          </footer>
-        </CardContent>
-      </Card>
+            <div className={'reply-content'}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
+            <footer className={'reply-footer'}>
+              <div className={'reply-vote'}>
+                <div className={'reply-activity-vote'}><ThumbDownAltTwoToneIcon color={'inherit'} fontSize={'inherit'}/> 1 </div>
+                <div className={'reply-activity-vote'}><ThumbUpAltTwoToneIcon color={'primary'} fontSize={'inherit'}/> 1 </div>
+              </div>
+              <div className={'reply-activity'}>
+                <Button onClick={handleReplyClick}>
+                  <SubdirectoryArrowRightIcon fontSize={'inherit'} style={{marginRight: 5}}/>
+                  Reply
+                </Button>
+              </div>
+            </footer>
+          </CardContent>
+        </Card>
+      </motion.div>
 
 
       {/*Reply of a Reply*/}
-      <Card sx={{maxWidth: '100%'}} className={'reply-card reply-border-blue'}>
-        <CardContent>
-          <div className={'reply-content'}> <b>@user</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
-          <footer className={'reply-footer'}>
-            <div className={'reply-vote'}>
-              <div className={'reply-activity-vote'}><ThumbDownAltTwoToneIcon color={'inherit'} fontSize={'inherit'}/> 1 </div>
-              <div className={'reply-activity-vote'}><ThumbUpAltTwoToneIcon color={'primary'} fontSize={'inherit'}/> 1 </div>
-              <span className={'reply-user'}>by @user</span>
-            </div>
-            <div className={'reply-activity'}>
-              <Button onClick={handleReplyClick}>
-                <SubdirectoryArrowRightIcon fontSize={'inherit'} style={{marginRight: 5}}/>
-                Reply
-              </Button>
-            </div>
-          </footer>
-        </CardContent>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, x: -50}}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card sx={{maxWidth: '100%'}} className={'reply-card reply-border-blue'}>
+          <CardContent>
+            <div className={'reply-content'}> <b>@user</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
+            <footer className={'reply-footer'}>
+              <div className={'reply-vote'}>
+                <div className={'reply-activity-vote'}><ThumbDownAltTwoToneIcon color={'inherit'} fontSize={'inherit'}/> 1 </div>
+                <div className={'reply-activity-vote'}><ThumbUpAltTwoToneIcon color={'primary'} fontSize={'inherit'}/> 1 </div>
+                <span className={'reply-user'}>by @user</span>
+              </div>
+              <div className={'reply-activity'}>
+                <Button onClick={handleReplyClick}>
+                  <SubdirectoryArrowRightIcon fontSize={'inherit'} style={{marginRight: 5}}/>
+                  Reply
+                </Button>
+              </div>
+            </footer>
+          </CardContent>
+        </Card>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card sx={{maxWidth: '100%'}} className={'reply-card reply-border-blue'}>
+          <CardContent>
+            <div className={'reply-content'}> <b>@user</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
+            <footer className={'reply-footer'}>
+              <div className={'reply-vote'}>
+                <div className={'reply-activity-vote'}><ThumbDownAltTwoToneIcon color={'inherit'} fontSize={'inherit'}/> 1 </div>
+                <div className={'reply-activity-vote'}><ThumbUpAltTwoToneIcon color={'primary'} fontSize={'inherit'}/> 1 </div>
+                <span className={'reply-user'}>by @user</span>
+              </div>
+              <div className={'reply-activity'}>
+                <Button onClick={handleReplyClick}>
+                  <SubdirectoryArrowRightIcon fontSize={'inherit'} style={{marginRight: 5}}/>
+                  Reply
+                </Button>
+              </div>
+            </footer>
+          </CardContent>
+        </Card>
+      </motion.div>
 
 
       {/* Reply Input Box */}

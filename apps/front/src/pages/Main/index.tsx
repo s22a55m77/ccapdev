@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
+import { motion } from 'framer-motion';
 import { Button, Menu, MenuItem, Radio } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
@@ -82,209 +82,216 @@ export default function Main() {
 
   return (
     <div className={'main-container'}>
-      <div id={'tabs'} className={'flex'}>
-        <button
-          className={`tab-button ${
-            query.sort === 'NEW' ? 'tab-button-active' : ''
-          }`}
-          onClick={() => setQuery({ ...query, sort: 'NEW' })}
-        >
-          <div style={{ display: 'flex' }}>
-            <AccessTimeIcon
-              fontSize={'inherit'}
-              style={{ marginRight: 5 }}
-            />
-            New
-          </div>
-        </button>
-        <button
-          className={`tab-button ${
-            query.sort === 'RATING' ? 'tab-button-active' : ''
-          }`}
-          onClick={() => setQuery({ ...query, sort: 'RATING' })}
-        >
-          <div style={{ display: 'flex' }}>
-            <CallMadeIcon
-              fontSize={'inherit'}
-              style={{ marginRight: 5 }}
-            />
-            Top
-          </div>
-        </button>
-        <button
-          className={`tab-button ${
-            query.building || query.floor ? 'tab-button-active' : ''
-          }`}
-          id="basic-button"
-          onClick={handleFilterClick}
-        >
-          <div style={{ display: 'flex' }}>
-            <FilterAltIcon
-              fontSize={'inherit'}
-              style={{ marginRight: 5 }}
-            />
-            Filter
-          </div>
-        </button>
-      </div>
-
-      {restroomList &&
-        restroomList.map((restroom) => {
-          return (
-            <RestroomCard
-              key={restroom.id}
-              id={restroom.id}
-              title={restroom.title}
-              tags={restroom.tags}
-              rating={restroom.rating}
-              restroomImageIds={restroom.restroomImageIds}
-              createdByUser={restroom.createdByUser}
-              createdAt={restroom.createdAt}
-              downVote={restroom.downVote}
-              upVote={restroom.upVote}
-              totalComments={restroom.totalComments}
-              location={restroom.location}
-            />
-          );
-        })}
-      {error && <span>Something go wrong</span>}
-      {/*  MENU Building*/}
-      <Menu
-        id="filter-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleFilterClose}
-        PaperProps={{
-          style: {
-            padding: '0px',
-            width: '200px',
-          },
-        }}
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 50 }}
       >
-        <MenuItem
-          style={{
-            padding: '0px',
-          }}
-        >
-          <Radio
-            checked={selectedBuilding === 'Gokongwei'}
-            onClick={(e) => handleBuildingRadioClick(e)}
-            name="building"
-            value="Gokongwei"
-            size="small"
-          />
-          <Button
-            onClick={handleMenuClick}
-            endIcon={<ArrowForwardIosIcon />}
-            color={'green'}
-            className={'menu-button'}
-            style={{ justifyContent: 'end' }}
+        <div id={'tabs'} className={'flex'}>
+          <button
+            className={`tab-button ${
+              query.sort === 'NEW' ? 'tab-button-active' : ''
+            }`}
+            onClick={() => setQuery({ ...query, sort: 'NEW' })}
           >
-            <span className={'text-wrap'}>Gokongwei Hall</span>
-          </Button>
-        </MenuItem>
-        <MenuItem
-          style={{
-            padding: '0px',
-          }}
-        >
-          <Radio
-            checked={selectedBuilding === 'Razon'}
-            onClick={(e) => handleBuildingRadioClick(e)}
-            name="building"
-            value="Razon"
-            size="small"
-          />
-          <Button
-            onClick={handleMenuClick}
-            endIcon={<ArrowForwardIosIcon />}
-            color={'green'}
-            className={'menu-button'}
-            style={{ justifyContent: 'end' }}
+            <div style={{ display: 'flex' }}>
+              <AccessTimeIcon
+                fontSize={'inherit'}
+                style={{ marginRight: 5 }}
+              />
+              New
+            </div>
+          </button>
+          <button
+            className={`tab-button ${
+              query.sort === 'RATING' ? 'tab-button-active' : ''
+            }`}
+            onClick={() => setQuery({ ...query, sort: 'RATING' })}
           >
-            <span className={'text-wrap'}>Razon</span>
-          </Button>
-        </MenuItem>
-        <MenuItem
-          style={{
-            padding: '0px',
-          }}
-        >
-          <Radio
-            checked={selectedBuilding === 'Henry Sy'}
-            onClick={(e) => handleBuildingRadioClick(e)}
-            name="building"
-            value="Henry Sy"
-            size="small"
-          />
-          <Button
-            onClick={handleMenuClick}
-            endIcon={<ArrowForwardIosIcon />}
-            color={'green'}
-            className={'menu-button'}
-            style={{ justifyContent: 'end' }}
+            <div style={{ display: 'flex' }}>
+              <CallMadeIcon
+                fontSize={'inherit'}
+                style={{ marginRight: 5 }}
+              />
+              Top
+            </div>
+          </button>
+          <button
+            className={`tab-button ${
+              query.building || query.floor ? 'tab-button-active' : ''
+            }`}
+            id="basic-button"
+            onClick={handleFilterClick}
           >
-            <span className={'text-wrap'}>Henry Sy</span>
-          </Button>
-        </MenuItem>
-      </Menu>
+            <div style={{ display: 'flex' }}>
+              <FilterAltIcon
+                fontSize={'inherit'}
+                style={{ marginRight: 5 }}
+              />
+              Filter
+            </div>
+          </button>
+        </div>
 
-      {/*  MENU Floor*/}
-      <Menu
-        id="filter-menu"
-        anchorEl={anchorMenuEl}
-        open={openMenu}
-        onClose={handleFilterClose}
-      >
-        <MenuItem
-          style={{
-            padding: '0px',
-            paddingLeft: '3px',
-            paddingRight: '10px',
+        {restroomList &&
+          restroomList.map((restroom) => {
+            return (
+              <RestroomCard
+                key={restroom.id}
+                id={restroom.id}
+                title={restroom.title}
+                tags={restroom.tags}
+                rating={restroom.rating}
+                restroomImageIds={restroom.restroomImageIds}
+                createdByUser={restroom.createdByUser}
+                createdAt={restroom.createdAt}
+                downVote={restroom.downVote}
+                upVote={restroom.upVote}
+                totalComments={restroom.totalComments}
+                location={restroom.location}
+              />
+            );
+          })}
+        {error && <span>Something go wrong</span>}
+        {/*  MENU Building*/}
+        <Menu
+          id="filter-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleFilterClose}
+          PaperProps={{
+            style: {
+              padding: '0px',
+              width: '200px',
+            },
           }}
         >
-          <Radio
-            checked={selectedFloor === '1'}
-            onClick={(e) => handleFloorRadioClick(e)}
-            name="floor"
-            value="1"
-            size="small"
-          />
-          <span className={'green'}>1</span>
-        </MenuItem>
-        <MenuItem
-          style={{
-            padding: '0px',
-            paddingLeft: '3px',
-            paddingRight: '10px',
-          }}
+          <MenuItem
+            style={{
+              padding: '0px',
+            }}
+          >
+            <Radio
+              checked={selectedBuilding === 'Gokongwei'}
+              onClick={(e) => handleBuildingRadioClick(e)}
+              name="building"
+              value="Gokongwei"
+              size="small"
+            />
+            <Button
+              onClick={handleMenuClick}
+              endIcon={<ArrowForwardIosIcon />}
+              color={'green'}
+              className={'menu-button'}
+              style={{ justifyContent: 'end' }}
+            >
+              <span className={'text-wrap'}>Gokongwei Hall</span>
+            </Button>
+          </MenuItem>
+          <MenuItem
+            style={{
+              padding: '0px',
+            }}
+          >
+            <Radio
+              checked={selectedBuilding === 'Razon'}
+              onClick={(e) => handleBuildingRadioClick(e)}
+              name="building"
+              value="Razon"
+              size="small"
+            />
+            <Button
+              onClick={handleMenuClick}
+              endIcon={<ArrowForwardIosIcon />}
+              color={'green'}
+              className={'menu-button'}
+              style={{ justifyContent: 'end' }}
+            >
+              <span className={'text-wrap'}>Razon</span>
+            </Button>
+          </MenuItem>
+          <MenuItem
+            style={{
+              padding: '0px',
+            }}
+          >
+            <Radio
+              checked={selectedBuilding === 'Henry Sy'}
+              onClick={(e) => handleBuildingRadioClick(e)}
+              name="building"
+              value="Henry Sy"
+              size="small"
+            />
+            <Button
+              onClick={handleMenuClick}
+              endIcon={<ArrowForwardIosIcon />}
+              color={'green'}
+              className={'menu-button'}
+              style={{ justifyContent: 'end' }}
+            >
+              <span className={'text-wrap'}>Henry Sy</span>
+            </Button>
+          </MenuItem>
+        </Menu>
+
+        {/*  MENU Floor*/}
+        <Menu
+          id="filter-menu"
+          anchorEl={anchorMenuEl}
+          open={openMenu}
+          onClose={handleFilterClose}
         >
-          <Radio
-            checked={selectedFloor === '2'}
-            onClick={(e) => handleFloorRadioClick(e)}
-            name="floor"
-            value="2"
-            size="small"
-          />
-          <span className={'green'}>2</span>
-        </MenuItem>
-        <MenuItem
-          style={{
-            padding: '0px',
-            paddingLeft: '3px',
-            paddingRight: '10px',
-          }}
-        >
-          <Radio
-            checked={selectedFloor === '3'}
-            onClick={(e) => handleFloorRadioClick(e)}
-            name="floor"
-            value="3"
-            size="small"
-          />
-          <span className={'green'}>3</span>
-        </MenuItem>
-      </Menu>
+          <MenuItem
+            style={{
+              padding: '0px',
+              paddingLeft: '3px',
+              paddingRight: '10px',
+            }}
+          >
+            <Radio
+              checked={selectedFloor === '1'}
+              onClick={(e) => handleFloorRadioClick(e)}
+              name="floor"
+              value="1"
+              size="small"
+            />
+            <span className={'green'}>1</span>
+          </MenuItem>
+          <MenuItem
+            style={{
+              padding: '0px',
+              paddingLeft: '3px',
+              paddingRight: '10px',
+            }}
+          >
+            <Radio
+              checked={selectedFloor === '2'}
+              onClick={(e) => handleFloorRadioClick(e)}
+              name="floor"
+              value="2"
+              size="small"
+            />
+            <span className={'green'}>2</span>
+          </MenuItem>
+          <MenuItem
+            style={{
+              padding: '0px',
+              paddingLeft: '3px',
+              paddingRight: '10px',
+            }}
+          >
+            <Radio
+              checked={selectedFloor === '3'}
+              onClick={(e) => handleFloorRadioClick(e)}
+              name="floor"
+              value="3"
+              size="small"
+            />
+            <span className={'green'}>3</span>
+          </MenuItem>
+        </Menu>
+      </motion.div>
     </div>
   );
 }

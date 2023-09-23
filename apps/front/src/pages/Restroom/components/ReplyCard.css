@@ -12,7 +12,26 @@
     margin-top: 15px;
 }
 
+.reply-card:hover {
+    border-left: 10px solid #05DC8D;
+    transition: 0.2s;
+}
+
+.reply-card:not(:hover) {
+    border-left: 5px solid #05DC8D;
+    transition: 0.2s;
+}
+
 .reply-border-blue {
+    border-left: 5px solid #1682FD;
+}
+
+.reply-border-blue:hover {
+    border-left: 10px solid #1682FD;
+    transition: 0.2s;
+}
+
+.reply-border-blue:not(:hover) {
     border-left: 5px solid #1682FD;
 }
 
