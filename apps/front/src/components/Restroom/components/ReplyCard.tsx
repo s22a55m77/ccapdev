@@ -1,4 +1,4 @@
-import {Avatar, Button, Card, CardContent, CardHeader, Popover, TextField} from "@mui/material";
+import {Avatar, Button, Card, CardContent, CardHeader, Popover, Rating, TextField} from "@mui/material";
 import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
 import ThumbDownAltTwoToneIcon from '@mui/icons-material/ThumbDownAltTwoTone';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
@@ -30,6 +30,9 @@ export default function ReplyCard() {
           subheader="September 18, 2023"
         />
         <CardContent>
+          <div className='reply-rating'>
+            <Rating name="read-only" value={5} readOnly/>
+          </div>
           <div className={'reply-content'}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla </div>
           <footer className={'reply-footer'}>
             <div className={'reply-vote'}>

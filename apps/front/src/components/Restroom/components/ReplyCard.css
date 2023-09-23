@@ -56,3 +56,8 @@
 .reply-submit {
     margin-top: 10px;
 }
+
+.reply-rating {
+    margin-top: -10px;
+    margin-bottom: 10px;
+}

@@ -3,7 +3,7 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
+  CardHeader, Rating,
   TextField,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -34,6 +34,7 @@ export default function Restroom() {
             <div id="title">
               <b>Title</b>
             </div>
+            <Rating name="read-only" value={2.5} precision={0.5} readOnly className='rating'/>
             <div className={'restroom-content'}>
               {' '}
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -83,21 +84,22 @@ export default function Restroom() {
           </CardContent>
         </Card>
       </div>
-      <div className={'comments'}>Comments</div>
+      <div className={'comments'}>Rating</div>
       <div className={'comment-input-card'}>
         <Card style={{ padding: '40px', paddingBottom: '20px' }}>
           <CardContent>
+            <Rating defaultValue={0}/>
             <div className={'flex'} style={{ justifyContent: 'center' }}>
               <TextField
                 multiline
                 label="Comment"
-                placeholder={'Type here your comment'}
+                placeholder={'Type here your comment (Optional)'}
                 className={'comment-input'}
               />
             </div>
             <div className={'submit-box'}>
               <Button variant="contained" color="darkGreen">
-                Comment
+                Rate
               </Button>
             </div>
           </CardContent>

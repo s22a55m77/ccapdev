@@ -6,6 +6,10 @@
     padding: 25px;
 }
 
+.card:hover {
+    background-color: rgba(238, 238, 238, 0.73);
+}
+
 .card-content {
     margin-top: 5px;
     color: #000;
@@ -15,6 +19,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.rating {
+    margin: 5px 0px;
 }
 
 .card-footer {
@@ -56,4 +64,8 @@
     font-size: 13px;
     line-height: 20px;
     align-items: center;
+}
+
+img {
+    border-radius: 10px;
 }
