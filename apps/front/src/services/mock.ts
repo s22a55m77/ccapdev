@@ -2,12 +2,12 @@ import * as MockAdapter from 'axios-mock-adapter';
 
 function createResponse<Data>(
   data: Data,
-  msg?: string | null,
+  msg?: string,
   error?: string,
 ): API.BaseResponse<Data> {
   return {
-    error: error ?? null,
-    msg: msg ?? null,
+    error: error,
+    msg: msg,
     data: data,
   };
 }
