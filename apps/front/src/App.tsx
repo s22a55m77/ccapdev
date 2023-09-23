@@ -45,12 +45,12 @@ function App() {
               <Navbar />
             </div>
           </Grid>
-          <Grid xs={12} md={2}>
-            <div className={'side'}>
+          <Grid xs={12} md={2} lg={2}>
+            <div className={'side'} style={{overflow: 'hidden'}}>
               <Sidebar />
             </div>
           </Grid>
-          <Grid xs={12} md={10}>
+          <Grid xs={12} md={10} lg={10}>
             <div>
               <Outlet />
             </div>
