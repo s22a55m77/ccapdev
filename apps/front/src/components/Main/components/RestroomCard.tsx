@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, CardHeader } from '@mui/material';
+import {Avatar, Card, CardContent, CardHeader, Rating} from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './RestroomCard.css';
@@ -25,6 +25,7 @@ export default function RestroomCard({
 }: RestroomCardProps) {
   return (
     <>
+    <Link to={`/restroom/${id}`}>
       <div id={'cards'} className={'card-container'}>
         <Card sx={{ maxWidth: '100%' }} className={'card'}>
           {/*TODO MCO2 */}
@@ -34,11 +35,10 @@ export default function RestroomCard({
             subheader={createdAt}
           />
           <CardContent>
-            <Link to={`/restroom/${id}`}>
               <div id="title">
                 <b>{title}</b>
               </div>
-            </Link>
+            <Rating name="read-only" value={rating} readOnly className='rating'/>
             <div className={'card-content'}> {location} </div>
             {/*TODO MCO2*/}
             <img
@@ -78,6 +78,7 @@ export default function RestroomCard({
           </CardContent>
         </Card>
       </div>
+    </Link>
     </>
   );
 }
