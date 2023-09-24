@@ -211,3 +211,38 @@ export function changeVoteStatus({
     },
   ).then((res) => res.data.data);
 }
+
+
+// admin
+
+// GET  /restroom/creation/:id >> review restroom creation 
+export function getRestroomCreationInfo(id: string) : Promise<API.RestroomData> {
+  return APIClient.get<API.RestroomDetailResponse>(
+    `/restroom/creation/${id}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      }
+    }
+  ).then(
+    (res) => res.data.data,
+  );
+}
+
+// POST /restroom/creation/:id/status   >> handle restroom creation(approve, reject, delete)
+export function changeRestroomStatus({
+  newStatus,
+  restroomId,
+}: API.ChangeRestroomStatusParams): Promise<API.RestroomData> {
+  return APIClient.post<API.ChangeRestroomStatusResponse>(
+    `/restroom/creation/${restroomId}/status`,
+    {
+      status: newStatus,
+    },
+    {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    },
+  ).then((res) => res.data.data);
+}

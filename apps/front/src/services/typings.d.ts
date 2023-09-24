@@ -132,4 +132,12 @@ declare namespace API {
   type DeleteRestroomReviewResponse = BaseResponse<RestroomData>;
 
   type ChangeVoteStatusResponse = BaseResponse<RestroomData>;
+
+
+  type ChangeRestroomStatusParams = {
+    newStatus: number; // 0-none, 1-upvote, 2-downvote
+    restroomId: string;
+  };
+
+   type ChangeRestroomStatusResponse = BaseResponse<RestroomData>;
 }
