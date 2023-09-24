@@ -233,7 +233,7 @@ export function getRestroomCreationInfo(id: string) : Promise<API.RestroomData> 
 export function changeRestroomStatus({
   newStatus,
   restroomId,
-}: API.ChangeRestroomStatusParams): Promise<API.RestroomData> {
+}: API.ChangeRestroomStatusParams): Promise<API.AdminRestroomData> {
   return APIClient.post<API.ChangeRestroomStatusResponse>(
     `/restroom/creation/${restroomId}/status`,
     {
