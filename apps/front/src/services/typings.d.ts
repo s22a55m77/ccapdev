@@ -141,4 +141,21 @@ declare namespace API {
 
   type AdminRestroomData = RestroomData & { status: number };
   type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
+
+  type CommentDetailData = {
+    id: string;
+    content: string;
+    commentTo?: string; // comment ID to which it comments to
+    commentToUser?: string; // username
+    commentByUserId: string; // userId
+    commentBy?: string; // username
+    commentAt: string; // date
+    downVote: number;
+    upVote: number;
+    isUpVoted: boolean;
+    isDownVoted: boolean;
+    childComments: string[];
+  };
+
+  type GetCommentDetailResponse = BaseResponse<CommentDetailData>;
 }

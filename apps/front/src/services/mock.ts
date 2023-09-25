@@ -165,7 +165,7 @@ export default function configureMock(mock: MockAdapter) {
         restroomImageIds: ['2'],
         location: 'location description',
         locationImageIds: ['4'],
-        commentsIds: ['2'],
+        commentsIds: ['1', '2'],
         totalComments: 1,
         gender: 'FEMALE',
         createdByUser: 'user1',
@@ -250,7 +250,7 @@ export default function configureMock(mock: MockAdapter) {
         restroomImageIds: ['2'],
         location: 'location description',
         locationImageIds: ['4'],
-        commentsIds: ['2'],
+        commentsIds: ['1', '2'],
         totalComments: 1,
         gender: 'FEMALE',
         createdByUser: '1',
@@ -279,4 +279,63 @@ export default function configureMock(mock: MockAdapter) {
       id: '1',
     }),
   );
+
+  // GET comment/:id
+  mock.onGet(/^\/comment\/(\d+)$/).reply((config) => {
+    const comments: API.CommentDetailData[] = [
+      {
+        id: '1',
+        content: 'first comment',
+        commentByUserId: '1',
+        commentBy: 'user1',
+        commentAt: 'September 25, 2023',
+        downVote: 0,
+        upVote: 0,
+        isDownVoted: false,
+        isUpVoted: true,
+        childComments: ['3'],
+      },
+      {
+        id: '2',
+        content: 'second comment',
+        commentByUserId: '2',
+        commentBy: 'user2',
+        commentAt: 'September 25, 2023',
+        downVote: 0,
+        upVote: 0,
+        isDownVoted: false,
+        isUpVoted: false,
+        childComments: [],
+      },
+      {
+        id: '3',
+        content: 'reply to first comment',
+        commentByUserId: '3',
+        commentBy: 'user3',
+        commentAt: 'September 25, 2023',
+        commentTo: '1',
+        commentToUser: 'user1',
+        downVote: 0,
+        upVote: 0,
+        isDownVoted: false,
+        isUpVoted: false,
+        childComments: [],
+      },
+    ];
+
+    if (config.url) {
+      const result = config.url.match(/^\/comment\/(\d+)$/);
+      if (result) {
+        const id = result[1];
+        const comment = comments.filter((comment) => comment.id === id)[0];
+
+        const response: API.GetCommentDetailResponse =
+          createResponse(comment);
+
+        return [200, response];
+      }
+    }
+
+    return [400];
+  });
 }

@@ -212,21 +212,20 @@ export function changeVoteStatus({
   ).then((res) => res.data.data);
 }
 
-
 // admin
 
-// GET  /restroom/creation/:id >> review restroom creation 
-export function getRestroomCreationInfo(id: string) : Promise<API.RestroomData> {
+// GET  /restroom/creation/:id >> review restroom creation
+export function getRestroomCreationInfo(
+  id: string,
+): Promise<API.RestroomData> {
   return APIClient.get<API.RestroomDetailResponse>(
     `/restroom/creation/${id}`,
     {
       headers: {
         Authorization: localStorage.getItem('token'),
-      }
-    }
-  ).then(
-    (res) => res.data.data,
-  );
+      },
+    },
+  ).then((res) => res.data.data);
 }
 
 // POST /restroom/creation/:id/status   >> handle restroom creation(approve, reject, delete)
@@ -245,4 +244,15 @@ export function changeRestroomStatus({
       },
     },
   ).then((res) => res.data.data);
+}
+
+// GET /comment/:id
+export function getCommentDetail(
+  id: string,
+): Promise<API.CommentDetailData> {
+  return APIClient.get<API.GetCommentDetailResponse>(`/comment/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  }).then((res) => res.data.data);
 }
