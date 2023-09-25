@@ -1,0 +1,64 @@
+.user-profile-container {
+    padding: 40px 35px;
+    min-height: calc(100vh - 67px);
+    width: auto;
+    position: relative;
+
+    background: url("/public/background.png") no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.user-profile-card {
+    width: 80%;
+    padding: 40px 35px;
+    backdrop-filter: blur(20px);
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);;
+    margin: auto;
+    transform: translate(0%, 10%);
+}
+
+.user-profile-card-content {
+    display: flex;
+    gap: 50px;
+    flex-wrap: initial;
+    justify-content: start;
+}
+
+@media only screen and (max-width: 899px) {
+    .user-profile-card-content {
+        flex-wrap: wrap;
+    }
+}
+
+.user-profile-color{
+    color: #595959;
+}
+
+.user-profile-information-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.user-profile-weight {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.year-input {
+    width: 20%;
+}
+
+.description-input {
+    min-width: 100%;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+

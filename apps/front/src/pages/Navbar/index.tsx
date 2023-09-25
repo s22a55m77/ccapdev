@@ -7,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 export default function Navbar() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [avatarAnchor, setAvatarAnchor] = useState<null | HTMLElement>();
   const open = Boolean(avatarAnchor);
 
@@ -71,10 +71,12 @@ export default function Navbar() {
         }}
       >
         <MenuItem>
-          <span className={'user-profile'}>
-            <PersonIcon />
-            User Profile
-          </span>
+          <Link to="/user-profile">
+            <span className={'user-profile'}>
+              <PersonIcon />
+              User Profile
+            </span>
+          </Link>
         </MenuItem>
         <MenuItem>
           <span className={'logout'}>

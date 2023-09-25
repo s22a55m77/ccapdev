@@ -6,6 +6,7 @@ import Restroom from './pages/Restroom';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import Index from './pages/CreateRestroom';
+import UserProfile from './pages/UserProfile';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: '/submit-restroom',
         element: <Index />,
+      },
+      {
+        path: '/user-profile',
+        element: <UserProfile />,
       },
     ],
   },
