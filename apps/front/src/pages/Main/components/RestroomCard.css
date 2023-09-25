@@ -7,7 +7,7 @@
 }
 
 .card:hover {
-    background-color: rgba(238, 238, 238, 0.73);
+    background-color: rgba(238, 238, 238, 1);
 }
 
 .card-content {
