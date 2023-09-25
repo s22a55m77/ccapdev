@@ -1,9 +1,16 @@
 import './index.css';
+import { motion } from 'framer-motion';
 
 export default function Index() {
   return (
     <section className="restroom-form-section">
-      <div className="form-box">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: 50, backdropFilter: 'blur(20px)' }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 50 }}
+        className={'form-box'}
+      >
         <div className="form-value">
           <form action="">
             <h2 className="restroom-form-h2">Restroom forms</h2>
@@ -58,7 +65,7 @@ export default function Index() {
           </div>
           <button className={'restroom-form-button'}>Submit</button>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
