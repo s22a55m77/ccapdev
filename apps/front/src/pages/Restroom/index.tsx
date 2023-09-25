@@ -16,11 +16,17 @@ import './index.css';
 import ReplyCard from './components/ReplyCard.tsx';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useRequest } from 'ahooks';
+import { getRestroomDetail } from '../../services/api.ts';
 
 export default function Restroom() {
   const { restroomId } = useParams();
 
-  console.log(restroomId);
+  const { data: restroomData } = useRequest(getRestroomDetail, {
+    defaultParams: [restroomId || '0'],
+  });
+
+  console.log(restroomData);
 
   return (
     <div className={'restroom-container'}>
@@ -40,20 +46,17 @@ export default function Restroom() {
             />
             <CardContent>
               <div id="title">
-                <b>Title</b>
+                <b>{restroomData?.title}</b>
               </div>
               <Rating
                 name="read-only"
-                value={2.5}
+                value={restroomData?.rating || 0}
                 precision={0.5}
                 readOnly
                 className="rating"
               />
               <div className={'restroom-content'}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor
-                sit amet, consectetur adipiscing elit. Consequat aliquet
-                maecenas ut sit nulla
+                {restroomData?.location}
               </div>
               {/*fix it*/}
               <img
@@ -64,18 +67,26 @@ export default function Restroom() {
               />
               <footer className={'restroom-footer'}>
                 <div id="tags" className={'restroom-tags'}>
-                  <div className={'restroom-tag'}>Tag</div>
-                  <div className={'restroom-tag'}>Tag</div>
+                  {restroomData?.tags.map((tag) => {
+                    return (
+                      <div key={tag} className={'restroom-tag'}>
+                        {tag}
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className={'restroom-activity'}>
                   <div className={'restroom-activity-content'}>
-                    <ChatBubbleOutlineIcon fontSize={'inherit'} /> 1{' '}
+                    <ChatBubbleOutlineIcon fontSize={'inherit'} />
+                    {restroomData?.totalComments}
                   </div>
                   <div className={'restroom-activity-content'}>
-                    <ArrowDownwardIcon fontSize={'inherit'} /> 1{' '}
+                    <ArrowDownwardIcon fontSize={'inherit'} />
+                    {restroomData?.downVote}
                   </div>
                   <div className={'restroom-activity-content'}>
-                    <ArrowUpwardIcon fontSize={'inherit'} /> 1{' '}
+                    <ArrowUpwardIcon fontSize={'inherit'} />
+                    {restroomData?.upVote}
                   </div>
                   <Button
                     variant="contained"
@@ -118,7 +129,13 @@ export default function Restroom() {
             </CardContent>
           </Card>
         </div>
-        <ReplyCard />
+        {restroomData?.commentsIds.map((commentId) => (
+          <ReplyCard
+            key={commentId}
+            commentId={commentId}
+            isParent={true}
+          />
+        ))}
       </motion.div>
     </div>
   );

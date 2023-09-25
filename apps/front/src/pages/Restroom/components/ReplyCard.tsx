@@ -16,7 +16,12 @@ import { motion } from 'framer-motion';
 import './ReplyCard.css';
 import React, { useState } from 'react';
 
-export default function ReplyCard() {
+type ReplyCardProps = {
+  isParent: boolean;
+  commentId: string;
+};
+
+export default function ReplyCard({}: ReplyCardProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const open = Boolean(anchorEl);
@@ -266,6 +271,7 @@ export default function ReplyCard() {
           </CardContent>
         </Card>
       </motion.div>
+
 
       {/* Reply Input Box */}
       <Popover
