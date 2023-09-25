@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
 import { getRestroomList } from '../../services/api.ts';
 import { useRequest } from 'ahooks';
+import buildingInfo from './buildingInfo.ts';
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -16,6 +17,7 @@ export default function Main() {
     null,
   );
   const [selectedBuilding, setSelectedBuilding] = useState<string>('');
+  const [lastSelectedBuilding, setLastSelectedBuilding] = useState('');
   const [selectedFloor, setSelectedFloor] = useState<string>('');
   const open = Boolean(anchorEl);
   const openMenu = Boolean(anchorMenuEl);
@@ -24,6 +26,9 @@ export default function Main() {
   const [query, setQuery] = useState<API.RestroomListQuery>({
     sort: 'NEW',
   });
+
+  // this is control the floor of the building in filter
+  const [buildingFloorCount, setBuildingFloorCount] = useState(3);
 
   const {
     data: restroomList,
@@ -43,9 +48,18 @@ export default function Main() {
     setAnchorMenuEl(null);
   };
 
-  const handleMenuClick = () => {
+  const handleMenuClick = (selectedBuilding: string) => {
+    setLastSelectedBuilding(selectedBuilding);
     setAnchorMenuEl(anchorEl);
     setAnchorEl(null);
+
+    const matchBuilding = buildingInfo.find(
+      (building) => building.buildingName === selectedBuilding,
+    );
+
+    if (matchBuilding) {
+      setBuildingFloorCount(matchBuilding.maxFloor);
+    }
   };
 
   const handleBuildingRadioClick = (
@@ -69,10 +83,16 @@ export default function Main() {
 
     if (floor == selectedFloor) {
       setSelectedFloor('');
-      setQuery({ ...query, floor: undefined });
+      setQuery({ ...query, floor: undefined, building: undefined });
+      setSelectedBuilding('');
     } else {
+      setSelectedBuilding(lastSelectedBuilding);
       setSelectedFloor(floor);
-      setQuery({ ...query, floor: Number(floor) });
+      setQuery({
+        ...query,
+        floor: Number(floor),
+        building: lastSelectedBuilding,
+      });
     }
   };
 
@@ -167,72 +187,38 @@ export default function Main() {
             },
           }}
         >
-          <MenuItem
-            style={{
-              padding: '0px',
-            }}
-          >
-            <Radio
-              checked={selectedBuilding === 'Gokongwei'}
-              onClick={(e) => handleBuildingRadioClick(e)}
-              name="building"
-              value="Gokongwei"
-              size="small"
-            />
-            <Button
-              onClick={handleMenuClick}
-              endIcon={<ArrowForwardIosIcon />}
-              color={'green'}
-              className={'menu-button'}
-              style={{ justifyContent: 'end' }}
-            >
-              <span className={'text-wrap'}>Gokongwei Hall</span>
-            </Button>
-          </MenuItem>
-          <MenuItem
-            style={{
-              padding: '0px',
-            }}
-          >
-            <Radio
-              checked={selectedBuilding === 'Razon'}
-              onClick={(e) => handleBuildingRadioClick(e)}
-              name="building"
-              value="Razon"
-              size="small"
-            />
-            <Button
-              onClick={handleMenuClick}
-              endIcon={<ArrowForwardIosIcon />}
-              color={'green'}
-              className={'menu-button'}
-              style={{ justifyContent: 'end' }}
-            >
-              <span className={'text-wrap'}>Razon</span>
-            </Button>
-          </MenuItem>
-          <MenuItem
-            style={{
-              padding: '0px',
-            }}
-          >
-            <Radio
-              checked={selectedBuilding === 'Henry Sy'}
-              onClick={(e) => handleBuildingRadioClick(e)}
-              name="building"
-              value="Henry Sy"
-              size="small"
-            />
-            <Button
-              onClick={handleMenuClick}
-              endIcon={<ArrowForwardIosIcon />}
-              color={'green'}
-              className={'menu-button'}
-              style={{ justifyContent: 'end' }}
-            >
-              <span className={'text-wrap'}>Henry Sy</span>
-            </Button>
-          </MenuItem>
+          {buildingInfo.map((building) => {
+            return (
+              <MenuItem
+                style={{
+                  padding: '0px',
+                }}
+                key={building.buildingName}
+              >
+                <Radio
+                  checked={selectedBuilding === building.buildingName}
+                  onClick={(e) => handleBuildingRadioClick(e)}
+                  name="building"
+                  value={building.buildingName}
+                  size="small"
+                />
+                <Button
+                  onClick={() => {
+                    handleMenuClick(building.buildingName);
+                  }}
+                  endIcon={<ArrowForwardIosIcon />}
+                  color={'green'}
+                  className={'menu-button'}
+                  value={building.buildingName}
+                  style={{ justifyContent: 'end' }}
+                >
+                  <span className={'text-wrap'}>
+                    {building.buildingName}
+                  </span>
+                </Button>
+              </MenuItem>
+            );
+          })}
         </Menu>
 
         {/*  MENU Floor*/}
@@ -242,54 +228,29 @@ export default function Main() {
           open={openMenu}
           onClose={handleFilterClose}
         >
-          <MenuItem
-            style={{
-              padding: '0px',
-              paddingLeft: '3px',
-              paddingRight: '10px',
-            }}
-          >
-            <Radio
-              checked={selectedFloor === '1'}
-              onClick={(e) => handleFloorRadioClick(e)}
-              name="floor"
-              value="1"
-              size="small"
-            />
-            <span className={'green'}>1</span>
-          </MenuItem>
-          <MenuItem
-            style={{
-              padding: '0px',
-              paddingLeft: '3px',
-              paddingRight: '10px',
-            }}
-          >
-            <Radio
-              checked={selectedFloor === '2'}
-              onClick={(e) => handleFloorRadioClick(e)}
-              name="floor"
-              value="2"
-              size="small"
-            />
-            <span className={'green'}>2</span>
-          </MenuItem>
-          <MenuItem
-            style={{
-              padding: '0px',
-              paddingLeft: '3px',
-              paddingRight: '10px',
-            }}
-          >
-            <Radio
-              checked={selectedFloor === '3'}
-              onClick={(e) => handleFloorRadioClick(e)}
-              name="floor"
-              value="3"
-              size="small"
-            />
-            <span className={'green'}>3</span>
-          </MenuItem>
+          {[...Array(buildingFloorCount)].map((_, i) => {
+            const floor = i + 1;
+
+            return (
+              <MenuItem
+                style={{
+                  padding: '0px',
+                  paddingLeft: '3px',
+                  paddingRight: '10px',
+                }}
+                key={i}
+              >
+                <Radio
+                  checked={selectedFloor === floor.toString()}
+                  onClick={(e) => handleFloorRadioClick(e)}
+                  name="floor"
+                  value={floor}
+                  size="small"
+                />
+                <span className={'green'}>{floor}</span>
+              </MenuItem>
+            );
+          })}
         </Menu>
       </motion.div>
     </div>
