@@ -96,6 +96,22 @@ const buildingInfo: BuildingInfo[] = [
     buildingName: 'Carpentry & Painting Contractor Workshop',//应该不用了
     maxFloor: 0,
   },
+  {
+    buildingName: 'Milagros R. del Rosario Building', //Laguna Campus I didnt add all
+    maxFloor: 5,
+  },
+  {
+    buildingName: 'Richard L. Lee Engineering Technology Block',
+    maxFloor: 3,
+  },
+  {
+    buildingName: 'George S.K. Ty Advanced Instrumentation Building',
+    maxFloor: 4,
+  },
+  {
+    buildingName: 'John L. Gokongwei Jr. Innovation Center',
+    maxFloor: 3,
+  },
 ];
 
 export default buildingInfo;
