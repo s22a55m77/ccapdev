@@ -70,7 +70,7 @@ export default function Navbar() {
           horizontal: 100,
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={handleAvataClose}>
           <Link to="/user-profile">
             <span className={'user-profile'}>
               <PersonIcon />
@@ -78,7 +78,7 @@ export default function Navbar() {
             </span>
           </Link>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleAvataClose}>
           <span className={'logout'}>
             <LogoutIcon />
             Logout
