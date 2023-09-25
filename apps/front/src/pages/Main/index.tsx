@@ -160,9 +160,9 @@ export default function Main() {
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                key={restroom.id}
               >
                 <RestroomCard
-                  key={restroom.id}
                   id={restroom.id}
                   title={restroom.title}
                   tags={restroom.tags}
