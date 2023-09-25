@@ -18,3 +18,15 @@
     display: flex;
     justify-content: space-between;
 }
+
+.logout {
+    color: #ff4d4f;
+    display: flex;
+}
+
+.user-profile {
+    display: flex;
+    margin-left: -3px;
+    color: #595959;
+}
+
