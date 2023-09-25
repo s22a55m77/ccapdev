@@ -50,10 +50,10 @@ declare namespace API {
 
   type UpdateUserProfileResponse = BaseResponse<UserData>;
 
-  interface RestroomList
-    extends Omit<RestroomData, 'locationImageIds' | 'commentsIds'> {
-    totalComments: number;
-  }
+  type RestroomList = Omit<
+    RestroomData,
+    'locationImageIds' | 'commentsIds'
+  >;
 
   type RestroomListData = RestroomList[];
 
@@ -76,6 +76,7 @@ declare namespace API {
     locationImageIds: string[];
     restroomImageIds: string[];
     commentsIds: string[];
+    totalComments: number;
     gender: 'MALE' | 'FEMALE';
     createdByUser: string;
     createdAt: string;
@@ -133,12 +134,11 @@ declare namespace API {
 
   type ChangeVoteStatusResponse = BaseResponse<RestroomData>;
 
-
   type ChangeRestroomStatusParams = {
-    newStatus: number; 
+    newStatus: number;
     restroomId: string;
   };
 
-   type AdminRestroomData = RestroomData & {status: number};
-   type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
+  type AdminRestroomData = RestroomData & { status: number };
+  type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
 }
