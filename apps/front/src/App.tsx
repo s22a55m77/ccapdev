@@ -33,6 +33,15 @@ const theme = createTheme({
     green: createColor('#04AA6D'),
     darkGreen: createColor('#04AA6D'),
   },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '5px 5px 20px rgba(0, 0, 0, 0.5)',
+        },
+      },
+    },
+  },
 });
 
 function App() {
