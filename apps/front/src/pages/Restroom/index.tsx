@@ -50,11 +50,10 @@ export default function Restroom() {
                 className="rating"
               />
               <div className={'restroom-content'}>
-                {' '}
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor
                 sit amet, consectetur adipiscing elit. Consequat aliquet
-                maecenas ut sit nulla{' '}
+                maecenas ut sit nulla
               </div>
               {/*fix it*/}
               <img
