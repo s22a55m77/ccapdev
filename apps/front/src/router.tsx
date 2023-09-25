@@ -5,7 +5,7 @@ import Main from './pages/Main';
 import Restroom from './pages/Restroom';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
-import RestroomForm from './pages/CreateRestroom/restroom-form.tsx';
+import Index from './pages/CreateRestroom';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/submit-restroom',
-        element: <RestroomForm />,
+        element: <Index />,
       },
     ],
   },

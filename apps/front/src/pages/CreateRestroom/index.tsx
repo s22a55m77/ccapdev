@@ -1,6 +1,6 @@
-import './restroom-form.css';
+import './index.css';
 
-export default function RestroomForm() {
+export default function Index() {
   return (
     <section className="restroom-form-section">
       <div className="form-box">
