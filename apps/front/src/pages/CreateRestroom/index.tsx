@@ -33,7 +33,7 @@ export default function Index() {
 
               <div className="input-group">
                 <ion-icon name="people-outline"></ion-icon>
-                <input type="text" id="address" placeholder=" " required />
+                <input type="text" id="address" placeholder=" " required autoComplete="off" />
                 <label htmlFor="address">Gender</label>
               </div>
             </div>
