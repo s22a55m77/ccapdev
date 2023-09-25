@@ -148,6 +148,7 @@ export default function configureMock(mock: MockAdapter) {
         location: 'location description',
         locationImageIds: ['3'],
         commentsIds: ['1'],
+        totalComments: 1,
         gender: 'MALE',
         createdByUser: 'user1',
         createdAt: 'September 18, 2023',
@@ -165,6 +166,7 @@ export default function configureMock(mock: MockAdapter) {
         location: 'location description',
         locationImageIds: ['4'],
         commentsIds: ['2'],
+        totalComments: 1,
         gender: 'FEMALE',
         createdByUser: 'user1',
         createdAt: 'September 19, 2023',
@@ -176,8 +178,7 @@ export default function configureMock(mock: MockAdapter) {
     if (config.url) {
       const result = config.url.match(/^\/restroom\/(\d+)$/);
       if (result) {
-        const id = result[0];
-
+        const id = result[1];
         const restroom = restrooms.filter(
           (restroom) => restroom.id === id,
         )[0];
@@ -205,6 +206,7 @@ export default function configureMock(mock: MockAdapter) {
       locationImageIds: config.data.locationImageIds,
       restroomImageIds: config.data.restroomImageIds,
       commentsIds: [],
+      totalComments: 0,
       gender: config.data.gender,
       createdByUser: 'User1',
       createdAt: 'September 19, 2023',
@@ -231,6 +233,7 @@ export default function configureMock(mock: MockAdapter) {
         location: 'location description',
         locationImageIds: ['3'],
         commentsIds: ['1'],
+        totalComments: 1,
         gender: 'MALE',
         createdByUser: 'user1',
         createdAt: 'September 19, 2023',
@@ -248,6 +251,7 @@ export default function configureMock(mock: MockAdapter) {
         location: 'location description',
         locationImageIds: ['4'],
         commentsIds: ['2'],
+        totalComments: 1,
         gender: 'FEMALE',
         createdByUser: '1',
         createdAt: 'September 18, 2023',
