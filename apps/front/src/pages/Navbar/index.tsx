@@ -5,6 +5,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 export default function Navbar() {
   const [isLogin, setIsLogin] = useState(false);
   const [avatarAnchor, setAvatarAnchor] = useState<null | HTMLElement>();
@@ -21,20 +22,23 @@ export default function Navbar() {
   };
   return (
     <div className={'nav-container'}>
-      <div className={'flex'}>
-        <div>
-          <img
-            src={logo}
-            alt="logo"
-            className={'image'}
-            width={40}
-            height={40}
-          />
+      <Link to="/">
+        <div className={'flex'}>
+          <div>
+            <img
+              src={logo}
+              alt="logo"
+              className={'image'}
+              width={40}
+              height={40}
+            />
+          </div>
+          <div className={'v-center m-10'}>
+            DLSU toiletTo<b>PICK</b>
+          </div>
         </div>
-        <div className={'v-center m-10'}>
-          DLSU toiletTo<b>PICK</b>
-        </div>
-      </div>
+      </Link>
+
       <div>
         {!isLogin ? (
           <div>
