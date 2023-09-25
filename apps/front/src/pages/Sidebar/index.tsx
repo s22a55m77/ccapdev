@@ -2,9 +2,11 @@ import './index.css';
 import { Input, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar() {
+  const location = useLocation();
+
   return (
     <>
       <div className={'container'}>
@@ -22,8 +24,11 @@ export default function Sidebar() {
           <span className={'menu'}>MENU</span>
           <div className={'category'}>
             <Link to="/" className={'link-style'}>
-              <div className={'flex item active'}>
-                {/*TODO Fix css*/}
+              <div
+                className={`flex item ${
+                  location.pathname === '/' ? 'active' : ''
+                }`}
+              >
                 <FormatListBulletedIcon
                   fontSize={'inherit'}
                   className={'v-center'}
@@ -32,7 +37,11 @@ export default function Sidebar() {
               </div>
             </Link>
             <Link to="/submit-restroom" className={'link-style'}>
-              <div className={'flex item active'}>
+              <div
+                className={`flex item ${
+                  location.pathname === '/submit-restroom' ? 'active' : ''
+                }`}
+              >
                 <FormatListBulletedIcon
                   fontSize={'inherit'}
                   className={'v-center'}
