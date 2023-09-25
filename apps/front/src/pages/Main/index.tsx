@@ -137,20 +137,25 @@ export default function Main() {
         {restroomList &&
           restroomList.map((restroom) => {
             return (
-              <RestroomCard
-                key={restroom.id}
-                id={restroom.id}
-                title={restroom.title}
-                tags={restroom.tags}
-                rating={restroom.rating}
-                restroomImageIds={restroom.restroomImageIds}
-                createdByUser={restroom.createdByUser}
-                createdAt={restroom.createdAt}
-                downVote={restroom.downVote}
-                upVote={restroom.upVote}
-                totalComments={restroom.totalComments}
-                location={restroom.location}
-              />
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+              >
+                <RestroomCard
+                  key={restroom.id}
+                  id={restroom.id}
+                  title={restroom.title}
+                  tags={restroom.tags}
+                  rating={restroom.rating}
+                  restroomImageIds={restroom.restroomImageIds}
+                  createdByUser={restroom.createdByUser}
+                  createdAt={restroom.createdAt}
+                  downVote={restroom.downVote}
+                  upVote={restroom.upVote}
+                  totalComments={restroom.totalComments}
+                  location={restroom.location}
+                />
+              </motion.div>
             );
           })}
         {error && <span>Something go wrong</span>}
