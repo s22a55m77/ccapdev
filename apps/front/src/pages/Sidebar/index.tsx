@@ -21,24 +21,23 @@ export default function Sidebar() {
         <div className={'mt-50'}>
           <span className={'menu'}>MENU</span>
           <div className={'category'}>
-            <Link to="/">
-            <div className={'flex item active'}>
-              {/*TODO Fix css*/}
+            <Link to="/" className={'link-style'}>
+              <div className={'flex item active'}>
+                {/*TODO Fix css*/}
                 <FormatListBulletedIcon
                   fontSize={'inherit'}
                   className={'v-center'}
                 />
                 Toilet
-
-            </div>
+              </div>
             </Link>
-            <Link to="/submit-restroom">
-              <div className={'flex item'}>
-                  <FormatListBulletedIcon
-                    fontSize={'inherit'}
-                    className={'v-center'}
-                  />
-                  Submit
+            <Link to="/submit-restroom" className={'link-style'}>
+              <div className={'flex item active'}>
+                <FormatListBulletedIcon
+                  fontSize={'inherit'}
+                  className={'v-center'}
+                />
+                Submit
               </div>
             </Link>
           </div>

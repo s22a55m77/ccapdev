@@ -35,7 +35,7 @@
     width: 100%;
     text-align: left;
     padding: 10px;
-    padding-right: 200px;
+    padding-right: 100%;
 }
 
 .item:hover {
@@ -68,4 +68,8 @@
     border-left: 5px solid #04AA6D;
     color: white;
     transition: 0.2s;
+}
+
+.link-style {
+    width: 100%;
 }
