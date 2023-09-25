@@ -3,7 +3,8 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader, Rating,
+  CardHeader,
+  Rating,
   TextField,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -14,7 +15,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import './index.css';
 import ReplyCard from './components/ReplyCard.tsx';
 import { useParams } from 'react-router-dom';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 export default function Restroom() {
   const { restroomId } = useParams();
@@ -22,14 +23,14 @@ export default function Restroom() {
   console.log(restroomId);
 
   return (
-    <>
+    <div className={'restroom-container'}>
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 50 }}
       >
-        <div id={'cards'} className={'restroom-container'}>
+        <div id={'cards'}>
           <Card sx={{ maxWidth: '100%' }} className={'restroom'}>
             {/*fix me */}
             <CardHeader
@@ -41,13 +42,19 @@ export default function Restroom() {
               <div id="title">
                 <b>Title</b>
               </div>
-              <Rating name="read-only" value={2.5} precision={0.5} readOnly className='rating'/>
+              <Rating
+                name="read-only"
+                value={2.5}
+                precision={0.5}
+                readOnly
+                className="rating"
+              />
               <div className={'restroom-content'}>
                 {' '}
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
-                amet, consectetur adipiscing elit. Consequat aliquet maecenas
-                ut sit nulla{' '}
+                Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor
+                sit amet, consectetur adipiscing elit. Consequat aliquet
+                maecenas ut sit nulla{' '}
               </div>
               {/*fix it*/}
               <img
@@ -95,7 +102,7 @@ export default function Restroom() {
         <div className={'comment-input-card'}>
           <Card style={{ padding: '40px', paddingBottom: '20px' }}>
             <CardContent>
-              <Rating defaultValue={0}/>
+              <Rating defaultValue={0} />
               <div className={'flex'} style={{ justifyContent: 'center' }}>
                 <TextField
                   multiline
@@ -114,6 +121,6 @@ export default function Restroom() {
         </div>
         <ReplyCard />
       </motion.div>
-    </>
+    </div>
   );
 }

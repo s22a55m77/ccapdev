@@ -1,7 +1,12 @@
 .main-container {
-    background-color: #FAFAFA;
+    /*background-color: #FAFAFA;*/
     padding: 40px 35px;
     min-height: calc(100vh - 67px);
+    width: 100%;
+    background: url("/public/background.png") no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .flex {

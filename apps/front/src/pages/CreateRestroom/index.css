@@ -11,8 +11,13 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    min-height: calc(100vh - 67px);
     height:100%;
     width:100%;
+    background: url("/public/background.png") no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .form-box{
@@ -27,7 +32,7 @@
     min-height:500px;
     height: auto;
     background: transparent;
-    border: 1px solid rgb(72, 225, 72);
+    border: 0px solid rgb(72, 225, 72);
     border-radius: 20px;
     backdrop-filter: blur(20px);
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
