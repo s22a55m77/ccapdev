@@ -6,58 +6,58 @@ type BuildingInfo = {
 const buildingInfo: BuildingInfo[] = [
   {
     buildingName: 'St. La Salle Hall',
-    maxFloor: 0,
+    maxFloor: 4,
   },
   {
     buildingName: 'Br John Hall',
-    maxFloor: 0,
+    maxFloor: 3,
   },
   {
     buildingName: 'Br Connion Hall',
-    maxFloor: 0,
+    maxFloor: 5,
   },
   {
     buildingName: 'Enrique YuChengco Hall',
-    maxFloor: 0,
+    maxFloor: 9,
   },
   {
     buildingName: 'Faculty Center',
-    maxFloor: 0,
+    maxFloor: 4,
   },
   {
     buildingName: 'Br William Hall',
-    maxFloor: 0,
+    maxFloor: 7,
   },
   {
-    buildingName: 'Salikneta Mart',
+    buildingName: 'Salikneta Mart', //应该不用了
     maxFloor: 0,
   },
   {
     buildingName: 'St. Joseph Hall',
-    maxFloor: 0,
+    maxFloor: 6,
   },
   {
     buildingName: 'Br Bloemen Hall',
-    maxFloor: 0,
+    maxFloor: 1,
   },
   {
     buildingName: 'Henry Sy Sr Hall',
-    maxFloor: 15,
+    maxFloor: 14,
   },
   {
     buildingName: 'Velasco Hall',
-    maxFloor: 0,
+    maxFloor: 5,
   },
   {
     buildingName: 'St. Miguel Hall',
-    maxFloor: 0,
+    maxFloor: 4,
   },
   {
     buildingName: 'St. Mutien Marie Hall',
-    maxFloor: 0,
+    maxFloor: 10,
   },
   {
-    buildingName: 'Solar/Eco Car Shelter',
+    buildingName: 'Solar/Eco Car Shelter',//应该不用了
     maxFloor: 0,
   },
   {
@@ -66,34 +66,34 @@ const buildingInfo: BuildingInfo[] = [
   },
   {
     buildingName: 'Science & Technology Research Center',
-    maxFloor: 0,
+    maxFloor: 4,
   },
   {
-    buildingName: 'Inventory Management OFF/ROTC/MAINTENANCE Shop',
+    buildingName: 'Inventory Management OFF/ROTC/MAINTENANCE Shop',//应该不用了
     maxFloor: 0,
   },
   {
     buildingName: 'Enrique Razon Sports Center',
-    maxFloor: 9,
+    maxFloor: 10,
   },
   {
     buildingName: 'Br Andrew Gonzalez Hall',
+    maxFloor: 20,
+  },
+  {
+    buildingName: 'Retreat House',//应该不用了
     maxFloor: 0,
   },
   {
-    buildingName: 'Retreat House',
+    buildingName: 'Preschool',//应该不用了
     maxFloor: 0,
   },
   {
-    buildingName: 'Preschool',
+    buildingName: 'Bahay KanlunganlLegal Aid Clinic',//应该不用了
     maxFloor: 0,
   },
   {
-    buildingName: 'Bahay KanlunganlLegal Aid Clinic',
-    maxFloor: 0,
-  },
-  {
-    buildingName: 'Carpentry & Painting Contractor Workshop',
+    buildingName: 'Carpentry & Painting Contractor Workshop',//应该不用了
     maxFloor: 0,
   },
 ];
