@@ -34,6 +34,7 @@ declare namespace API {
     yearsInDLSU: number;
     description: string;
     role: 'USER' | 'ADMIN';
+    profilePicId: string;
   };
 
   type MeResponse = BaseResponse<UserData>;

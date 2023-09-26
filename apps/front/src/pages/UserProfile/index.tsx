@@ -4,6 +4,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRequest } from 'ahooks';
+import { me, updateUserProfile } from '../../services/api.ts';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -17,21 +19,62 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+type Edit = {
+  isEditing: boolean;
+  value?: string;
+};
+
 export default function UserProfile() {
-  const [isYearEdit, setIsYearEdit] = useState(false);
-  const [isDescEdit, setIsDescEdit] = useState(false);
+  const [yearEdit, setYearEdit] = useState<Edit>({ isEditing: false });
+  const [descEdit, setDescEdit] = useState<Edit>({ isEditing: false });
+  let { data, run } = useRequest(me);
 
   const handleKeyDown = (
     event: React.KeyboardEvent,
     identifier: string,
   ) => {
     if (identifier === 'year') {
-      if (event.key === 'Escape') setIsYearEdit(false);
-      else if (event.key === 'Enter') setIsYearEdit(false);
+      if (event.key === 'Escape') {
+        setYearEdit({ value: undefined, isEditing: false });
+      } else if (event.key === 'Enter') {
+        if (yearEdit?.value) {
+          updateUserProfile({ yearsInDLSU: Number(yearEdit.value) })
+            .then(() => {
+              setYearEdit({ ...yearEdit, isEditing: false });
+              run();
+            })
+            .catch(() => {
+              //TODO do something when update is failed
+            });
+        }
+      }
     } else if (identifier === 'desc') {
-      if (event.key === 'Escape') setIsDescEdit(false);
-      else if (event.key === 'Enter') setIsDescEdit(false);
+      if (event.key === 'Escape')
+        setDescEdit({ value: undefined, isEditing: false });
+      else if (event.key === 'Enter') {
+        updateUserProfile({ description: descEdit?.value })
+          .then(() => {
+            setDescEdit({ value: undefined, isEditing: false });
+            // refetch the data if successfully updated
+            run();
+          })
+          .catch(() => {
+            //TODO do something when update is failed
+          });
+      }
     }
+  };
+
+  const handleDescChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setDescEdit({ ...descEdit, value: e.target.value });
+  };
+
+  const handleYearChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setYearEdit({ ...yearEdit, value: e.target.value });
   };
 
   return (
@@ -46,7 +89,11 @@ export default function UserProfile() {
           <div className={'user-profile-card'}>
             <div className={'user-profile-card-content'}>
               <div className={'avatar-container'}>
-                <Avatar sx={{ width: 100, height: 100 }} />
+                {/*TODO MCO2*/}
+                <Avatar
+                  sx={{ width: 100, height: 100 }}
+                  src={data?.profilePicId}
+                />
                 <Button
                   component="label"
                   variant={'contained'}
@@ -59,16 +106,16 @@ export default function UserProfile() {
                 </Button>
               </div>
               <div className={'user-profile-information-container'}>
-                {!isYearEdit ? (
+                {!yearEdit.isEditing ? (
                   <span className={'user-profile-color'}>
                     <span className={'user-profile-weight'}>
                       Year in DLSU:
                     </span>
-                    10{' '}
+                    {data?.yearsInDLSU}
                     <EditIcon
                       fontSize={'inherit'}
                       onClick={() => {
-                        setIsYearEdit(true);
+                        setYearEdit({ ...yearEdit, isEditing: true });
                       }}
                     />
                   </span>
@@ -76,28 +123,26 @@ export default function UserProfile() {
                   <TextField
                     label="Year in DLSU"
                     className={'year-input'}
-                    value={'123'}
+                    value={yearEdit?.value || data?.yearsInDLSU}
                     type={'number'}
                     onKeyDown={(event) => {
                       handleKeyDown(event, 'year');
                     }}
                     autoFocus
                     size={'small'}
+                    onChange={handleYearChange}
                   />
                 )}
-                {!isDescEdit ? (
+                {!descEdit.isEditing ? (
                   <span className={'user-profile-color'}>
                     <span className={'user-profile-weight'}>
                       Description:
                     </span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit. Consequat aliquet maecenas ut sit nulla Lorem
-                    ipsum dolor sit amet, consectetur adipiscing elit.
-                    Consequat aliquet maecenas ut sit nulla
+                    {data?.description}
                     <EditIcon
                       fontSize={'inherit'}
                       onClick={() => {
-                        setIsDescEdit(true);
+                        setDescEdit({ ...descEdit, isEditing: true });
                       }}
                     />
                   </span>
@@ -111,6 +156,8 @@ export default function UserProfile() {
                     }}
                     autoFocus
                     size={'small'}
+                    value={descEdit?.value || data?.description}
+                    onChange={handleDescChange}
                   />
                 )}
               </div>

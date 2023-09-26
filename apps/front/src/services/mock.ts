@@ -12,6 +12,16 @@ function createResponse<Data>(
   };
 }
 
+const user: API.UserData = {
+  id: '1',
+  username: 'user1',
+  reviews: 1,
+  yearsInDLSU: 1,
+  description: 'this is a short description',
+  role: 'ADMIN',
+  profilePicId: '/src/assets/dlsu.jpg',
+};
+
 export default function configureMock(mock: MockAdapter) {
   // POST /auth/login
   mock.onPost('/auth/login').reply(
@@ -30,17 +40,7 @@ export default function configureMock(mock: MockAdapter) {
   );
 
   // GET /auth/me
-  mock.onGet('/auth/me').reply(
-    200,
-    createResponse<API.UserData>({
-      id: '1',
-      username: 'user1',
-      reviews: 1,
-      yearsInDLSU: 1,
-      description: 'this is a short description',
-      role: 'ADMIN',
-    }),
-  );
+  mock.onGet('/auth/me').reply(200, createResponse<API.UserData>(user));
 
   // GET /auth/refresh
   mock.onGet('/auth/refresh').reply(
@@ -51,17 +51,12 @@ export default function configureMock(mock: MockAdapter) {
   );
 
   //PATCH /user/profile
-  mock.onPatch('/user/profile').reply(
-    200,
-    createResponse<API.UserData>({
-      id: '1',
-      username: 'user1',
-      reviews: 1,
-      yearsInDLSU: 2,
-      description: 'this is the new description',
-      role: 'ADMIN',
-    }),
-  );
+  mock.onPatch('/user/profile').reply((config) => {
+    const data = JSON.parse(config.data);
+    if (data.description) user.description = data.description;
+    if (data.yearsInDLSU) user.yearsInDLSU = data.yearsInDLSU;
+    return [200, createResponse<API.UserData>(user)];
+  });
 
   // GET /restroom
   // query building
