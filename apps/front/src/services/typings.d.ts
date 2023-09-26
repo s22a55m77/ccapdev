@@ -139,7 +139,15 @@ declare namespace API {
     restroomId: string;
   };
 
-  type AdminRestroomData = RestroomData & { status: number };
+  type AdminRestroomData = Omit<
+    RestroomData,
+    | 'commentsIds'
+    | 'totalComments'
+    | 'upVote'
+    | 'downVote'
+    | 'rating'
+    | 'tags'
+  > & { status: number };
   type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
 
   type CommentDetailData = {

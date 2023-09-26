@@ -2,10 +2,14 @@ import './index.css';
 import { Input, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function Sidebar() {
   const location = useLocation();
+  const [isAdmin, setIsAdmin] = useState(true);
 
   return (
     <>
@@ -42,13 +46,28 @@ export default function Sidebar() {
                   location.pathname === '/submit-restroom' ? 'active' : ''
                 }`}
               >
-                <FormatListBulletedIcon
+                <EditNoteIcon
                   fontSize={'inherit'}
                   className={'v-center'}
                 />
                 Submit
               </div>
             </Link>
+            {isAdmin && (
+              <Link to="/admin-table" className={'link-style'}>
+                <div
+                  className={`flex item ${
+                    location.pathname === '/admin-table' ? 'active' : ''
+                  }`}
+                >
+                  <ChecklistIcon
+                    fontSize={'inherit'}
+                    className={'v-center'}
+                  />
+                  Table
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>

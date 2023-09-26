@@ -7,6 +7,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import Index from './pages/CreateRestroom';
 import UserProfile from './pages/UserProfile';
+import AdminTable from './pages/AdminTable';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/user-profile',
         element: <UserProfile />,
+      },
+      {
+        path: 'admin-table',
+        element: <AdminTable />,
       },
     ],
   },
