@@ -38,6 +38,7 @@ export default function configureMock(mock: MockAdapter) {
       reviews: 1,
       yearsInDLSU: 1,
       description: 'this is a short description',
+      role: 'ADMIN',
     }),
   );
 
@@ -58,6 +59,7 @@ export default function configureMock(mock: MockAdapter) {
       reviews: 1,
       yearsInDLSU: 2,
       description: 'this is the new description',
+      role: 'ADMIN',
     }),
   );
 

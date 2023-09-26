@@ -33,6 +33,7 @@ declare namespace API {
     reviews: number;
     yearsInDLSU: number;
     description: string;
+    role: 'USER' | 'ADMIN';
   };
 
   type MeResponse = BaseResponse<UserData>;
