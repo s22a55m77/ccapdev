@@ -116,9 +116,10 @@ declare namespace API {
   type UpdateProfilePicResponse = BaseResponse<UpdateProfilePicData>;
 
   type CreateRestroomReviewParams = {
+    rating?: number;
     restroomId: string;
-    commentTo: string | null; // comment ID to which it comments to
-    content: string;
+    commentTo?: string; // comment ID to which it comments to
+    content?: string;
   };
 
   type CreateRestroomReviewResponse = BaseResponse<RestroomData>;
@@ -159,6 +160,7 @@ declare namespace API {
   type CommentDetailData = {
     id: string;
     content: string;
+    rating?: number;
     commentTo?: string; // comment ID to which it comments to
     commentToUser?: string; // username
     commentByUserId: string; // userId
@@ -172,4 +174,12 @@ declare namespace API {
   };
 
   type GetCommentDetailResponse = BaseResponse<CommentDetailData>;
+
+  type VoteRestroomParams = {
+    restroomId: string;
+    upVote?: boolean;
+    downVote?: boolean;
+  };
+
+  type VoteRestroomResponse = BaseResponse<RestroomData>;
 }

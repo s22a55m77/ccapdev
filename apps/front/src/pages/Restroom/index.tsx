@@ -17,16 +17,69 @@ import ReplyCard from './components/ReplyCard.tsx';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
-import { getRestroomDetail } from '../../services/api.ts';
+import {
+  createRestroomReview,
+  getRestroomDetail,
+  voteRestroom,
+} from '../../services/api.ts';
+import { useState } from 'react';
+
+type UserRating = {
+  rating: number;
+  comment?: string;
+  isButtonDisable: boolean;
+};
 
 export default function Restroom() {
   const { restroomId } = useParams();
+  const [userRating, setUserRating] = useState<UserRating>({
+    rating: 0,
+    isButtonDisable: false,
+  });
 
-  const { data: restroomData } = useRequest(getRestroomDetail, {
+  const { data: restroomData, run } = useRequest(getRestroomDetail, {
     defaultParams: [restroomId || '0'],
   });
 
-  console.log(restroomData);
+  const handleVote = ({
+    upVote,
+    downVote,
+  }: {
+    upVote?: boolean;
+    downVote?: boolean;
+  }) => {
+    if (restroomId && upVote)
+      voteRestroom({ restroomId, upVote }).then(() => {
+        run(restroomId);
+      });
+    else if (restroomId && downVote)
+      voteRestroom({ restroomId, downVote }).then(() => {
+        run(restroomId);
+      });
+  };
+
+  const handleRateClick = (value: number | null) => {
+    if (value) setUserRating({ ...userRating, rating: value });
+  };
+
+  const handleCommentInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if (e.target.value)
+      setUserRating({ ...userRating, comment: e.target.value });
+  };
+
+  const handleRateSubmit = () => {
+    if (userRating?.rating && restroomId)
+      createRestroomReview({
+        restroomId,
+        content: userRating.comment,
+        rating: userRating.rating,
+      }).then(() => {
+        setUserRating({ rating: 0, comment: '', isButtonDisable: true });
+        run(restroomId);
+      });
+  };
 
   return (
     <div className={'restroom-container'}>
@@ -41,8 +94,8 @@ export default function Restroom() {
             {/*fix me */}
             <CardHeader
               avatar={<Avatar />}
-              title="Placeholder"
-              subheader="September 18, 2023"
+              title={restroomData?.createdByUser}
+              subheader={restroomData?.createdAt}
             />
             <CardContent>
               <div id="title">
@@ -58,13 +111,30 @@ export default function Restroom() {
               <div className={'restroom-content'}>
                 {restroomData?.location}
               </div>
-              {/*fix it*/}
-              <img
-                style={{ marginTop: 10 }}
-                src={'src/assets/toilet.png'}
-                alt={'img'}
-                width={'30%'}
-              />
+              {/*TODO MCO2*/}
+              {restroomData?.restroomImageIds.map((id) => {
+                return (
+                  <img
+                    key={id}
+                    style={{ marginTop: 10 }}
+                    src={id}
+                    alt={'img'}
+                    width={'30%'}
+                  />
+                );
+              })}
+              {restroomData?.locationImageIds.map((id) => {
+                return (
+                  <img
+                    key={id}
+                    style={{ marginTop: 10 }}
+                    src={id}
+                    alt={'img'}
+                    width={'30%'}
+                  />
+                );
+              })}
+
               <footer className={'restroom-footer'}>
                 <div id="tags" className={'restroom-tags'}>
                   {restroomData?.tags.map((tag) => {
@@ -93,6 +163,9 @@ export default function Restroom() {
                     color="error"
                     style={{ boxShadow: 'none' }}
                     disabled={restroomData?.isDownVoted}
+                    onClick={() => {
+                      handleVote({ downVote: true });
+                    }}
                   >
                     <ThumbDownAltIcon />
                   </Button>
@@ -102,6 +175,9 @@ export default function Restroom() {
                     color="primary"
                     style={{ boxShadow: 'none' }}
                     disabled={restroomData?.isUpVoted}
+                    onClick={() => {
+                      handleVote({ upVote: true });
+                    }}
                   >
                     Upvote
                   </Button>
@@ -114,17 +190,30 @@ export default function Restroom() {
         <div className={'comment-input-card'}>
           <Card style={{ padding: '40px', paddingBottom: '20px' }}>
             <CardContent>
-              <Rating defaultValue={0} />
+              <Rating
+                defaultValue={0}
+                value={userRating.rating}
+                onChange={(_, value) => {
+                  handleRateClick(value);
+                }}
+              />
               <div className={'flex'} style={{ justifyContent: 'center' }}>
                 <TextField
                   multiline
                   label="Comment"
                   placeholder={'Type here your comment (Optional)'}
                   className={'comment-input'}
+                  onChange={handleCommentInput}
+                  value={userRating.comment}
                 />
               </div>
               <div className={'submit-box'}>
-                <Button variant="contained" color="darkGreen">
+                <Button
+                  variant="contained"
+                  color="darkGreen"
+                  disabled={userRating.isButtonDisable}
+                  onClick={handleRateSubmit}
+                >
                   Rate
                 </Button>
               </div>
@@ -134,6 +223,7 @@ export default function Restroom() {
         {restroomData?.commentsIds.map((commentId) => (
           <ReplyCard
             key={commentId}
+            restroomId={restroomId || ''}
             commentId={commentId}
             isParent={true}
           />

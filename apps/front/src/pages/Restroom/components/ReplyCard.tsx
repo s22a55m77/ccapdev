@@ -16,22 +16,34 @@ import { motion } from 'framer-motion';
 import './ReplyCard.css';
 import React, { useState } from 'react';
 import { useRequest } from 'ahooks';
-import { getCommentDetail } from '../../../services/api.ts';
+import {
+  createRestroomReview,
+  getCommentDetail,
+  updateRestroomReview,
+} from '../../../services/api.ts';
 
 type ReplyCardProps = {
+  restroomId: string;
   isParent: boolean;
   commentId: string;
 };
 
+type Edit = {
+  isEdit: boolean;
+  value?: string;
+};
+
 export default function ReplyCard({
+  restroomId,
   isParent,
   commentId,
 }: ReplyCardProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [isEdit, setIsEdit] = useState(false);
+  const [edit, setEdit] = useState<Edit>({ isEdit: false });
+  const [replyEdit, setReplyEdit] = useState<string>();
   const open = Boolean(anchorEl);
 
-  const { data: commentDetail } = useRequest(getCommentDetail, {
+  const { data: commentDetail, run } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
   });
 
@@ -47,9 +59,46 @@ export default function ReplyCard({
 
   // TODO
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Escape') setIsEdit(false);
-    else if (event.key === 'Enter') setIsEdit(false);
+    if (event.key === 'Escape')
+      setEdit({ ...edit, isEdit: false, value: '' });
+    else if (event.key === 'Enter') {
+      if (edit.value)
+        updateRestroomReview({
+          restroomId,
+          commentId,
+          content: edit.value,
+        }).then(() => {
+          setEdit({ ...edit, isEdit: false });
+          run(commentId);
+        });
+    }
   };
+
+  const handleEditChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setEdit({ ...edit, value: e.target.value });
+  };
+
+  const handleReplyChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setReplyEdit(e.target.value);
+  };
+
+  const handleReplySubmit = () => {
+    console.log(commentId);
+    createRestroomReview({
+      restroomId,
+      commentTo: commentId,
+      content: replyEdit,
+    }).then(() => {
+      setAnchorEl(null);
+      run(commentId);
+    });
+  };
+
+  console.log(commentDetail);
 
   return (
     <div id={'cards'} className={'card-container'}>
@@ -73,9 +122,9 @@ export default function ReplyCard({
 
           <CardContent>
             {commentDetail?.commentToUser && (
-              <b>{commentDetail?.commentToUser}</b>
+              <b>@{commentDetail?.commentToUser}</b>
             )}
-            {!isEdit ? (
+            {!edit.isEdit ? (
               <div className={'reply-content'}>
                 {isParent && (
                   <div className="reply-rating">
@@ -84,13 +133,15 @@ export default function ReplyCard({
                 )}
 
                 {/*TODO determine if the current user is the author*/}
-                <EditIcon
-                  fontSize={'inherit'}
-                  color={'action'}
-                  onClick={() => {
-                    setIsEdit(true);
-                  }}
-                />
+                {commentDetail?.content && (
+                  <EditIcon
+                    fontSize={'inherit'}
+                    color={'action'}
+                    onClick={() => {
+                      setEdit({ ...edit, isEdit: true });
+                    }}
+                  />
+                )}
                 {commentDetail?.content}
               </div>
             ) : (
@@ -105,8 +156,9 @@ export default function ReplyCard({
                     label="Comment"
                     placeholder={'Type here your comment (Optional)'}
                     className={'comment-input'}
-                    value={'123'}
+                    value={edit.value || commentDetail?.content}
                     onKeyDown={handleKeyDown}
+                    onChange={handleEditChange}
                     autoFocus
                   />
                 </div>
@@ -154,7 +206,14 @@ export default function ReplyCard({
 
       {commentDetail?.childComments &&
         commentDetail?.childComments.map((id) => {
-          return <ReplyCard key={id} isParent={false} commentId={id} />;
+          return (
+            <ReplyCard
+              key={id}
+              restroomId={restroomId}
+              isParent={false}
+              commentId={id}
+            />
+          );
         })}
 
       {/* Reply Input Box */}
@@ -174,10 +233,17 @@ export default function ReplyCard({
               label="Reply"
               placeholder={'Type here your reply'}
               className={'comment-input'}
+              onChange={handleReplyChange}
             />
           </div>
           <div className={'reply-submit'}>
-            <Button variant="contained" color="darkGreen">
+            <Button
+              variant="contained"
+              color="darkGreen"
+              onClick={() => {
+                handleReplySubmit();
+              }}
+            >
               Reply
             </Button>
           </div>

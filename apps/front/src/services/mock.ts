@@ -12,6 +12,31 @@ function createResponse<Data>(
   };
 }
 
+function getCurrentFormattedDate() {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const currentDate = new Date();
+  const month = months[currentDate.getMonth()];
+  const day = currentDate.getDate();
+  const year = currentDate.getFullYear();
+
+  const formattedDate = `${month} ${day}, ${year}`;
+  return formattedDate;
+}
+
 const user: API.UserData = {
   id: '1',
   username: 'user1',
@@ -21,6 +46,113 @@ const user: API.UserData = {
   role: 'ADMIN',
   profilePicId: '/src/assets/dlsu.jpg',
 };
+
+let restrooms: API.RestroomData[] = [
+  {
+    id: '1',
+    title: 'Gokongwei - 1st Floor - Male',
+    tags: ['tag1', 'tag2'],
+    building: 'Gokongwei',
+    floor: 1,
+    rating: 4,
+    restroomImageIds: ['/src/assets/toilet.png'],
+    location: 'location description',
+    locationImageIds: ['/src/assets/toilet.png'],
+    commentsIds: ['1'],
+    totalComments: 1,
+    gender: 'MALE' as 'FEMALE' | 'MALE',
+    createdByUser: 'user1',
+    createdAt: 'September 18, 2023',
+    downVote: 2,
+    upVote: 2,
+    isDownVoted: false,
+    isUpVoted: true,
+  },
+  {
+    id: '2',
+    title: 'Razon - 3rd Floor - Female',
+    tags: ['tag3', 'tag4'],
+    building: 'Razon',
+    floor: 3,
+    rating: 2,
+    restroomImageIds: ['/src/assets/toilet.png', '/src/assets/toilet.png'],
+    location: 'location description',
+    locationImageIds: ['/src/assets/toilet.png'],
+    commentsIds: ['1', '2'],
+    totalComments: 1,
+    gender: 'FEMALE' as 'FEMALE' | 'MALE',
+    createdByUser: 'user1',
+    createdAt: 'September 19, 2023',
+    downVote: 2,
+    upVote: 2,
+    isDownVoted: false,
+    isUpVoted: false,
+  },
+];
+
+const getRestroomList = (): API.RestroomListData => {
+  return restrooms.map((restroom) => {
+    return {
+      id: restroom.id,
+      title: restroom.title,
+      tags: restroom.tags,
+      building: restroom.building,
+      floor: restroom.floor,
+      rating: restroom.rating,
+      restroomImageIds: restroom.restroomImageIds,
+      location: restroom.location,
+      totalComments: restroom.totalComments,
+      gender: restroom.gender as 'FEMALE' | 'MALE',
+      createdByUser: restroom.createdByUser,
+      createdAt: restroom.createdAt,
+      downVote: restroom.downVote,
+      upVote: restroom.upVote,
+    };
+  });
+};
+
+const comments: API.CommentDetailData[] = [
+  {
+    id: '1',
+    rating: 4,
+    content: 'first comment',
+    commentByUserId: '1',
+    commentBy: 'user1',
+    commentAt: 'September 25, 2023',
+    downVote: 0,
+    upVote: 0,
+    isDownVoted: false,
+    isUpVoted: true,
+    childComments: ['3'],
+  },
+  {
+    id: '2',
+    rating: 3,
+    content: 'second comment',
+    commentByUserId: '2',
+    commentBy: 'user2',
+    commentAt: 'September 25, 2023',
+    downVote: 0,
+    upVote: 0,
+    isDownVoted: false,
+    isUpVoted: false,
+    childComments: [],
+  },
+  {
+    id: '3',
+    content: 'reply to first comment',
+    commentByUserId: '3',
+    commentBy: 'user3',
+    commentAt: 'September 25, 2023',
+    commentTo: '1',
+    commentToUser: 'user1',
+    downVote: 0,
+    upVote: 0,
+    isDownVoted: false,
+    isUpVoted: false,
+    childComments: [],
+  },
+];
 
 export default function configureMock(mock: MockAdapter) {
   // POST /auth/login
@@ -63,40 +195,7 @@ export default function configureMock(mock: MockAdapter) {
   // query floor
   // query sort
   mock.onGet('/restroom').reply((config) => {
-    let restrooms: API.RestroomListData = [
-      {
-        id: '1',
-        title: 'Gokongwei - 1st Floor - Male',
-        tags: ['tag1', 'tag2'],
-        building: 'Gokongwei',
-        floor: 1,
-        rating: 4,
-        restroomImageIds: ['1'],
-        gender: 'MALE',
-        createdByUser: 'user1',
-        createdAt: 'September 18, 2023',
-        downVote: 1,
-        upVote: 1,
-        totalComments: 1,
-        location: 'location description',
-      },
-      {
-        id: '2',
-        title: 'Razon - 3rd Floor - Female',
-        tags: ['tag4', 'tag3'],
-        building: 'Razon',
-        floor: 3,
-        rating: 2,
-        restroomImageIds: ['2'],
-        gender: 'FEMALE',
-        createdByUser: 'user1',
-        createdAt: 'September 19, 2023',
-        downVote: 2,
-        upVote: 2,
-        totalComments: 1,
-        location: 'location description',
-      },
-    ];
+    let restrooms: API.RestroomListData = getRestroomList();
 
     if (config.params.building) {
       restrooms = restrooms.filter(
@@ -133,49 +232,6 @@ export default function configureMock(mock: MockAdapter) {
 
   // GET /restroom/:id
   mock.onGet(/^\/restroom\/(\d+)$/).reply((config) => {
-    let restrooms: API.RestroomData[] = [
-      {
-        id: '1',
-        title: 'Gokongwei - 1st Floor - Male',
-        tags: ['tag1', 'tag2'],
-        building: 'Gokongwei',
-        floor: 1,
-        rating: 4,
-        restroomImageIds: ['1'],
-        location: 'location description',
-        locationImageIds: ['3'],
-        commentsIds: ['1'],
-        totalComments: 1,
-        gender: 'MALE',
-        createdByUser: 'user1',
-        createdAt: 'September 18, 2023',
-        downVote: 2,
-        upVote: 2,
-        isDownVoted: false,
-        isUpVoted: true,
-      },
-      {
-        id: '2',
-        title: 'Razon - 3rd Floor - Female',
-        tags: ['tag3', 'tag4'],
-        building: 'Razon',
-        floor: 3,
-        rating: 2,
-        restroomImageIds: ['2'],
-        location: 'location description',
-        locationImageIds: ['4'],
-        commentsIds: ['1', '2'],
-        totalComments: 1,
-        gender: 'FEMALE',
-        createdByUser: 'user1',
-        createdAt: 'September 19, 2023',
-        downVote: 2,
-        upVote: 2,
-        isDownVoted: false,
-        isUpVoted: false,
-      },
-    ];
-
     if (config.url) {
       const result = config.url.match(/^\/restroom\/(\d+)$/);
       if (result) {
@@ -189,6 +245,42 @@ export default function configureMock(mock: MockAdapter) {
 
         return [200, response];
       }
+    }
+
+    return [400];
+  });
+
+  // POST /restroom/:id/vote
+  mock.onPost(/^\/restroom\/(\d+)\/vote$/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    if (!config.url) return [500];
+
+    const result = config.url.match(/^\/restroom\/(\d+)\/vote$/);
+    if (result) {
+      const id = result[1];
+      const index = restrooms.findIndex((restroom) => restroom.id === id);
+
+      if (index === -1) return [400];
+
+      if (data.upVote) {
+        restrooms[index].upVote += 1;
+        restrooms[index].isUpVoted = true;
+        if (restrooms[index].isDownVoted) {
+          restrooms[index].isDownVoted = false;
+          restrooms[index].downVote -= 1;
+        }
+      }
+      if (data.downVote) {
+        restrooms[index].downVote += 1;
+        restrooms[index].isDownVoted = true;
+        if (restrooms[index].isUpVoted) {
+          restrooms[index].isUpVoted = false;
+          restrooms[index].upVote -= 1;
+        }
+      }
+
+      return [200, createResponse(restrooms[index])];
     }
 
     return [400];
@@ -217,66 +309,65 @@ export default function configureMock(mock: MockAdapter) {
       isUpVoted: false,
     };
 
+    restrooms.push(restroom);
     const response: API.CreateRestroomResponse = createResponse(restroom);
 
     return [200, response];
   });
 
-  // POST /restroom/rate
-  mock.onPost('/restroom/rate').reply((config) => {
-    let restrooms: API.RestroomData[] = [
-      {
-        id: '1',
-        title: 'Restroom 1',
-        tags: ['tag1', 'tag2'],
-        building: 'building 1',
-        floor: 1,
-        rating: 4,
-        restroomImageIds: ['1'],
-        location: 'location description',
-        locationImageIds: ['3'],
-        commentsIds: ['1'],
-        totalComments: 1,
-        gender: 'MALE',
-        createdByUser: 'user1',
-        createdAt: 'September 19, 2023',
-        downVote: 2,
-        upVote: 2,
-        isDownVoted: false,
-        isUpVoted: true,
-      },
-      {
-        id: '2',
-        title: 'Restroom 2',
-        tags: ['tag1', 'tag2'],
-        building: 'building 2',
-        floor: 3,
-        rating: 2,
-        restroomImageIds: ['2'],
-        location: 'location description',
-        locationImageIds: ['4'],
-        commentsIds: ['1', '2'],
-        totalComments: 1,
-        gender: 'FEMALE',
-        createdByUser: '1',
-        createdAt: 'September 18, 2023',
-        downVote: 2,
-        upVote: 2,
-        isDownVoted: false,
+  // POST /restroom/:id/review
+  mock.onPost(/^\/restroom\/(\d+)\/review$/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    let comment: API.CommentDetailData;
+
+    if (data.commentTo) {
+      const commentTo = comments.find(
+        (comment) => comment.id === data?.commentTo,
+      );
+
+      comment = {
+        id: comments[comments.length - 1].id + 1,
+        content: data?.content,
+        commentTo: data?.commentTo,
+        commentToUser: commentTo?.commentBy,
+        commentBy: 'User1',
+        commentByUserId: '1',
+        commentAt: getCurrentFormattedDate(),
+        downVote: 0,
+        upVote: 0,
         isUpVoted: false,
-      },
-    ];
+        isDownVoted: false,
+        childComments: [],
+      };
+      commentTo?.childComments.push(comment.id);
+    } else
+      comment = {
+        id: comments[comments.length - 1].id + 1,
+        rating: data.rating,
+        content: data?.content,
+        commentBy: 'User1',
+        commentByUserId: '1',
+        commentAt: getCurrentFormattedDate(),
+        downVote: 0,
+        upVote: 0,
+        isUpVoted: false,
+        isDownVoted: false,
+        childComments: [],
+      };
 
-    const restroom = restrooms.filter(
-      (restroom) => restroom.id === config.data.restroomId,
-    )[0];
+    comments.push(comment);
 
-    restroom.rating = config.data.rating;
+    if (!config.url) return [500];
 
-    const response: API.RateRestroomResponse =
-      createResponse<API.RestroomData>(restroom);
+    const result = config.url.match(/^\/restroom\/(\d+)\/review$/);
+    if (result) {
+      const id = result[1];
+      const index = restrooms.findIndex((restroom) => restroom.id === id);
+      restrooms[index].commentsIds.push(comment.id);
+    }
 
-    return [200, response];
+    return [200, createResponse(comment)];
   });
 
   // PATCH /user/profile/pic
@@ -289,47 +380,6 @@ export default function configureMock(mock: MockAdapter) {
 
   // GET comment/:id
   mock.onGet(/^\/comment\/(\d+)$/).reply((config) => {
-    const comments: API.CommentDetailData[] = [
-      {
-        id: '1',
-        content: 'first comment',
-        commentByUserId: '1',
-        commentBy: 'user1',
-        commentAt: 'September 25, 2023',
-        downVote: 0,
-        upVote: 0,
-        isDownVoted: false,
-        isUpVoted: true,
-        childComments: ['3'],
-      },
-      {
-        id: '2',
-        content: 'second comment',
-        commentByUserId: '2',
-        commentBy: 'user2',
-        commentAt: 'September 25, 2023',
-        downVote: 0,
-        upVote: 0,
-        isDownVoted: false,
-        isUpVoted: false,
-        childComments: [],
-      },
-      {
-        id: '3',
-        content: 'reply to first comment',
-        commentByUserId: '3',
-        commentBy: 'user3',
-        commentAt: 'September 25, 2023',
-        commentTo: '1',
-        commentToUser: 'user1',
-        downVote: 0,
-        upVote: 0,
-        isDownVoted: false,
-        isUpVoted: false,
-        childComments: [],
-      },
-    ];
-
     if (config.url) {
       const result = config.url.match(/^\/comment\/(\d+)$/);
       if (result) {
@@ -344,5 +394,18 @@ export default function configureMock(mock: MockAdapter) {
     }
 
     return [400];
+  });
+
+  // PATCH /restroom/:id/review
+  mock.onPatch(/^\/restroom\/(\d+)\/review$/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    const index = comments.findIndex(
+      (comment) => comment.id === data.commentId,
+    );
+
+    comments[index].content = data.content;
+
+    return [200, createResponse(comments[index])];
   });
 }

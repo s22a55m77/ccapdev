@@ -1,4 +1,10 @@
-import {Avatar, Card, CardContent, CardHeader, Rating} from '@mui/material';
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  Rating,
+} from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './RestroomCard.css';
@@ -25,60 +31,71 @@ export default function RestroomCard({
 }: RestroomCardProps) {
   return (
     <>
-    <Link to={`/restroom/${id}`}>
-      <div id={'cards'} className={'card-container'}>
-        <Card sx={{ maxWidth: '100%' }} className={'card'}>
-          {/*TODO MCO2 */}
-          <CardHeader
-            avatar={<Avatar />}
-            title={createdByUser}
-            subheader={createdAt}
-          />
-          <CardContent>
+      <Link to={`/restroom/${id}`}>
+        <div id={'cards'} className={'card-container'}>
+          <Card sx={{ maxWidth: '100%' }} className={'card'}>
+            {/*TODO MCO2 */}
+            <CardHeader
+              avatar={<Avatar />}
+              title={createdByUser}
+              subheader={createdAt}
+            />
+            <CardContent>
               <div id="title">
                 <b>{title}</b>
               </div>
-            <Rating name="read-only" value={rating} readOnly className='rating'/>
-            <div className={'card-content'}> {location} </div>
-            {/*TODO MCO2*/}
-            <img
-              style={{ marginTop: 10 }}
-              src={'src/assets/toilet.png'}
-              alt={'img'}
-              width={'30%'}
-            />
-            <footer className={'card-footer'}>
-              {/*tags*/}
-              <div id="tags" className={'tags'}>
-                {tags.map((tag) => (
-                  <div key={tag} className="tag">
-                    {tag}
-                  </div>
-                ))}
-              </div>
+              <Rating
+                name="read-only"
+                value={rating}
+                readOnly
+                className="rating"
+              />
+              <div className={'card-content'}> {location} </div>
+              {/*TODO MCO2*/}
+              {restroomImageIds.map((id) => {
+                return (
+                  <img
+                    key={id}
+                    style={{ marginTop: 10 }}
+                    src={id}
+                    alt={'img'}
+                    width={'30%'}
+                  />
+                );
+              })}
 
-              <div className={'activity'}>
-                <div className={'activity-content'}>
-                  {/*Comments Number*/}
-                  <ChatBubbleOutlineIcon fontSize={'inherit'} />{' '}
-                  {totalComments}
+              <footer className={'card-footer'}>
+                {/*tags*/}
+                <div id="tags" className={'tags'}>
+                  {tags.map((tag) => (
+                    <div key={tag} className="tag">
+                      {tag}
+                    </div>
+                  ))}
                 </div>
-                <div className={'activity-content'}>
-                  {/*Upvote*/}
-                  <ArrowDownwardIcon fontSize={'inherit'} />
-                  {upVote}
+
+                <div className={'activity'}>
+                  <div className={'activity-content'}>
+                    {/*Comments Number*/}
+                    <ChatBubbleOutlineIcon fontSize={'inherit'} />{' '}
+                    {totalComments}
+                  </div>
+                  <div className={'activity-content'}>
+                    {/*DownVote*/}
+                    <ArrowDownwardIcon fontSize={'inherit'} />
+                    {downVote}
+                  </div>
+                  <div className={'activity-content'}>
+                    {/*Up Vote*/}
+                    <ArrowUpwardIcon fontSize={'inherit'} />
+                    {upVote}
+                  </div>
                 </div>
-                <div className={'activity-content'}>
-                  {/*Down vote*/}
-                  <ArrowUpwardIcon fontSize={'inherit'} />
-                  {downVote}
-                </div>
-              </div>
-            </footer>
-          </CardContent>
-        </Card>
-      </div>
-    </Link>
+              </footer>
+            </CardContent>
+          </Card>
+        </div>
+      </Link>
     </>
   );
 }
