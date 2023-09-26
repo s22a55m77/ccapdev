@@ -92,6 +92,7 @@ export default function Restroom() {
                     variant="contained"
                     color="error"
                     style={{ boxShadow: 'none' }}
+                    disabled={restroomData?.isDownVoted}
                   >
                     <ThumbDownAltIcon />
                   </Button>
@@ -100,6 +101,7 @@ export default function Restroom() {
                     variant="contained"
                     color="primary"
                     style={{ boxShadow: 'none' }}
+                    disabled={restroomData?.isUpVoted}
                   >
                     Upvote
                   </Button>

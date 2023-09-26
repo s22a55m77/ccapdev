@@ -95,9 +95,11 @@ export function getRestroomList({
 
 // GET /restroom/:id
 export function getRestroomDetail(id: string): Promise<API.RestroomData> {
-  return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`).then(
-    (res) => res.data.data,
-  );
+  return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  }).then((res) => res.data.data);
 }
 
 // POST /restroom

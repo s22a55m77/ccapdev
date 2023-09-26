@@ -52,7 +52,7 @@ declare namespace API {
 
   type RestroomList = Omit<
     RestroomData,
-    'locationImageIds' | 'commentsIds'
+    'locationImageIds' | 'commentsIds' | 'isDownVoted' | 'isUpVoted'
   >;
 
   type RestroomListData = RestroomList[];
@@ -82,6 +82,8 @@ declare namespace API {
     createdAt: string;
     downVote: number;
     upVote: number;
+    isUpVoted: boolean;
+    isDownVoted: boolean;
   };
 
   type RestroomDetailResponse = BaseResponse<RestroomData>;
@@ -147,6 +149,8 @@ declare namespace API {
     | 'downVote'
     | 'rating'
     | 'tags'
+    | 'isUpVoted'
+    | 'isDownVoted'
   > & { status: number };
   type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
 

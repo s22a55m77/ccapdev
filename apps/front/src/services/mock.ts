@@ -154,6 +154,8 @@ export default function configureMock(mock: MockAdapter) {
         createdAt: 'September 18, 2023',
         downVote: 2,
         upVote: 2,
+        isDownVoted: false,
+        isUpVoted: true,
       },
       {
         id: '2',
@@ -172,6 +174,8 @@ export default function configureMock(mock: MockAdapter) {
         createdAt: 'September 19, 2023',
         downVote: 2,
         upVote: 2,
+        isDownVoted: false,
+        isUpVoted: false,
       },
     ];
 
@@ -212,6 +216,8 @@ export default function configureMock(mock: MockAdapter) {
       createdAt: 'September 19, 2023',
       downVote: 2,
       upVote: 2,
+      isDownVoted: false,
+      isUpVoted: false,
     };
 
     const response: API.CreateRestroomResponse = createResponse(restroom);
@@ -239,6 +245,8 @@ export default function configureMock(mock: MockAdapter) {
         createdAt: 'September 19, 2023',
         downVote: 2,
         upVote: 2,
+        isDownVoted: false,
+        isUpVoted: true,
       },
       {
         id: '2',
@@ -257,6 +265,8 @@ export default function configureMock(mock: MockAdapter) {
         createdAt: 'September 18, 2023',
         downVote: 2,
         upVote: 2,
+        isDownVoted: false,
+        isUpVoted: false,
       },
     ];
 
