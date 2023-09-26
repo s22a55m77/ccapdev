@@ -11,6 +11,11 @@
     transition: 0.2s;
 }
 
+.card:not(:hover) {
+    background-color: white;
+    transition: 0.2s;
+}
+
 .card-content {
     margin-top: 5px;
     color: #000;

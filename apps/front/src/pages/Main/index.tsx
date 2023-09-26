@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button, Menu, MenuItem, Radio } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
@@ -154,30 +154,33 @@ export default function Main() {
           </button>
         </div>
 
-        {restroomList &&
-          restroomList.map((restroom) => {
-            return (
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                key={restroom.id}
-              >
-                <RestroomCard
-                  id={restroom.id}
-                  title={restroom.title}
-                  tags={restroom.tags}
-                  rating={restroom.rating}
-                  restroomImageIds={restroom.restroomImageIds}
-                  createdByUser={restroom.createdByUser}
-                  createdAt={restroom.createdAt}
-                  downVote={restroom.downVote}
-                  upVote={restroom.upVote}
-                  totalComments={restroom.totalComments}
-                  location={restroom.location}
-                />
-              </motion.div>
-            );
-          })}
+        <AnimatePresence mode={'wait'}>
+          {restroomList &&
+            restroomList.map((restroom) => {
+              return (
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  key={restroom.id}
+                  layoutId={restroom.id}
+                >
+                  <RestroomCard
+                    id={restroom.id}
+                    title={restroom.title}
+                    tags={restroom.tags}
+                    rating={restroom.rating}
+                    restroomImageIds={restroom.restroomImageIds}
+                    createdByUser={restroom.createdByUser}
+                    createdAt={restroom.createdAt}
+                    downVote={restroom.downVote}
+                    upVote={restroom.upVote}
+                    totalComments={restroom.totalComments}
+                    location={restroom.location}
+                  />
+                </motion.div>
+              );
+            })}
+        </AnimatePresence>
         {error && <span>Something go wrong</span>}
         {/*  MENU Building*/}
         <Menu
