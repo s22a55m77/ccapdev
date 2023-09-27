@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button, Menu, MenuItem, Radio } from '@mui/material';
 import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
