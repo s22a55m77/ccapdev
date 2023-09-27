@@ -1,6 +1,7 @@
 import './index.css';
 import {
   Card,
+  Chip,
   Drawer,
   IconButton,
   Table,
@@ -9,6 +10,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -29,8 +32,8 @@ export default function AdminTable() {
               <TableRow>
                 <TableCell sx={{ width: '10px' }} />
                 <TableCell>ID</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell>Building</TableCell>
+                <TableCell sx={{ width: '20vw' }}>Title</TableCell>
+                <TableCell sx={{ width: '10vw' }}>Building</TableCell>
                 <TableCell>Floor</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Action</TableCell>
@@ -48,10 +51,65 @@ export default function AdminTable() {
                   </IconButton>
                 </TableCell>
                 <TableCell>id</TableCell>
-                <TableCell>title</TableCell>
-                <TableCell>building</TableCell>
+                <TableCell>
+                  <div style={{ width: '20vw' }}>
+                    <Tooltip title="Title">
+                      <Typography noWrap fontSize={'inherit'}>
+                        Title Title Title Title Title Title Title Title
+                        Title Title Title Title
+                      </Typography>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div style={{ width: '10vw' }}>
+                    <Tooltip title="Building">
+                      <Typography noWrap fontSize={'inherit'}>
+                        Building
+                      </Typography>
+                    </Tooltip>
+                  </div>
+                </TableCell>
                 <TableCell>floor</TableCell>
-                <TableCell>status</TableCell>
+                <TableCell>
+                  <Chip label="Status" color="green" />
+                </TableCell>
+                <TableCell>action</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <IconButton onClick={() => setIsOpen(!isOpen)}>
+                    {isOpen ? (
+                      <KeyboardArrowLeftIcon />
+                    ) : (
+                      <KeyboardArrowRightIcon />
+                    )}
+                  </IconButton>
+                </TableCell>
+                <TableCell>id</TableCell>
+                <TableCell>
+                  <div style={{ width: '20vw' }}>
+                    <Tooltip title="Title">
+                      <Typography noWrap fontSize={'inherit'}>
+                        Title Title Title Title Title Title Title Title
+                        Title Title Title Title
+                      </Typography>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div style={{ width: '10vw' }}>
+                    <Tooltip title="Building">
+                      <Typography noWrap fontSize={'inherit'}>
+                        Building Building Building Building
+                      </Typography>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+                <TableCell>floor</TableCell>
+                <TableCell>
+                  <Chip label="Status" color="error" />
+                </TableCell>
                 <TableCell>action</TableCell>
               </TableRow>
             </TableBody>
