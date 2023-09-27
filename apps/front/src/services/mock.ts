@@ -75,7 +75,11 @@ let restrooms: API.RestroomData[] = [
     building: 'Razon',
     floor: 3,
     rating: 2,
-    restroomImageIds: ['/src/assets/toilet.png', '/src/assets/toilet.png'],
+    restroomImageIds: [
+      '/src/assets/toilet.png',
+      '/src/assets/toilet.png',
+      '/src/assets/toilet.png',
+    ],
     location: 'location description',
     locationImageIds: ['/src/assets/toilet.png'],
     commentsIds: ['1', '2'],

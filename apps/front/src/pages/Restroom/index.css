@@ -105,3 +105,10 @@
 .rating {
     margin: 5px 0px;
 }
+
+.restroom-image-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}

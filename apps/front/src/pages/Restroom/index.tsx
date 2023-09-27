@@ -112,28 +112,32 @@ export default function Restroom() {
                 {restroomData?.location}
               </div>
               {/*TODO MCO2*/}
-              {restroomData?.restroomImageIds.map((id) => {
-                return (
-                  <img
-                    key={id}
-                    style={{ marginTop: 10 }}
-                    src={id}
-                    alt={'img'}
-                    width={'30%'}
-                  />
-                );
-              })}
-              {restroomData?.locationImageIds.map((id) => {
-                return (
-                  <img
-                    key={id}
-                    style={{ marginTop: 10 }}
-                    src={id}
-                    alt={'img'}
-                    width={'30%'}
-                  />
-                );
-              })}
+              <div className={'restroom-image-container'}>
+                {restroomData?.restroomImageIds.map((id) => {
+                  return (
+                    <img
+                      key={id}
+                      style={{ marginTop: 10 }}
+                      src={id}
+                      alt={'img'}
+                      width={'30%'}
+                    />
+                  );
+                })}
+              </div>
+              <div className={'restroom-image-container'}>
+                {restroomData?.locationImageIds.map((id) => {
+                  return (
+                    <img
+                      key={id}
+                      style={{ marginTop: 10 }}
+                      src={id}
+                      alt={'img'}
+                      width={'30%'}
+                    />
+                  );
+                })}
+              </div>
 
               <footer className={'restroom-footer'}>
                 <div id="tags" className={'restroom-tags'}>

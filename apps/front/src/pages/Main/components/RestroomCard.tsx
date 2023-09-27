@@ -51,18 +51,20 @@ export default function RestroomCard({
                 className="rating"
               />
               <div className={'card-content'}> {location} </div>
-              {/*TODO MCO2*/}
-              {restroomImageIds.map((id) => {
-                return (
-                  <img
-                    key={id}
-                    style={{ marginTop: 10 }}
-                    src={id}
-                    alt={'img'}
-                    width={'30%'}
-                  />
-                );
-              })}
+              <div className={'restroom-card-image-container'}>
+                {/*TODO MCO2*/}
+                {restroomImageIds.map((id) => {
+                  return (
+                    <img
+                      key={id}
+                      style={{ marginTop: 10 }}
+                      src={id}
+                      alt={'img'}
+                      width={'30%'}
+                    />
+                  );
+                })}
+              </div>
 
               <footer className={'card-footer'}>
                 {/*tags*/}

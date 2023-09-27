@@ -75,3 +75,11 @@
 img {
     border-radius: 10px;
 }
+
+.restroom-card-image-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
