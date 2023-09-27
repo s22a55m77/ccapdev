@@ -154,33 +154,31 @@ export default function Main() {
           </button>
         </div>
 
-        <AnimatePresence mode={'wait'}>
-          {restroomList &&
-            restroomList.map((restroom) => {
-              return (
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  key={restroom.id}
-                  layoutId={restroom.id}
-                >
-                  <RestroomCard
-                    id={restroom.id}
-                    title={restroom.title}
-                    tags={restroom.tags}
-                    rating={restroom.rating}
-                    restroomImageIds={restroom.restroomImageIds}
-                    createdByUser={restroom.createdByUser}
-                    createdAt={restroom.createdAt}
-                    downVote={restroom.downVote}
-                    upVote={restroom.upVote}
-                    totalComments={restroom.totalComments}
-                    location={restroom.location}
-                  />
-                </motion.div>
-              );
-            })}
-        </AnimatePresence>
+        {restroomList &&
+          restroomList.map((restroom) => {
+            return (
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                key={restroom.id}
+                layoutId={restroom.id}
+              >
+                <RestroomCard
+                  id={restroom.id}
+                  title={restroom.title}
+                  tags={restroom.tags}
+                  rating={restroom.rating}
+                  restroomImageIds={restroom.restroomImageIds}
+                  createdByUser={restroom.createdByUser}
+                  createdAt={restroom.createdAt}
+                  downVote={restroom.downVote}
+                  upVote={restroom.upVote}
+                  totalComments={restroom.totalComments}
+                  location={restroom.location}
+                />
+              </motion.div>
+            );
+          })}
         {error && <span>Something go wrong</span>}
         {/*  MENU Building*/}
         <Menu
