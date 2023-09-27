@@ -124,8 +124,6 @@ export default function Restroom() {
                     />
                   );
                 })}
-              </div>
-              <div className={'restroom-image-container'}>
                 {restroomData?.locationImageIds.map((id) => {
                   return (
                     <img
