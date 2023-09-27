@@ -31,7 +31,7 @@ export default function RestroomCard({
 }: RestroomCardProps) {
   return (
     <>
-      <Link to={`/restroom/${id}`}>
+      <Link to={`/restroom/${id}`} onClick={() => window.scrollTo(0, 0)}>
         <div id={'cards'} className={'card-container'}>
           <Card sx={{ maxWidth: '100%' }} className={'card'}>
             {/*TODO MCO2 */}
