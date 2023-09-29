@@ -22,13 +22,16 @@
 
 .form-box{
     margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    padding: 10px;
     display:flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 20px;
     align-items: center;
     position:relative;
-    width:80%;
+    width:100%;
     min-height:500px;
     height: auto;
     background: transparent;
@@ -48,7 +51,7 @@
     position: relative;
     margin: 30px 0;
     width: 100%;
-    border-bottom: 1px solid black;
+    /*border-bottom: 1px solid black;*/
 }
 
 .inputbox label{
@@ -167,9 +170,7 @@ textarea:not(:placeholder-shown) ~ label {
 }
 
 .smallbox {
-    position: relative;
     margin: 30px 0;
-    width: 310px;
     display: flex;
     justify-content: space-between;
 }
@@ -182,36 +183,6 @@ textarea:not(:placeholder-shown) ~ label {
 
 .input-group:not(:last-child) {
     margin-right: 20px;
-}
-
-.smallbox label {
-    top: 50%;
-    left: 1%;
-    transform: translateY(-50%);
-    position: absolute;
-    color: black;
-    font-size: 1em;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.smallbox input {
-    width: 100%;
-    height: 50px;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    padding: 0 35px 0 5px;
-    color: black;
-}
-
-.smallbox ion-icon {
-    position: absolute;
-    right: 8px;
-    color: black;
-    font-size: 1.2em;
-    top: 20px;
 }
 
 .availbox {
@@ -247,5 +218,9 @@ textarea:not(:placeholder-shown) ~ label {
 }
 
 .second-column {
+}
+
+.select-box {
+    display: flex;
 }
 
