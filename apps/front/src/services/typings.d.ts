@@ -139,7 +139,7 @@ declare namespace API {
 
   type DeleteRestroomReviewResponse = BaseResponse<RestroomData>;
 
-  type ChangeVoteStatusResponse = BaseResponse<RestroomData>;
+  type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
   type ChangeRestroomStatusParams = {
     newStatus: number;

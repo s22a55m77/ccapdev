@@ -205,7 +205,7 @@ export function deleteRestroomReview(
 export function changeVoteStatus({
   newStatus,
   commentId,
-}: API.ChangeVoteStatusParams): Promise<API.RestroomData> {
+}: API.ChangeVoteStatusParams): Promise<API.CommentDetailData> {
   return APIClient.post<API.ChangeVoteStatusResponse>(
     `/restroom/review/${commentId}/vote`,
     {
