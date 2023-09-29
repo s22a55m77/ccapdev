@@ -2,6 +2,9 @@ import {
   Alert,
   Avatar,
   Button,
+  Card,
+  CardContent,
+  Rating,
   Snackbar,
   styled,
   TextField,
@@ -196,6 +199,72 @@ export default function UserProfile() {
             </div>
           </div>
         </div>
+      </motion.div>
+      <h2 className={'user-profile-h2'}> History </h2>
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card
+          sx={{ maxWidth: '80%' }}
+          className={'user-profile-reply-card'}
+        >
+          <CardContent>
+            <h4>Title --- Review</h4>
+            <div className="user-profile-reply-rating">
+              <Rating name="read-only" value={5} readOnly />
+            </div>
+            <div className={'user-profile-reply-content'}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit. Consequat aliquet maecenas
+              ut sit nulla
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card
+          sx={{ maxWidth: '80%' }}
+          className={
+            'user-profile-reply-card user-profile-reply-border-blue'
+          }
+        >
+          <CardContent>
+            <h4>Title --- Reply</h4>
+            <b>@user</b>
+            <div className={'user-profile-reply-content'}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit. Consequat aliquet maecenas
+              ut sit nulla
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+      >
+        <Card
+          sx={{ maxWidth: '80%' }}
+          className={
+            'user-profile-reply-card user-profile-submit-border-orange'
+          }
+        >
+          <CardContent>
+            <h4>Title --- Submit</h4>
+            <div className={'user-profile-reply-content'}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit. Consequat aliquet maecenas
+              ut sit nulla
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
     </div>
   );

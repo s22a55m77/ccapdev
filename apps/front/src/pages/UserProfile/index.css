@@ -62,3 +62,68 @@
     gap: 10px;
 }
 
+.user-profile-h2 {
+    margin: auto;
+    margin-top: 50px;
+    width: 80%;
+    background-color: #05DC8D;
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+.user-profile-reply-content {
+    margin-top: 5px;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+.user-profile-reply-card {
+    border-left: 5px solid #05DC8D;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.user-profile-reply-card:hover {
+    border-left: 10px solid #05DC8D;
+    transition: 0.2s;
+}
+
+.user-profile-reply-card:not(:hover) {
+    border-left: 5px solid #05DC8D;
+    transition: 0.2s;
+}
+
+.user-profile-reply-border-blue {
+    border-left: 5px solid #1682FD;
+}
+
+.user-profile-reply-border-blue:hover {
+    border-left: 10px solid #1682FD;
+    transition: 0.2s;
+}
+
+.user-profile-reply-border-blue:not(:hover) {
+    border-left: 5px solid #1682FD;
+}
+
+.user-profile-reply-rating {
+    margin-bottom: 10px;
+}
+
+.user-profile-submit-border-orange {
+    border-left: 5px solid #fa541c;
+}
+
+.user-profile-submit-border-orange:hover {
+    border-left: 10px solid #fa541c;
+    transition: 0.2s;
+}
+
+.user-profile-submit-border-orange:not(:hover) {
+    border-left: 5px solid #fa541c;
+}
+
