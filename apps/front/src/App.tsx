@@ -8,6 +8,7 @@ import {
   PaletteColorOptions,
 } from '@mui/material';
 import Sidebar from './pages/Sidebar';
+import { useEffect } from 'react';
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
@@ -32,7 +33,7 @@ declare module '@mui/material/Chip' {
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
-const createColor = (mainColor: any) =>
+const createColor = (mainColor: string) =>
   augmentColor({ color: { main: mainColor } });
 const theme = createTheme({
   palette: {
@@ -51,6 +52,10 @@ const theme = createTheme({
 });
 
 function App() {
+  useEffect(() => {
+    document.title = 'DLSU toileToPick';
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <div>
