@@ -3,6 +3,20 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 export default function LoginPage() {
+  // TODO 通过调用me接口判断是不是已登录状态，是则跳转到 /
+
+  /* TODO 通过react-hook-form拿到用户输入的账号密码，调用登录接口
+  成功: 调用me接口拿到详细的用户资讯，调用user.store.ts里的setUser把接口返回的数据存起来，跳转到 /
+  失败: 给出相应的错误讯息 可能的错误: 账号不存在，密码错误，Internal Server Error
+  */
+
+  /* TODO Form Validation
+  username is not empty
+  password is not empty
+
+   在没有通过的情况下 Button是disable状态
+  * */
+
   return (
     <section className="login-section">
       <motion.div
