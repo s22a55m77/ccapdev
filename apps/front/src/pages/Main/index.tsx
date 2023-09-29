@@ -10,6 +10,7 @@ import RestroomCard from './components/RestroomCard.tsx';
 import { getRestroomList } from '../../services/api.ts';
 import { useRequest } from 'ahooks';
 import buildingInfo from './buildingInfo.ts';
+import { useRestroomList } from './restroom-list.store.ts';
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,12 +31,20 @@ export default function Main() {
   // this is control the floor of the building in filter
   const [buildingFloorCount, setBuildingFloorCount] = useState(3);
 
-  const {
-    data: restroomList,
-    run,
-    error,
-  } = useRequest(getRestroomList, {
+  const restroomList = useRestroomList((state) => state.restroomList);
+  const setRestroomList = useRestroomList(
+    (state) => state.setRestroomList,
+  );
+  const setOriginalList = useRestroomList(
+    (state) => state.setOriginalList,
+  );
+
+  const { run, error } = useRequest(getRestroomList, {
     defaultParams: [query],
+    onSuccess: (data) => {
+      setRestroomList(data);
+      setOriginalList(data);
+    },
   });
 
   const handleFilterClick = (

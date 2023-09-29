@@ -6,10 +6,34 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import { useRestroomList } from '../Main/restroom-list.store.ts';
 
 export default function Sidebar() {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(true);
+
+  const restroomList = useRestroomList((state) => state.restroomList);
+  const originalList = useRestroomList((state) => state.originalList);
+  const setRestroomList = useRestroomList(
+    (state) => state.setRestroomList,
+  );
+
+  const handleSearch = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    const searchText = e.target.value;
+
+    if (searchText) {
+      const newList = originalList.filter((restroom) =>
+        restroom.title.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      console.log(restroomList);
+      console.log(searchText);
+      setRestroomList(newList);
+    } else {
+      setRestroomList(originalList);
+    }
+  };
 
   return (
     <>
@@ -22,6 +46,7 @@ export default function Sidebar() {
                 <SearchIcon />
               </InputAdornment>
             }
+            onChange={handleSearch}
           />
         </div>
         <div className={'mt-50'}>
