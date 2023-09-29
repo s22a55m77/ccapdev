@@ -124,7 +124,7 @@ const comments: API.CommentDetailData[] = [
     commentBy: 'user1',
     commentAt: 'September 25, 2023',
     downVote: 0,
-    upVote: 0,
+    upVote: 1,
     isDownVoted: false,
     isUpVoted: true,
     childComments: ['3'],
@@ -417,5 +417,52 @@ export default function configureMock(mock: MockAdapter) {
     comments[index].content = data.content;
 
     return [200, createResponse(comments[index])];
+  });
+
+  // POST /restroom/review/:id/vote
+  mock.onPost(/^\/restroom\/review\/(\d+)\/vote$/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    if (config.url) {
+      const result = config.url.match(/^\/restroom\/review\/(\d+)\/vote$/);
+      if (result) {
+        const id = result[1];
+
+        const index = comments.findIndex((comment) => comment.id === id);
+        if (data.status === 1) {
+          comments[index].upVote += 1;
+          comments[index].isUpVoted = true;
+          if (comments[index].isDownVoted) {
+            comments[index].downVote -= 1;
+            comments[index].isDownVoted = false;
+          }
+        }
+
+        if (data.status === 2) {
+          comments[index].downVote += 1;
+          comments[index].isDownVoted = true;
+          if (comments[index].isUpVoted) {
+            comments[index].upVote -= 1;
+            comments[index].isUpVoted = false;
+          }
+        }
+
+        if (data.status === 0) {
+          if (comments[index].isDownVoted) {
+            comments[index].downVote -= 1;
+            comments[index].isDownVoted = false;
+          }
+
+          if (comments[index].isUpVoted) {
+            comments[index].upVote -= 1;
+            comments[index].isUpVoted = false;
+          }
+        }
+
+        return [200, createResponse(comments[index])];
+      }
+    }
+
+    return [400];
   });
 }

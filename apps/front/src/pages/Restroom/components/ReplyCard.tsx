@@ -17,6 +17,7 @@ import './ReplyCard.css';
 import React, { useState } from 'react';
 import { useRequest } from 'ahooks';
 import {
+  changeVoteStatus,
   createRestroomReview,
   getCommentDetail,
   updateRestroomReview,
@@ -69,6 +70,13 @@ export default function ReplyCard({
     },
   });
 
+  const { run: vote } = useRequest(changeVoteStatus, {
+    manual: true,
+    onSuccess: (data) => {
+      mutate(data);
+    },
+  });
+
   const handleReplyClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -106,6 +114,16 @@ export default function ReplyCard({
       commentTo: commentId,
       content: replyEdit,
     });
+  };
+
+  const handleUpVote = () => {
+    if (commentDetail?.isUpVoted) vote({ newStatus: 0, commentId });
+    else vote({ newStatus: 1, commentId });
+  };
+
+  const handleDownVote = () => {
+    if (commentDetail?.isDownVoted) vote({ newStatus: 0, commentId });
+    else vote({ newStatus: 2, commentId });
   };
 
   return (
@@ -180,8 +198,9 @@ export default function ReplyCard({
                       commentDetail?.isDownVoted ? 'primary' : 'inherit'
                     }`}
                     fontSize={'inherit'}
+                    onClick={handleDownVote}
                   />
-                  1
+                  {commentDetail?.downVote}
                 </div>
                 <div className={'reply-activity-vote'}>
                   <ThumbUpAltTwoToneIcon
@@ -189,8 +208,9 @@ export default function ReplyCard({
                       commentDetail?.isUpVoted ? 'primary' : 'inherit'
                     }`}
                     fontSize={'inherit'}
+                    onClick={handleUpVote}
                   />
-                  1
+                  {commentDetail?.upVote}
                 </div>
                 {!isParent && (
                   <span className={'reply-user'}>
