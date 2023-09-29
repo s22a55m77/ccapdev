@@ -11,7 +11,7 @@ export default function LoginPage() {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 50 }}
       >
-        <div className="form-box">
+        <div className="login-form-box">
           <div className="form-value">
             <form action="">
               <h2 className="login-h2">Login</h2>
