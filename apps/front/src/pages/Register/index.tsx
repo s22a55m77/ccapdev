@@ -2,6 +2,19 @@ import './index.css';
 import { motion } from 'framer-motion';
 
 export default function RegisterPage() {
+  /* TODO 通过react-hook-form拿到用户输入的账号密码，调用注册接口
+  成功: 调用me接口拿到详细的用户资讯，调用user.store.ts里的setUser把接口返回的数据存起来，跳转到 /
+  失败: 给出相应的错误讯息 可能的错误: 账号已经存在，密码不符合格式，Internal Server Error
+  */
+
+  /* TODO Form Validation
+  username is not empty
+  password is not empty
+  password should be at least 6 characters
+
+   在没有通过的情况下 Button是disable状态
+  * */
+
   return (
     <section className="register-section">
       <motion.div

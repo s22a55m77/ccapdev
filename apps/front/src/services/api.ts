@@ -8,7 +8,10 @@ export function login({
   return APIClient.post<API.LoginResponse>('/auth/login', {
     username,
     password,
-  }).then((res) => res.data.data);
+  }).then((res) => {
+    localStorage.setItem('token', res.data.data.token);
+    return res.data.data;
+  });
 }
 
 // POST /auth/register
@@ -19,7 +22,10 @@ export function register({
   return APIClient.post<API.RegisterResponse>('/auth/register', {
     username,
     password,
-  }).then((res) => res.data.data);
+  }).then((res) => {
+    localStorage.setItem('token', res.data.data.token);
+    return res.data.data;
+  });
 }
 
 //GET /auth/me
