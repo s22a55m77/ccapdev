@@ -1,4 +1,11 @@
-import { Avatar, Button, styled, TextField } from '@mui/material';
+import {
+  Alert,
+  Avatar,
+  Button,
+  Snackbar,
+  styled,
+  TextField,
+} from '@mui/material';
 import './index.css';
 import EditIcon from '@mui/icons-material/Edit';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -27,6 +34,11 @@ type Edit = {
 export default function UserProfile() {
   const [yearEdit, setYearEdit] = useState<Edit>({ isEditing: false });
   const [descEdit, setDescEdit] = useState<Edit>({ isEditing: false });
+  const [alertContent, setAlertContent] = useState<AlertContent>({
+    isOpen: false,
+    message: 'default message',
+    severity: 'success',
+  });
   let { data, mutate } = useRequest(me);
 
   const { run: updateProfile } = useRequest(updateUserProfile, {
@@ -36,9 +48,19 @@ export default function UserProfile() {
       if (descEdit.isEditing) setDescEdit({ value: '', isEditing: false });
 
       mutate(data);
+
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Edited',
+        severity: 'success',
+      });
     },
     onError: () => {
-      // TODO Add error message
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
     },
   });
 
@@ -77,6 +99,17 @@ export default function UserProfile() {
 
   return (
     <div className={'user-profile-container'}>
+      <Snackbar
+        open={alertContent.isOpen}
+        autoHideDuration={1000}
+        onClose={() => {
+          setAlertContent({ ...alertContent, isOpen: false });
+        }}
+      >
+        <Alert severity={alertContent.severity}>
+          {alertContent.message}
+        </Alert>
+      </Snackbar>
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, x: 50 }}

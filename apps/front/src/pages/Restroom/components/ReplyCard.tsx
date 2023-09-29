@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Button,
   Card,
@@ -6,6 +7,7 @@ import {
   CardHeader,
   Popover,
   Rating,
+  Snackbar,
   TextField,
 } from '@mui/material';
 import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
@@ -22,6 +24,7 @@ import {
   getCommentDetail,
   updateRestroomReview,
 } from '../../../services/api.ts';
+import { AlertContent } from '../../../declaration';
 
 type ReplyCardProps = {
   restroomId: string;
@@ -43,6 +46,11 @@ export default function ReplyCard({
   const [edit, setEdit] = useState<Edit>({ isEdit: false });
   const [replyEdit, setReplyEdit] = useState<string>();
   const open = Boolean(anchorEl);
+  const [alertContent, setAlertContent] = useState<AlertContent>({
+    isOpen: false,
+    message: 'default message',
+    severity: 'success',
+  });
 
   const { data: commentDetail, mutate } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
@@ -53,9 +61,18 @@ export default function ReplyCard({
     onSuccess: (data) => {
       setEdit({ ...edit, isEdit: false });
       mutate(data);
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Edited',
+        severity: 'success',
+      });
     },
     onError: () => {
-      // TODO Add error message
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
     },
   });
 
@@ -64,9 +81,18 @@ export default function ReplyCard({
     onSuccess: (data) => {
       mutate(data);
       setAnchorEl(null);
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Replied',
+        severity: 'success',
+      });
     },
     onError: () => {
-      // TODO Add error message
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
     },
   });
 
@@ -128,6 +154,17 @@ export default function ReplyCard({
 
   return (
     <div id={'cards'} className={'card-container'}>
+      <Snackbar
+        open={alertContent.isOpen}
+        autoHideDuration={1000}
+        onClose={() => {
+          setAlertContent({ ...alertContent, isOpen: false });
+        }}
+      >
+        <Alert severity={alertContent.severity}>
+          {alertContent.message}
+        </Alert>
+      </Snackbar>
       {/*Main Reply*/}
       <motion.div
         initial={{ opacity: 0, x: -50 }}

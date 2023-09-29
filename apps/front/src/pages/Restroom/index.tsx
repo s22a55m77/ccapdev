@@ -1,10 +1,12 @@
 import {
+  Alert,
   Avatar,
   Button,
   Card,
   CardContent,
   CardHeader,
   Rating,
+  Snackbar,
   TextField,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -23,6 +25,7 @@ import {
   voteRestroom,
 } from '../../services/api.ts';
 import { useState } from 'react';
+import { AlertContent } from '../../declaration';
 
 type UserRating = {
   rating: number;
@@ -35,6 +38,11 @@ export default function Restroom() {
   const [userRating, setUserRating] = useState<UserRating>({
     rating: 0,
     isButtonDisable: false,
+  });
+  const [alertContent, setAlertContent] = useState<AlertContent>({
+    isOpen: false,
+    message: 'default message',
+    severity: 'success',
   });
 
   const {
@@ -49,9 +57,18 @@ export default function Restroom() {
     manual: true,
     onSuccess: (data) => {
       mutate(data);
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Voted',
+        severity: 'success',
+      });
     },
     onError: () => {
-      // TODO Add error message
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
     },
   });
 
@@ -91,6 +108,17 @@ export default function Restroom() {
 
   return (
     <div className={'restroom-container'}>
+      <Snackbar
+        open={alertContent.isOpen}
+        autoHideDuration={1000}
+        onClose={() => {
+          setAlertContent({ ...alertContent, isOpen: false });
+        }}
+      >
+        <Alert severity={alertContent.severity}>
+          {alertContent.message}
+        </Alert>
+      </Snackbar>
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, x: 50 }}
