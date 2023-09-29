@@ -325,8 +325,10 @@ export default function configureMock(mock: MockAdapter) {
 
     let comment: API.CommentDetailData;
 
+    let parentComment;
+
     if (data.commentTo) {
-      const commentTo = comments.find(
+      parentComment = comments.find(
         (comment) => comment.id === data?.commentTo,
       );
 
@@ -334,7 +336,7 @@ export default function configureMock(mock: MockAdapter) {
         id: comments[comments.length - 1].id + 1,
         content: data?.content,
         commentTo: data?.commentTo,
-        commentToUser: commentTo?.commentBy,
+        commentToUser: parentComment?.commentBy,
         commentBy: 'User1',
         commentByUserId: '1',
         commentAt: getCurrentFormattedDate(),
@@ -344,7 +346,7 @@ export default function configureMock(mock: MockAdapter) {
         isDownVoted: false,
         childComments: [],
       };
-      commentTo?.childComments.push(comment.id);
+      parentComment?.childComments.push(comment.id);
     } else
       comment = {
         id: comments[comments.length - 1].id + 1,
@@ -369,6 +371,10 @@ export default function configureMock(mock: MockAdapter) {
       const id = result[1];
       const index = restrooms.findIndex((restroom) => restroom.id === id);
       restrooms[index].commentsIds.push(comment.id);
+    }
+
+    if (data.commentTo) {
+      return [200, createResponse(parentComment)];
     }
 
     return [200, createResponse(comment)];

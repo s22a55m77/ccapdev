@@ -122,13 +122,15 @@ declare namespace API {
     content?: string;
   };
 
-  type CreateRestroomReviewResponse = BaseResponse<RestroomData>;
+  type CreateRestroomReviewResponse = BaseResponse<CommentDetailData>;
 
   type UpdateRestroomReviewParams = {
     restroomId: string;
     commentId: string;
     content: string;
   };
+
+  type UpdateRestroomReviewResponse = BaseResponse<CommentDetailData>;
 
   type ChangeVoteStatusParams = {
     newStatus: number; // 0-none, 1-upvote, 2-downvote

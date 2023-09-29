@@ -27,7 +27,20 @@ type Edit = {
 export default function UserProfile() {
   const [yearEdit, setYearEdit] = useState<Edit>({ isEditing: false });
   const [descEdit, setDescEdit] = useState<Edit>({ isEditing: false });
-  let { data, run } = useRequest(me);
+  let { data, mutate } = useRequest(me);
+
+  const { run: updateProfile } = useRequest(updateUserProfile, {
+    manual: true,
+    onSuccess: (data) => {
+      if (yearEdit.isEditing) setYearEdit({ value: '', isEditing: false });
+      if (descEdit.isEditing) setDescEdit({ value: '', isEditing: false });
+
+      mutate(data);
+    },
+    onError: () => {
+      // TODO Add error message
+    },
+  });
 
   const handleKeyDown = (
     event: React.KeyboardEvent,
@@ -38,29 +51,14 @@ export default function UserProfile() {
         setYearEdit({ value: undefined, isEditing: false });
       } else if (event.key === 'Enter') {
         if (yearEdit?.value) {
-          updateUserProfile({ yearsInDLSU: Number(yearEdit.value) })
-            .then(() => {
-              setYearEdit({ ...yearEdit, isEditing: false });
-              run();
-            })
-            .catch(() => {
-              //TODO do something when update is failed
-            });
+          updateProfile({ yearsInDLSU: Number(yearEdit.value) });
         }
       }
     } else if (identifier === 'desc') {
       if (event.key === 'Escape')
         setDescEdit({ value: undefined, isEditing: false });
       else if (event.key === 'Enter') {
-        updateUserProfile({ description: descEdit?.value })
-          .then(() => {
-            setDescEdit({ value: undefined, isEditing: false });
-            // refetch the data if successfully updated
-            run();
-          })
-          .catch(() => {
-            //TODO do something when update is failed
-          });
+        updateProfile({ description: descEdit?.value });
       }
     }
   };

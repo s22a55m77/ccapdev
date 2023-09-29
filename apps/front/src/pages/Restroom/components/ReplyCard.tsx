@@ -43,8 +43,30 @@ export default function ReplyCard({
   const [replyEdit, setReplyEdit] = useState<string>();
   const open = Boolean(anchorEl);
 
-  const { data: commentDetail, run } = useRequest(getCommentDetail, {
+  const { data: commentDetail, mutate } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
+  });
+
+  const { run: updateReview } = useRequest(updateRestroomReview, {
+    manual: true,
+    onSuccess: (data) => {
+      setEdit({ ...edit, isEdit: false });
+      mutate(data);
+    },
+    onError: () => {
+      // TODO Add error message
+    },
+  });
+
+  const { run: createReview } = useRequest(createRestroomReview, {
+    manual: true,
+    onSuccess: (data) => {
+      mutate(data);
+      setAnchorEl(null);
+    },
+    onError: () => {
+      // TODO Add error message
+    },
   });
 
   const handleReplyClick = (
@@ -57,20 +79,12 @@ export default function ReplyCard({
     setAnchorEl(null);
   };
 
-  // TODO
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Escape')
       setEdit({ ...edit, isEdit: false, value: '' });
     else if (event.key === 'Enter') {
       if (edit.value)
-        updateRestroomReview({
-          restroomId,
-          commentId,
-          content: edit.value,
-        }).then(() => {
-          setEdit({ ...edit, isEdit: false });
-          run(commentId);
-        });
+        updateReview({ restroomId, commentId, content: edit.value });
     }
   };
 
@@ -87,18 +101,12 @@ export default function ReplyCard({
   };
 
   const handleReplySubmit = () => {
-    console.log(commentId);
-    createRestroomReview({
+    createReview({
       restroomId,
       commentTo: commentId,
       content: replyEdit,
-    }).then(() => {
-      setAnchorEl(null);
-      run(commentId);
     });
   };
-
-  console.log(commentDetail);
 
   return (
     <div id={'cards'} className={'card-container'}>

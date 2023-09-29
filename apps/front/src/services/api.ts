@@ -130,7 +130,7 @@ export function createRestroomReview({
   restroomId,
   commentTo,
   content,
-}: API.CreateRestroomReviewParams): Promise<API.RestroomData> {
+}: API.CreateRestroomReviewParams): Promise<API.CommentDetailData> {
   return APIClient.post<API.CreateRestroomReviewResponse>(
     `/restroom/${restroomId}/review`,
     {
@@ -151,7 +151,7 @@ export function voteRestroom({
   restroomId,
   upVote,
   downVote,
-}: API.VoteRestroomParams) {
+}: API.VoteRestroomParams): Promise<API.RestroomData> {
   return APIClient.post<API.VoteRestroomResponse>(
     `/restroom/${restroomId}/vote`,
     {
@@ -164,7 +164,7 @@ export function voteRestroom({
         Authorization: localStorage.getItem('token'),
       },
     },
-  );
+  ).then((res) => res.data.data);
 }
 
 // PATCH /restroom/:id/review
@@ -172,8 +172,8 @@ export function updateRestroomReview({
   restroomId,
   commentId,
   content,
-}: API.UpdateRestroomReviewParams): Promise<API.RestroomData> {
-  return APIClient.patch<API.CreateRestroomReviewResponse>(
+}: API.UpdateRestroomReviewParams): Promise<API.CommentDetailData> {
+  return APIClient.patch<API.UpdateRestroomReviewResponse>(
     `/restroom/${restroomId}/review`,
     {
       commentId,

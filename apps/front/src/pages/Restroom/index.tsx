@@ -37,8 +37,22 @@ export default function Restroom() {
     isButtonDisable: false,
   });
 
-  const { data: restroomData, run } = useRequest(getRestroomDetail, {
+  const {
+    data: restroomData,
+    run,
+    mutate,
+  } = useRequest(getRestroomDetail, {
     defaultParams: [restroomId || '0'],
+  });
+
+  const { run: vote } = useRequest(voteRestroom, {
+    manual: true,
+    onSuccess: (data) => {
+      mutate(data);
+    },
+    onError: () => {
+      // TODO Add error message
+    },
   });
 
   const handleVote = ({
@@ -48,14 +62,8 @@ export default function Restroom() {
     upVote?: boolean;
     downVote?: boolean;
   }) => {
-    if (restroomId && upVote)
-      voteRestroom({ restroomId, upVote }).then(() => {
-        run(restroomId);
-      });
-    else if (restroomId && downVote)
-      voteRestroom({ restroomId, downVote }).then(() => {
-        run(restroomId);
-      });
+    if (restroomId && upVote) vote({ restroomId, upVote });
+    else if (restroomId && downVote) vote({ restroomId, downVote });
   };
 
   const handleRateClick = (value: number | null) => {
