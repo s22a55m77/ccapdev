@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import { me, updateUserProfile } from '../../services/api.ts';
+import { AlertContent } from '../../declaration';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
