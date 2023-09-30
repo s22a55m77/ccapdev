@@ -14,6 +14,14 @@ export function login({
   });
 }
 
+// POST /auth/logout
+export function logout(): Promise<void> {
+  return APIClient.post('/auth/logout')
+    .then(() => {
+      localStorage.removeItem('token');
+    });
+}
+
 // POST /auth/register
 export function register({
   username,
