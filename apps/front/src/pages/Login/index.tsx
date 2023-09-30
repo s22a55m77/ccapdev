@@ -1,6 +1,6 @@
 import './index.css';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from 'react';
 import { login, me } from '../../services/api.ts';
@@ -8,14 +8,14 @@ import { useUser } from './user.store.ts';
 
 export default function LoginPage() {
   
-
-  const [ loginStat, setLoginStat ] = useState(false);
   const [ name, setName ] = useState('');
   const [ pwd, setPwd] = useState('');
   const [ btnStatus, setBtnStatus ] = useState(false);
-  const [ errmsg, setErrMsg ] = useState('');
+  const [ errMsg, setErrMsg ] = useState('');
+
 
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   // TODO 通过调用me接口判断是不是已登录状态，是则跳转到 /
   const { register, handleSubmit } = useForm<API.LoginParams>();
@@ -23,14 +23,12 @@ export default function LoginPage() {
     me()
       .then((userData) => {
         if (userData) {
-          setLoginStat(true);
-        } else {
-          setLoginStat(false);
+          navigate("/");
         }
       })
       .catch((error) => {
         // Handle error - set ErrMsg based on the error
-        setErrMsg('Err Msg');
+        setErrMsg("err msg");
       });
   }, []);
 
@@ -45,13 +43,11 @@ export default function LoginPage() {
       await login(data);
       const userData = await me();
       setUser(userData);
-      setLoginStat(true);
+      navigate("/");
     } catch(error) {
-      console.error("Login error:", error);
-      setLoginStat(false);
-      setErrMsg('');
+      // TODO: set error message based on the errors 
+      setErrMsg('Err Msg');
     }
-    console.log (loginStat ? "Sucessful" : "Failed");
    }
 
   /* TODO Form Validation
@@ -68,12 +64,14 @@ export default function LoginPage() {
       setBtnStatus(false);
     }
   }, [name, pwd])
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [name, pwd])
    
 
   return (
-    <> 
-    {/* TODO: check login status to determine where to go */}
-        <section className="login-section">
+      <section className="login-section">
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, x: 50, backdropFilter: 'blur(20px)' }}
@@ -84,6 +82,10 @@ export default function LoginPage() {
             <div className="form-value">
               <form onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="login-h2">Login</h2>
+                <p className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+                  <ion-icon name="close-circle-outline" aria-hidden="true"></ion-icon>
+                  {errMsg}
+                </p>
                 <div className="inputbox">
                   <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
                   <input
@@ -95,6 +97,7 @@ export default function LoginPage() {
                     aria-label="Email"
                     onChange={(e) => setName(e.target.value)}
                   />
+                  
                   <label htmlFor="email">Email</label>
                 </div>
                 <div className="inputbox">
@@ -128,7 +131,5 @@ export default function LoginPage() {
           </div>
         </motion.div>
       </section>
-
-    </>
   );
 }
