@@ -1,5 +1,6 @@
 import './index.css';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export default function RegisterPage() {
   /* TODO 通过react-hook-form拿到用户输入的账号密码，调用注册接口
@@ -75,6 +76,11 @@ export default function RegisterPage() {
                 <label htmlFor="password2">Repeat Password</label>
               </div>
               <button className="register-button">Register</button>
+              <div className="login">
+                  <p>
+                    <Link to="/">Go Back &#8594;</Link>
+                  </p>
+                </div>
             </form>
           </div>
         </div>

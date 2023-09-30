@@ -125,6 +125,9 @@ export default function LoginPage() {
                     Don't have an account?{' '}
                     <Link to="/register">Register Now!</Link>
                   </p>
+                  <p>
+                    <Link to="/">Go Back &#8594;</Link>
+                  </p>
                 </div>
               </form>
             </div>
