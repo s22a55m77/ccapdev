@@ -15,10 +15,10 @@ export default function LoginPage() {
 
 
   const { setUser } = useUser();
+  const { register, handleSubmit } = useForm<API.LoginParams>();
   const navigate = useNavigate();
 
   // TODO 通过调用me接口判断是不是已登录状态，是则跳转到 /
-  const { register, handleSubmit } = useForm<API.LoginParams>();
   useEffect(() => {
     me()
       .then((userData) => {
@@ -27,8 +27,11 @@ export default function LoginPage() {
         }
       })
       .catch((error) => {
-        // Handle error - set ErrMsg based on the error
-        setErrMsg("err msg");
+        if(error.response.status === 401) {
+          // user not logged in
+        } else {
+          setErrMsg("Other Errors")
+        }
       });
   }, []);
 
@@ -45,7 +48,8 @@ export default function LoginPage() {
       setUser(userData);
       navigate("/");
     } catch(error) {
-      // TODO: set error message based on the errors 
+      // TODO: set error message based on the errors ex. Wrong Credentials
+      
       setErrMsg('Err Msg');
     }
    }
