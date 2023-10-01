@@ -175,8 +175,12 @@ export default function configureMock(mock: MockAdapter) {
     }),
   );
 
+
   // GET /auth/me
+  // successful
   mock.onGet('/auth/me').reply(200, createResponse<API.UserData>(user));
+  // failed
+  // mock.onGet('/auth/me').reply(401, createResponse({error: "Unauthorized", msg: "You need to login to access this resource", data: null}));
 
   // GET /auth/refresh
   mock.onGet('/auth/refresh').reply(
