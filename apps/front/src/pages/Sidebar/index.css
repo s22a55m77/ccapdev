@@ -39,8 +39,8 @@
 }
 
 .item:hover {
-    background-color: #05DC8D;
-    border-left: 5px solid #04AA6D;
+    background-color: var(--primary-green);
+    border-left: 5px solid var(--secondary-green);
     color: white;
     transition: 0.5s, color 0ms;
 }
@@ -53,19 +53,19 @@
 }
 
 .active {
-    background-color: #05DC8D;
-    border-left: 5px solid #04AA6D;
+    background-color: var(--primary-green);
+    border-left: 5px solid var(--secondary-green);
     color: white;
 }
 
 .active:hover {
-    border-left: 10px solid #04AA6D;
+    border-left: 10px solid var(--secondary-green);
     transition: 0.2s;
 }
 
 .active:not(:hover) {
-    background-color: #05DC8D;
-    border-left: 5px solid #04AA6D;
+    background-color: var(--primary-green);
+    border-left: 5px solid var(--secondary-green);
     color: white;
     transition: 0.2s;
 }

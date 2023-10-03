@@ -58,5 +58,5 @@
 }
 
 .green {
-    color: #04AA6D;
+    color: var(--secondary-green);
 }

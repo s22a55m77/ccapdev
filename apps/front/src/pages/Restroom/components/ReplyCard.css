@@ -8,17 +8,17 @@
 
 .reply-card {
     padding: 25px;
-    border-left: 5px solid #05DC8D;
+    border-left: 5px solid var(--primary-green);
     margin-top: 15px;
 }
 
 .reply-card:hover {
-    border-left: 10px solid #05DC8D;
+    border-left: 10px solid var(--primary-green);
     transition: 0.2s;
 }
 
 .reply-card:not(:hover) {
-    border-left: 5px solid #05DC8D;
+    border-left: 5px solid var(--primary-green);
     transition: 0.2s;
 }
 
