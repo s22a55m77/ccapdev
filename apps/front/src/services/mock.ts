@@ -533,4 +533,22 @@ export default function configureMock(mock: MockAdapter) {
       }
     }
   });
+
+  // GET /user/:id/profile
+  mock.onGet(/^\/user\/(\d+)\/profile/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    if (config.url) {
+      const result = config.url.match(/^\/user\/(\d+)\/profile/);
+      if (result) {
+        const id = result[1];
+        // TODO 找出user和他以前给过的review
+        const data: API.UserProfileData = {};
+
+        const response: API.GetUserProfileResponse = createResponse(data);
+
+        return [200, response];
+      }
+    }
+  });
 }

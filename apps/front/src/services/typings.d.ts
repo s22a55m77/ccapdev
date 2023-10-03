@@ -199,4 +199,10 @@ declare namespace API {
   type GetAdminRestroomListResponse = BaseResponse<AdminRestroomListData>;
 
   type GetAdminRestroomDetailResponse = BaseResponse<AdminRestroomData>;
+
+  type UserProfileData = UserData & {
+    history: CommentDetailData[];
+  };
+
+  type GetUserProfileResponse = BaseResponse<UserProfileData>;
 }

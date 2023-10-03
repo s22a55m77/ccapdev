@@ -91,6 +91,13 @@ export function updateProfilePic(
   ).then((res) => res.data.data);
 }
 
+// GET /user/:id/profile
+export function getUserProfile(id: string): Promise<API.UserProfileData> {
+  return APIClient.get<API.GetUserProfileResponse>(
+    `/user/${id}/profile`,
+  ).then((res) => res.data.data);
+}
+
 // GET /restroom
 // query building
 // query floor
