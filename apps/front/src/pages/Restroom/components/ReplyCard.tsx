@@ -25,6 +25,7 @@ import {
   updateRestroomReview,
 } from '../../../services/api.ts';
 import { AlertContent } from '../../../declaration';
+import { useUserStore } from '../../Login/user.store.ts';
 
 type ReplyCardProps = {
   restroomId: string;
@@ -55,6 +56,8 @@ export default function ReplyCard({
   const { data: commentDetail, mutate } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
   });
+
+  const currentUser = useUserStore((state) => state.user);
 
   const { run: updateReview } = useRequest(updateRestroomReview, {
     manual: true,
@@ -195,16 +198,16 @@ export default function ReplyCard({
                   </div>
                 )}
 
-                {/*TODO determine if the current user is the author*/}
-                {commentDetail?.content && (
-                  <EditIcon
-                    fontSize={'inherit'}
-                    color={'action'}
-                    onClick={() => {
-                      setEdit({ ...edit, isEdit: true });
-                    }}
-                  />
-                )}
+                {currentUser?.id === commentDetail?.commentByUserId &&
+                  commentDetail?.content && (
+                    <EditIcon
+                      fontSize={'inherit'}
+                      color={'action'}
+                      onClick={() => {
+                        setEdit({ ...edit, isEdit: true });
+                      }}
+                    />
+                  )}
                 {commentDetail?.content}
               </div>
             ) : (

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type State = {
-  user: API.UserData | {};
+  user?: API.UserData;
 };
 
 type Action = {
@@ -9,7 +9,6 @@ type Action = {
 };
 
 export const useUserStore = create<State & Action>((set) => ({
-  user: {},
   setUser: (user: API.UserData) =>
     set(() => ({
       user,
