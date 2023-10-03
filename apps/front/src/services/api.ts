@@ -16,20 +16,21 @@ export function login({
 
 // POST /auth/logout
 export function logout(): Promise<void> {
-  return APIClient.post('/auth/logout')
-    .then(() => {
-      localStorage.removeItem('token');
-    });
+  return APIClient.post('/auth/logout').then(() => {
+    localStorage.removeItem('token');
+  });
 }
 
 // POST /auth/register
 export function register({
   username,
+  email,
   password,
 }: API.RegisterParams): Promise<API.RegisterData> {
   return APIClient.post<API.RegisterResponse>('/auth/register', {
     username,
     password,
+    email,
   }).then((res) => {
     localStorage.setItem('token', res.data.data.token);
     return res.data.data;

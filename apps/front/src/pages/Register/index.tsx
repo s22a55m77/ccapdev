@@ -1,46 +1,40 @@
 import './index.css';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { me, register as registerUser } from '../../services/api.ts';
 import { useUser } from '../../pages/Login/user.store.ts';
+
+type RegisterFormValues = {
+  username: string;
+  email: string;
+  password1: string;
+  password2: string;
+};
 
 export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<RegisterFormValues>();
   const [errMsg, setErrMsg] = useState('');
   const { setUser } = useUser();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = 'Register Page';
-  }, []);
-
-  /* TODO 通过react-hook-form拿到用户输入的账号密码，调用注册接口
-  成功: 调用me接口拿到详细的用户资讯，调用user.store.ts里的setUser把接口返回的数据存起来，跳转到 /
-  失败: 给出相应的错误讯息 可能的错误: 账号已经存在，密码不符合格式，Internal Server Error
-  */
-
-  /* TODO Form Validation
-  username is not empty
-  password is not empty
-  password should be at least 6 characters
-
-   在没有通过的情况下 Button是disable状态
-  * */
-  const onSubmit = async (data: API.RegisterParams) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     if (data.password1 !== data.password2) {
       setErrMsg('Passwords do not match');
       return;
     }
 
     try {
-      await registerUser(data);
+      await registerUser({
+        email: data.email,
+        username: data.username,
+        password: data.password1,
+      });
       const userData = await me();
       setUser(userData);
       navigate('/');
@@ -62,10 +56,18 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <h2 className="register-h2">Register</h2>
               <p
-                className={errMsg ? 'errmsg' : 'offscreen'}
+                className={
+                  Object.keys(errors).length > 0 || errMsg
+                    ? 'errmsg'
+                    : 'offscreen'
+                }
                 aria-live="assertive"
               >
                 {errMsg}
+                {Object.keys(errors).length > 0 &&
+                  errors[
+                    Object.keys(errors)[0] as keyof RegisterFormValues
+                  ]?.message}
               </p>
               <div className="inputbox">
                 <ion-icon
@@ -73,10 +75,15 @@ export default function RegisterPage() {
                   aria-hidden="true"
                 ></ion-icon>
                 <input
-                  {...register('username', { required: true })}
+                  {...register('username', {
+                    required: {
+                      value: true,
+                      message: 'Username should not be empty',
+                    },
+                  })}
                   type="text"
                   id="username"
-                  placeholder=" "
+                  placeholder=""
                   aria-label="Username"
                 />
                 <label htmlFor="username">Username</label>
@@ -88,9 +95,15 @@ export default function RegisterPage() {
                 ></ion-icon>
                 <input
                   {...register('email', {
-                    required: true,
-                    pattern:
-                      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    required: {
+                      value: true,
+                      message: 'Email should not be empty',
+                    },
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: 'Please input a valid email',
+                    },
                   })}
                   type="email"
                   id="email"
@@ -103,8 +116,14 @@ export default function RegisterPage() {
                 <ion-icon name="lock-closed-outline"></ion-icon>
                 <input
                   {...register('password1', {
-                    required: true,
-                    minLength: 6,
+                    required: {
+                      value: true,
+                      message: 'Password should not be empty',
+                    },
+                    minLength: {
+                      value: 6,
+                      message: 'The minimum length is 6',
+                    },
                   })}
                   type="password"
                   id="password1"
@@ -116,8 +135,14 @@ export default function RegisterPage() {
                 <ion-icon name="lock-closed-outline"></ion-icon>
                 <input
                   {...register('password2', {
-                    required: true,
-                    minLength: 6,
+                    required: {
+                      value: true,
+                      message: 'Password should not be empty',
+                    },
+                    minLength: {
+                      value: 6,
+                      message: 'The minimum length is 6',
+                    },
                   })}
                   type="password"
                   id="password2"
