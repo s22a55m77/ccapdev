@@ -259,6 +259,7 @@ export default function ReplyCard({
                 )}
               </div>
               <div className={'reply-activity'}>
+                <Button color={'error'}>Delete</Button>
                 <Button onClick={handleReplyClick}>
                   <SubdirectoryArrowRightIcon
                     fontSize={'inherit'}
