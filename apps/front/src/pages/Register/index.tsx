@@ -2,7 +2,7 @@ import './index.css';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { me, register as registerUser } from '../../services/api.ts';
 import { useUserStore } from '../Login/user.store.ts';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
@@ -25,6 +25,10 @@ export default function RegisterPage() {
   const [errMsg, setErrMsg] = useState('');
   const { setUser } = useUserStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = 'Register Page';
+  }, []);
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     if (data.password1 !== data.password2) {
