@@ -1,3 +1,8 @@
+:root {
+    --primary-green: #05DC8D;
+    --secondary-green: #04AA6D;
+}
+
 .navbar {
     background-color: white;
     height: 50px;
