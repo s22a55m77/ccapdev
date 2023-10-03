@@ -9,7 +9,7 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-type RegisterFormValues = {
+type RegisterFormValues = { 
   username: string;
   email: string;
   password1: string;
@@ -33,6 +33,11 @@ export default function RegisterPage() {
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     if (data.password1 !== data.password2) {
       setErrMsg('Passwords do not match');
+
+      setTimeout(() => {
+        setErrMsg(''); 
+      }, 2000); 
+
       return;
     }
 
