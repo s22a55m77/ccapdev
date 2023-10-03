@@ -17,11 +17,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Login Page';
-  }, []);
-
-  // TODO 通过调用me接口判断是不是已登录状态，是则跳转到 /
-  useEffect(() => {
     me()
       .then((userData) => {
         if (userData) {
@@ -37,11 +32,6 @@ export default function LoginPage() {
       });
   }, []);
 
-  /* TODO 通过react-hook-form拿到用户输入的账号密码，调用登录接口
-  成功: 调用me接口拿到详细的用户资讯，调用user.store.ts里的setUser把接口返回的数据存起来，跳转到 /
-  失败: 给出相应的错误讯息 可能的错误: 账号不存在，密码错误，Internal Server Error
-  */
-
   const onSubmit = async (data: API.LoginParams) => {
     try {
       await login(data);
@@ -50,17 +40,9 @@ export default function LoginPage() {
       navigate('/');
     } catch (error) {
       // TODO: set error message based on the errors ex. Wrong Credentials
-
       setErrMsg('Err Msg');
     }
   };
-
-  /* TODO Form Validation
-  username is not empty
-  password is not empty
-
-   在没有通过的情况下 Button是disable状态
-  * */
 
   useEffect(() => {
     if (name != '' && pwd != '') {
@@ -103,15 +85,15 @@ export default function LoginPage() {
                 ></ion-icon>
                 <input
                   {...register('username', { required: true })}
-                  type="email"
-                  id="email"
+                  type="text"
+                  id="username"
                   placeholder=" "
                   required
-                  aria-label="Email"
+                  aria-label="username"
                   onChange={(e) => setName(e.target.value)}
                 />
 
-                <label htmlFor="email">Email</label>
+                <label htmlFor="username">Username</label>
               </div>
               <div className="inputbox">
                 <ion-icon name="lock-closed-outline"></ion-icon>
