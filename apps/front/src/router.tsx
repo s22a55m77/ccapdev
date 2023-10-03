@@ -8,6 +8,7 @@ import RegisterPage from './pages/Register';
 import Index from './pages/CreateRestroom';
 import UserProfile from './pages/UserProfile';
 import AdminTable from './pages/AdminTable';
+import Error404 from './pages/Error/Error404.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+  {
+    path: '*',
+    element: <Error404 />,
   },
 ]);
 
