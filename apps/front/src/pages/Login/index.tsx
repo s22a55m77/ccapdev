@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login, me } from '../../services/api.ts';
-import { useUser } from './user.store.ts';
+import { useUserStore } from './user.store.ts';
 
 export default function LoginPage() {
   const [name, setName] = useState('');
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [btnStatus, setBtnStatus] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
-  const { setUser } = useUser();
+  const { setUser } = useUserStore();
   const { register, handleSubmit } = useForm<API.LoginParams>();
   const navigate = useNavigate();
 

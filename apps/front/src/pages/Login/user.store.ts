@@ -8,7 +8,7 @@ type Action = {
   setUser: (list: API.UserData) => void;
 };
 
-export const useUser = create<State & Action>((set) => ({
+export const useUserStore = create<State & Action>((set) => ({
   user: {},
   setUser: (user: API.UserData) =>
     set(() => ({

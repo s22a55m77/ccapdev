@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { me, register as registerUser } from '../../services/api.ts';
-import { useUser } from '../../pages/Login/user.store.ts';
+import { useUserStore } from '../Login/user.store.ts';
 
 type RegisterFormValues = {
   username: string;
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormValues>();
   const [errMsg, setErrMsg] = useState('');
-  const { setUser } = useUser();
+  const { setUser } = useUserStore();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
