@@ -248,7 +248,7 @@ export default function Restroom() {
               <div className={'submit-box'}>
                 <Button
                   variant="contained"
-                  color="darkGreen"
+                  color="green"
                   disabled={userRating.isButtonDisable}
                   onClick={handleRateSubmit}
                 >

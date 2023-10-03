@@ -304,7 +304,7 @@ export default function ReplyCard({
           <div className={'reply-submit'}>
             <Button
               variant="contained"
-              color="darkGreen"
+              color="green"
               onClick={() => {
                 handleReplySubmit();
               }}
