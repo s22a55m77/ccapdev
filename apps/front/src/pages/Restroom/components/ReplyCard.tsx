@@ -155,6 +155,10 @@ export default function ReplyCard({
     else vote({ newStatus: 2, commentId });
   };
 
+  const handleDelete = () => {
+    // TODO 删除的逻辑, deleteRestroomReview()
+  };
+
   return (
     <div id={'cards'} className={'card-container'}>
       <Snackbar
@@ -259,6 +263,10 @@ export default function ReplyCard({
                 )}
               </div>
               <div className={'reply-activity'}>
+                {/*TODO 删除按钮只会出现在：
+                            当前登录用户是comment的， ??? === commentDetail?.commentByUserId
+                            当前用户是admin ???.role === 'ADMIN'
+                */}
                 <Button color={'error'}>Delete</Button>
                 <Button onClick={handleReplyClick}>
                   <SubdirectoryArrowRightIcon

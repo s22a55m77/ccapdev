@@ -5,12 +5,17 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRestroomList } from '../Main/restroom-list.store.ts';
 
 export default function Sidebar() {
   const location = useLocation();
+  // TODO 把initialState改为false
   const [isAdmin, setIsAdmin] = useState(true);
+
+  useEffect(() => {
+    //   TODO 调用useUserStore取出user, 如果role是Admin再调用setIsAdmin改为true
+  }, []);
 
   const restroomList = useRestroomList((state) => state.restroomList);
   const originalList = useRestroomList((state) => state.originalList);
@@ -27,8 +32,6 @@ export default function Sidebar() {
       const newList = originalList.filter((restroom) =>
         restroom.title.toLowerCase().includes(searchText.toLowerCase()),
       );
-      console.log(restroomList);
-      console.log(searchText);
       setRestroomList(newList);
     } else {
       setRestroomList(originalList);

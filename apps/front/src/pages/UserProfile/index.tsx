@@ -205,6 +205,7 @@ export default function UserProfile() {
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}
       >
+        {/*TODO 把这个弄成另一个组件，然后从这里请求的数据中.map循环再通过props传过去*/}
         <Card
           sx={{ maxWidth: '80%' }}
           className={'user-profile-reply-card'}

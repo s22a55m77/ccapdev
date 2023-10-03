@@ -51,6 +51,7 @@ const theme = createTheme({
 function App() {
   useEffect(() => {
     document.title = 'DLSU toileToPick';
+    // TODO 在这里调用me，成功的话就调用useUserStore的setUser存进去
   }, []);
 
   return (
