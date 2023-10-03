@@ -115,6 +115,13 @@ const getRestroomList = (): API.RestroomListData => {
   });
 };
 
+const getAdminRestroomList = (): API.AdminRestroomListData => {
+  /* TODO 从restrooms拿到基本的数据 然后转换成 API.AdminRestroomListData 的格式
+              记得要加一些待审核的
+  */
+  return restrooms.map(() => {});
+};
+
 const comments: API.CommentDetailData[] = [
   {
     id: '1',
@@ -476,5 +483,54 @@ export default function configureMock(mock: MockAdapter) {
     }
 
     return [400];
+  });
+
+  // GET /restroom/creation
+  mock
+    .onGet('/restroom/creation')
+    .reply(200, (): API.GetAdminRestroomListResponse => {
+      const data: API.AdminRestroomListData = getAdminRestroomList();
+
+      return createResponse(data);
+    });
+
+  // GET  /restroom/creation/:id >> review restroom creation
+  mock.onGet(/^\/restroom\/creation\/(\d+)$/).reply((config) => {
+    if (config.url) {
+      const result = config.url.match(/^\/restroom\/creation\/(\d+)$/);
+      if (result) {
+        const id = result[1];
+        // TODO 想办法从restrooms或getAdminRestroomList()拼凑出需要的数据
+        const data: API.AdminRestroomData = {};
+
+        const response: API.GetAdminRestroomDetailResponse =
+          createResponse(data);
+
+        return [200, response];
+      }
+    }
+
+    return [400];
+  });
+
+  // POST /restroom/creation/:id/status   >> handle restroom creation(approve, reject, delete)
+  mock.onPost(/^\/restroom\/creation\/(\d+)\/status/).reply((config) => {
+    const data = JSON.parse(config.data);
+
+    if (config.url) {
+      const result = config.url.match(
+        /^\/restroom\/creation\/(\d+)\/status/,
+      );
+      if (result) {
+        const id = result[1];
+        // TODO 修改restrooms中的status并返回
+        const data: API.AdminRestroomData = {};
+
+        const response: API.ChangeRestroomStatusResponse =
+          createResponse(data);
+
+        return [200, response];
+      }
+    }
   });
 }

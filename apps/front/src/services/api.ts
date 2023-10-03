@@ -236,11 +236,23 @@ export function changeVoteStatus({
 
 // admin
 
+// GET /restroom/creation
+export function getAdminRestroomsList(): Promise<API.AdminRestroomListData> {
+  return APIClient.get<API.GetAdminRestroomListResponse>(
+    '/restroom/creation',
+    {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    },
+  ).then((res) => res.data.data);
+}
+
 // GET  /restroom/creation/:id >> review restroom creation
 export function getRestroomCreationInfo(
   id: string,
-): Promise<API.RestroomData> {
-  return APIClient.get<API.RestroomDetailResponse>(
+): Promise<API.AdminRestroomData> {
+  return APIClient.get<API.GetAdminRestroomDetailResponse>(
     `/restroom/creation/${id}`,
     {
       headers: {

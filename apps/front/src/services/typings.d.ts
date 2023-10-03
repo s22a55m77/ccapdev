@@ -185,4 +185,18 @@ declare namespace API {
   };
 
   type VoteRestroomResponse = BaseResponse<RestroomData>;
+
+  type AdminRestroomList = {
+    id: string;
+    title: string;
+    building: string;
+    floor: number;
+    status: number;
+  };
+
+  type AdminRestroomListData = AdminRestroomList[];
+
+  type GetAdminRestroomListResponse = BaseResponse<AdminRestroomListData>;
+
+  type GetAdminRestroomDetailResponse = BaseResponse<AdminRestroomData>;
 }
