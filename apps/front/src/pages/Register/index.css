@@ -65,7 +65,7 @@ input:not(:placeholder-shown) ~ label {
   color: white;
 }
 
-.inputbox ion-icon {
+.register-icon {
   position: absolute;
   right: 8px;
   color: white;

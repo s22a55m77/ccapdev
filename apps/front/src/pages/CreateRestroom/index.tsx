@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import WcOutlinedIcon from '@mui/icons-material/WcOutlined';
+import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
 import {
   FormControl,
   InputLabel,
@@ -96,14 +97,16 @@ export default function Index() {
         </div>
         <div className="second-column">
           <div className="picturebox">
-            <ion-icon name="water-outline"></ion-icon>
             <input type="file" id="picture" required multiple />
-            <label htmlFor="picture">Upload the Location Picture</label>
+            <label htmlFor="picture">
+              Upload Location Picture <PhotoCameraBackIcon />
+            </label>
           </div>
           <div className="picturebox">
-            <ion-icon name="water-outline"></ion-icon>
             <input type="file" id="picture" required multiple />
-            <label htmlFor="picture">Upload the Restroom Picture</label>
+            <label htmlFor="picture">
+              Upload Restroom Picture <PhotoCameraBackIcon />
+            </label>
           </div>
           <button className={'restroom-form-button'}>Submit</button>
         </div>

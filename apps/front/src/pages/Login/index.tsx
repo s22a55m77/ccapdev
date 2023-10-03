@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { login, me } from '../../services/api.ts';
 import { useUserStore } from './user.store.ts';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 export default function LoginPage() {
   const [name, setName] = useState('');
@@ -17,6 +20,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'Login Page';
+
     me()
       .then((userData) => {
         if (userData) {
@@ -72,17 +77,11 @@ export default function LoginPage() {
                 className={errMsg ? 'errmsg' : 'offscreen'}
                 aria-live="assertive"
               >
-                <ion-icon
-                  name="close-circle-outline"
-                  aria-hidden="true"
-                ></ion-icon>
+                <ErrorOutlineOutlinedIcon style={{ marginRight: 5 }} />
                 {errMsg}
               </p>
               <div className="inputbox">
-                <ion-icon
-                  name="mail-outline"
-                  aria-hidden="true"
-                ></ion-icon>
+                <Person2OutlinedIcon className={'login-icon'} />
                 <input
                   {...register('username', { required: true })}
                   type="text"
@@ -96,7 +95,7 @@ export default function LoginPage() {
                 <label htmlFor="username">Username</label>
               </div>
               <div className="inputbox">
-                <ion-icon name="lock-closed-outline"></ion-icon>
+                <LockOutlinedIcon className={'login-icon'} />
                 <input
                   {...register('password', { required: true })}
                   type="password"

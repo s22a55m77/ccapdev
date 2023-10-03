@@ -5,6 +5,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { me, register as registerUser } from '../../services/api.ts';
 import { useUserStore } from '../Login/user.store.ts';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 type RegisterFormValues = {
   username: string;
@@ -70,10 +73,7 @@ export default function RegisterPage() {
                   ]?.message}
               </p>
               <div className="inputbox">
-                <ion-icon
-                  name="person-outline"
-                  aria-hidden="true"
-                ></ion-icon>
+                <Person2OutlinedIcon className="register-icon" />
                 <input
                   {...register('username', {
                     required: {
@@ -89,10 +89,7 @@ export default function RegisterPage() {
                 <label htmlFor="username">Username</label>
               </div>
               <div className="inputbox">
-                <ion-icon
-                  name="mail-outline"
-                  aria-hidden="true"
-                ></ion-icon>
+                <EmailOutlinedIcon className="register-icon" />
                 <input
                   {...register('email', {
                     required: {
@@ -113,7 +110,7 @@ export default function RegisterPage() {
                 <label htmlFor="email">Email</label>
               </div>
               <div className="inputbox">
-                <ion-icon name="lock-closed-outline"></ion-icon>
+                <LockOutlinedIcon className="register-icon" />
                 <input
                   {...register('password1', {
                     required: {
@@ -132,7 +129,7 @@ export default function RegisterPage() {
                 <label htmlFor="password1">Password</label>
               </div>
               <div className="inputbox">
-                <ion-icon name="lock-closed-outline"></ion-icon>
+                <LockOutlinedIcon className="register-icon" />
                 <input
                   {...register('password2', {
                     required: {
