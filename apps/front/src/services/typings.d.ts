@@ -143,7 +143,7 @@ declare namespace API {
   type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
   type ChangeRestroomStatusParams = {
-    newStatus: number;
+    newStatus: number;  // 0-disapproved, 1-approved, 2-pending
     restroomId: string;
   };
 

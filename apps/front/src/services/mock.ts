@@ -119,7 +119,15 @@ const getAdminRestroomList = (): API.AdminRestroomListData => {
   /* TODO 从restrooms拿到基本的数据 然后转换成 API.AdminRestroomListData 的格式
               记得要加一些待审核的
   */
-  return restrooms.map(() => {});
+  return restrooms.map((restroom) => { 
+    return {
+      id: restroom.id,
+      title: restroom.title,
+      building: restroom.building,
+      floor: restroom.floor,
+      status: Math.floor(Math.random() * 3),  // randomly generated
+    }
+  });
 };
 
 const comments: API.CommentDetailData[] = [
@@ -500,8 +508,25 @@ export default function configureMock(mock: MockAdapter) {
       const result = config.url.match(/^\/restroom\/creation\/(\d+)$/);
       if (result) {
         const id = result[1];
+
         // TODO 想办法从restrooms或getAdminRestroomList()拼凑出需要的数据
-        const data: API.AdminRestroomData = {};
+        const index = restrooms.findIndex((restroom) => restroom.id === id);
+        if (index === -1) return [400];
+
+        const restroom = restrooms[index];
+        const data: API.AdminRestroomData = {
+          id: restroom.id,
+          title: restroom.title,
+          building: restroom.building,
+          floor: restroom.floor,
+          location: restroom.location,
+          locationImageIds: restroom.locationImageIds,
+          restroomImageIds: restroom.restroomImageIds,
+          gender: restroom.gender,
+          createdByUser: restroom.createdByUser,
+          createdAt: restroom.createdAt,
+          status: 0,    // placeholder TODO: how to get the status
+        };
 
         const response: API.GetAdminRestroomDetailResponse =
           createResponse(data);
@@ -523,15 +548,32 @@ export default function configureMock(mock: MockAdapter) {
       );
       if (result) {
         const id = result[1];
+
         // TODO 修改restrooms中的status并返回
-        const data: API.AdminRestroomData = {};
+        const index = restrooms.findIndex((restroom) => restroom.id === id);
+        if (index === -1) return [400];
+        const restroom = restrooms[index]
+        const restroomData: API.AdminRestroomData = {
+          id: restroom.id,
+          title: restroom.title,
+          building: restroom.building,
+          floor: restroom.floor,
+          location: restroom.location,
+          locationImageIds: restroom.locationImageIds,
+          restroomImageIds: restroom.restroomImageIds,
+          gender: restroom.gender,
+          createdByUser: restroom.createdByUser,
+          createdAt: restroom.createdAt,
+          status: data.status,   
+        };
 
         const response: API.ChangeRestroomStatusResponse =
-          createResponse(data);
+          createResponse(restroomData);
 
         return [200, response];
       }
     }
+    return [400];
   });
 
   // GET /user/:id/profile
@@ -543,12 +585,23 @@ export default function configureMock(mock: MockAdapter) {
       if (result) {
         const id = result[1];
         // TODO 找出user和他以前给过的review
-        const data: API.UserProfileData = {};
+        if(id != user.id) return [400];
+        const profileData: API.UserProfileData = {
+          id: user.id,
+          username: user.username,
+          reviews: user.reviews,
+          yearsInDLSU: user.yearsInDLSU,
+          description: user.description,
+          role: user.role,
+          profilePicId: user.profilePicId,
+          history: ,
+        };
 
-        const response: API.GetUserProfileResponse = createResponse(data);
+        const response: API.GetUserProfileResponse = createResponse(profileData);
 
         return [200, response];
       }
     }
+    return [400];
   });
 }
