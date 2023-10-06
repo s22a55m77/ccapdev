@@ -102,7 +102,7 @@ export default function ReplyCard({
 
   const { run: deleteReview } = useRequest(deleteRestroomReview, {
     manual: true,
-    onSuccess: (data) => {
+    onSuccess: () => {
       //TODO: check
       setAlertContent({
         isOpen: true,
