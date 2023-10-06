@@ -103,7 +103,7 @@ export default function ReplyCard({
   const { run: deleteReview } = useRequest(deleteRestroomReview, {
     manual: true,
     onSuccess: (data) => {
-      mutate(data);
+      //TODO: check
       setAlertContent({
         isOpen: true,
         message: 'Successfully Deleted',
@@ -177,9 +177,7 @@ export default function ReplyCard({
 
   const handleDelete = () => {
     // TODO 删除的逻辑, deleteRestroomReview()
-    deleteReview({
-      restroomId,
-    });
+    deleteReview(restroomId);
   };
 
   return (
@@ -289,7 +287,8 @@ export default function ReplyCard({
                 {
                   /*TODO 删除按钮只会出现在：
                             当前登录用户是comment的， ??? === commentDetail?.commentByUserId
-                            当前用户是admin ???.role === 'ADMIN' */
+                            当前用户是admin ???.role === 'ADMIN' 
+                            TODO: CHECK*/
                   (currentUser?.id === commentDetail?.commentByUserId ||
                     currentUser?.id === 'ADMIN') && (
                     <Button onClick={handleDelete} color={'error'}>
