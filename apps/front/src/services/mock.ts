@@ -119,14 +119,14 @@ const getAdminRestroomList = (): API.AdminRestroomListData => {
   /* TODO 从restrooms拿到基本的数据 然后转换成 API.AdminRestroomListData 的格式
               记得要加一些待审核的
   */
-  return restrooms.map((restroom) => { 
+  return restrooms.map((restroom) => {
     return {
       id: restroom.id,
       title: restroom.title,
       building: restroom.building,
       floor: restroom.floor,
-      status: Math.floor(Math.random() * 3),  // randomly generated
-    }
+      status: Math.floor(Math.random() * 3), // randomly generated
+    };
   });
 };
 
@@ -194,16 +194,14 @@ export default function configureMock(mock: MockAdapter) {
   // successful
   // mock.onGet('/auth/me').reply(200, createResponse<API.UserData>(user));
   // failed
-  mock
-    .onGet('/auth/me')
-    .reply(
-      401,
-      createResponse({
-        error: 'Unauthorized',
-        msg: 'You need to login to access this resource',
-        data: null,
-      }),
-    );
+  mock.onGet('/auth/me').reply(
+    401,
+    createResponse({
+      error: 'Unauthorized',
+      msg: 'You need to login to access this resource',
+      data: null,
+    }),
+  );
 
   // GET /auth/refresh
   mock.onGet('/auth/refresh').reply(
@@ -510,8 +508,14 @@ export default function configureMock(mock: MockAdapter) {
         const id = result[1];
 
         // TODO 想办法从restrooms或getAdminRestroomList()拼凑出需要的数据
-        const index = restrooms.findIndex((restroom) => restroom.id === id);
+        const index = restrooms.findIndex(
+          (restroom) => restroom.id === id,
+        );
         if (index === -1) return [400];
+        const restroomStatus = getAdminRestroomList().find(
+          (restroom) => restroom.id === id,
+        )?.status;
+        if (restroomStatus === undefined) return [400];
 
         const restroom = restrooms[index];
         const data: API.AdminRestroomData = {
@@ -525,7 +529,7 @@ export default function configureMock(mock: MockAdapter) {
           gender: restroom.gender,
           createdByUser: restroom.createdByUser,
           createdAt: restroom.createdAt,
-          status: 0,    // placeholder TODO: how to get the status
+          status: restroomStatus,
         };
 
         const response: API.GetAdminRestroomDetailResponse =
@@ -550,9 +554,11 @@ export default function configureMock(mock: MockAdapter) {
         const id = result[1];
 
         // TODO 修改restrooms中的status并返回
-        const index = restrooms.findIndex((restroom) => restroom.id === id);
+        const index = restrooms.findIndex(
+          (restroom) => restroom.id === id,
+        );
         if (index === -1) return [400];
-        const restroom = restrooms[index]
+        const restroom = restrooms[index];
         const restroomData: API.AdminRestroomData = {
           id: restroom.id,
           title: restroom.title,
@@ -564,7 +570,7 @@ export default function configureMock(mock: MockAdapter) {
           gender: restroom.gender,
           createdByUser: restroom.createdByUser,
           createdAt: restroom.createdAt,
-          status: data.status,   
+          status: data.status,
         };
 
         const response: API.ChangeRestroomStatusResponse =
@@ -578,14 +584,16 @@ export default function configureMock(mock: MockAdapter) {
 
   // GET /user/:id/profile
   mock.onGet(/^\/user\/(\d+)\/profile/).reply((config) => {
-    const data = JSON.parse(config.data);
-
     if (config.url) {
       const result = config.url.match(/^\/user\/(\d+)\/profile/);
       if (result) {
         const id = result[1];
         // TODO 找出user和他以前给过的review
-        if(id != user.id) return [400];
+        if (id != user.id) return [400];
+
+        const userComments = comments.filter(
+          (comment) => comment.commentByUserId == id,
+        );
         const profileData: API.UserProfileData = {
           id: user.id,
           username: user.username,
@@ -594,10 +602,11 @@ export default function configureMock(mock: MockAdapter) {
           description: user.description,
           role: user.role,
           profilePicId: user.profilePicId,
-          history: ,
+          history: userComments,
         };
 
-        const response: API.GetUserProfileResponse = createResponse(profileData);
+        const response: API.GetUserProfileResponse =
+          createResponse(profileData);
 
         return [200, response];
       }
