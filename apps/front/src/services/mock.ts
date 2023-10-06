@@ -492,13 +492,11 @@ export default function configureMock(mock: MockAdapter) {
   });
 
   // GET /restroom/creation
-  mock
-    .onGet('/restroom/creation')
-    .reply(200, (): API.GetAdminRestroomListResponse => {
-      const data: API.AdminRestroomListData = getAdminRestroomList();
+  mock.onGet('/restroom/creation').reply(() => {
+    const data: API.AdminRestroomListData = getAdminRestroomList();
 
-      return createResponse(data);
-    });
+    return [200, createResponse(data)];
+  });
 
   // GET  /restroom/creation/:id >> review restroom creation
   mock.onGet(/^\/restroom\/creation\/(\d+)$/).reply((config) => {
