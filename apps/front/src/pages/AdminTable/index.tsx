@@ -10,9 +10,12 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { AdminTableRow } from './components/AdminTableRow.tsx';
+import { useRequest } from 'ahooks';
+import { getAdminRestroomsList } from '../../services/api';
 
 export default function AdminTable() {
   // TODO 使用 useRequest获取数据 API: getAdminRestroomsList
+  const { data, error, loading } = useRequest(getAdminRestroomsList);
 
   return (
     <div className={'admin-table-container'}>
@@ -34,7 +37,16 @@ export default function AdminTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <AdminTableRow />
+              {data?.map((restroom) => (
+                <AdminTableRow
+                  key={restroom.id}
+                  id={restroom.id}
+                  title={restroom.title}
+                  building={restroom.building}
+                  floor={restroom.floor}
+                  status={restroom.status}
+                />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
