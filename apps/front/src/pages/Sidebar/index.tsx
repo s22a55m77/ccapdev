@@ -7,14 +7,19 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useRestroomList } from '../Main/restroom-list.store.ts';
+import { useUserStore } from '../Login/user.store.ts';
 
 export default function Sidebar() {
   const location = useLocation();
   // TODO 把initialState改为false
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     //   TODO 调用useUserStore取出user, 如果role是Admin再调用setIsAdmin改为true
+    const user = useUserStore((state) => state.user);
+    if (user && user.role === 'ADMIN') {
+      setIsAdmin(true);
+    }
   }, []);
 
   const restroomList = useRestroomList((state) => state.restroomList);
