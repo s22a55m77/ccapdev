@@ -21,6 +21,7 @@ import { useRequest } from 'ahooks';
 import {
   changeVoteStatus,
   createRestroomReview,
+  deleteRestroomReview,
   getCommentDetail,
   updateRestroomReview,
 } from '../../../services/api.ts';
@@ -99,6 +100,25 @@ export default function ReplyCard({
     },
   });
 
+  const { run: deleteReview } = useRequest(deleteRestroomReview, {
+    manual: true,
+    onSuccess: (data) => {
+      mutate(data);
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Deleted',
+        severity: 'success',
+      });
+    },
+    onError: () => {
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
+    },
+  });
+
   const { run: vote } = useRequest(changeVoteStatus, {
     manual: true,
     onSuccess: (data) => {
@@ -157,6 +177,9 @@ export default function ReplyCard({
 
   const handleDelete = () => {
     // TODO 删除的逻辑, deleteRestroomReview()
+    deleteReview({
+      restroomId,
+    });
   };
 
   return (
@@ -263,11 +286,17 @@ export default function ReplyCard({
                 )}
               </div>
               <div className={'reply-activity'}>
-                {/*TODO 删除按钮只会出现在：
+                {
+                  /*TODO 删除按钮只会出现在：
                             当前登录用户是comment的， ??? === commentDetail?.commentByUserId
-                            当前用户是admin ???.role === 'ADMIN'
-                */}
-                <Button color={'error'}>Delete</Button>
+                            当前用户是admin ???.role === 'ADMIN' */
+                  (currentUser?.id === commentDetail?.commentByUserId ||
+                    currentUser?.id === 'ADMIN') && (
+                    <Button onClick={handleDelete} color={'error'}>
+                      Delete
+                    </Button>
+                  )
+                }
                 <Button onClick={handleReplyClick}>
                   <SubdirectoryArrowRightIcon
                     fontSize={'inherit'}
