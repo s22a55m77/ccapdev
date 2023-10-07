@@ -59,11 +59,8 @@ function App() {
     me()
       .then((userData) => {
         setUser(userData);
-        console.log('hhhhhhhhhhhhhhhh');
       })
-      .catch((error) => {
-        console.log('erorororororo');
-      });
+      .catch((error) => {});
   }, []);
 
   return (
