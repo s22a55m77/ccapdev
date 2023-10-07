@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import Sidebar from './pages/Sidebar';
 import { useEffect } from 'react';
+import { useUserStore } from './pages/Login/user.store.ts';
+import { me } from './services/api.ts';
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
@@ -49,9 +51,19 @@ const theme = createTheme({
 });
 
 function App() {
+  const { setUser } = useUserStore();
+
   useEffect(() => {
     document.title = 'DLSU toileToPick';
     // TODO 在这里调用me，成功的话就调用useUserStore的setUser存进去
+    me()
+      .then((userData) => {
+        setUser(userData);
+        console.log('hhhhhhhhhhhhhhhh');
+      })
+      .catch((error) => {
+        console.log('erorororororo');
+      });
   }, []);
 
   return (
