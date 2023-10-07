@@ -290,7 +290,7 @@ export default function ReplyCard({
                             当前用户是admin ???.role === 'ADMIN' 
                             TODO: CHECK*/
                   (currentUser?.id === commentDetail?.commentByUserId ||
-                    currentUser?.id === 'ADMIN') && (
+                    currentUser?.role === 'ADMIN') && (
                     <Button onClick={handleDelete} color={'error'}>
                       Delete
                     </Button>
