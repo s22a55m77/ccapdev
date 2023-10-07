@@ -587,10 +587,11 @@ export default function configureMock(mock: MockAdapter) {
       if (result) {
         const id = result[1];
         // TODO 找出user和他以前给过的review
+        // TODO check here
         if (id != user.id) return [400];
 
         const userComments = comments.filter(
-          (comment) => comment.commentByUserId == id,
+          (comment) => comment.commentByUserId === id,
         );
         const profileData: API.UserProfileData = {
           id: user.id,
