@@ -8,15 +8,19 @@ type RequireAuthProps = {
 
 const RequireAuth: FC<RequireAuthProps> = ({ allowedRoles }) => {
   const user = useUserStore((state) => state.user);
+  const isLogin = useUserStore((state) => state.isLogin);
   const location = useLocation();
 
-  return user === undefined ? (
-    <Navigate to="/login" state={{ from: location }} replace />
-  ) : allowedRoles.includes(user.role) ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" state={{ from: location }} replace />
-  );
+  console.log(user);
+
+  if (isLogin === undefined) return '';
+
+  if (!isLogin)
+    return <Navigate to="/login" state={{ from: location }} replace />;
+
+  if (user && allowedRoles.includes(user.role)) return <Outlet />;
+
+  return <Navigate to="/" state={{ from: location }} replace />;
 };
 
 export default RequireAuth;

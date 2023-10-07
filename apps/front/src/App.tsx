@@ -51,16 +51,19 @@ const theme = createTheme({
 });
 
 function App() {
-  const { setUser } = useUserStore();
+  const { setUser, setUserLoginState } = useUserStore();
 
   useEffect(() => {
     document.title = 'DLSU toiletToPick';
     // TODO 在这里调用me，成功的话就调用useUserStore的setUser存进去
     me()
       .then((userData) => {
+        setUserLoginState(true);
         setUser(userData);
       })
-      .catch((error) => {});
+      .catch(() => {
+        setUserLoginState(false);
+      });
   }, []);
 
   return (
