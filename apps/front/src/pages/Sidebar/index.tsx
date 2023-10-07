@@ -20,7 +20,7 @@ export default function Sidebar() {
     if (user && user.role === 'ADMIN') {
       setIsAdmin(true);
     }
-  }, []);
+  }, [user]);
 
   const restroomList = useRestroomList((state) => state.restroomList);
   const originalList = useRestroomList((state) => state.originalList);
