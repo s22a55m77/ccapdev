@@ -125,7 +125,7 @@ const getAdminRestroomList = (): API.AdminRestroomListData => {
       title: restroom.title,
       building: restroom.building,
       floor: restroom.floor,
-      status: Math.floor(Math.random() * 3), // randomly generated
+      status: 2,
     };
   });
 };
