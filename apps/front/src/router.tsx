@@ -9,6 +9,7 @@ import Index from './pages/CreateRestroom';
 import UserProfile from './pages/UserProfile';
 import AdminTable from './pages/AdminTable';
 import Error404 from './pages/Error/Error404.tsx';
+import RequireAuth from './RequireAuth.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -32,8 +33,14 @@ const router = createBrowserRouter([
       },
       {
         // TODO 想办法加上路由守卫
-        path: 'admin-table',
-        element: <AdminTable />,
+        path: '/admin-table',
+        element: <RequireAuth allowedRoles={['ADMIN']} />,
+        children: [
+          {
+            index: true,
+            element: <AdminTable />,
+          },
+        ],
       },
     ],
   },
