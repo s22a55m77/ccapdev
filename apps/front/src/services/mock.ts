@@ -44,6 +44,7 @@ const user: API.UserData = {
   yearsInDLSU: 1,
   description: 'this is a short description',
   role: 'ADMIN',
+  // role: 'USER',
   profilePicId: '/src/assets/dlsu.jpg',
 };
 
