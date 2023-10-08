@@ -368,33 +368,7 @@ export default function configureMock(mock: MockAdapter) {
   });
 
   // POST /restroom
-  mock.onPost('/restroom').reply((config) => {
-    const restroom: API.RestroomData = {
-      id: '100',
-      title: `${config.data.building}-${config.data.floor} floor-${config.data.gender}`,
-      building: config.data.building,
-      floor: config.data.floor,
-      location: config.data.location,
-      rating: 2,
-      tags: config.data.tags,
-      locationImageIds: config.data.locationImageIds,
-      restroomImageIds: config.data.restroomImageIds,
-      commentsIds: [],
-      totalComments: 0,
-      gender: config.data.gender,
-      createdByUser: 'User1',
-      createdAt: 'September 19, 2023',
-      downVote: 2,
-      upVote: 2,
-      isDownVoted: false,
-      isUpVoted: false,
-    };
-
-    restrooms.push(restroom);
-    const response: API.CreateRestroomResponse = createResponse(restroom);
-
-    return [200, response];
-  });
+  mock.onPost('/restroom').reply(200, createResponse(null));
 
   // POST /restroom/:id/review
   mock.onPost(/^\/restroom\/(\d+)\/review$/).reply((config) => {

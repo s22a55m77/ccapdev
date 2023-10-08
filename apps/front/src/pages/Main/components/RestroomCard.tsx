@@ -53,7 +53,7 @@ export default function RestroomCard({
               <div className={'card-content'}> {location} </div>
               <div className={'restroom-card-image-container'}>
                 {/*TODO MCO2*/}
-                {restroomImageIds.map((id, index) => {
+                {restroomImageIds?.map((id, index) => {
                   return (
                     <img
                       key={id + index}
@@ -69,7 +69,7 @@ export default function RestroomCard({
               <footer className={'card-footer'}>
                 {/*tags*/}
                 <div id="tags" className={'tags'}>
-                  {tags.map((tag) => (
+                  {tags?.map((tag) => (
                     <div key={tag} className="tag">
                       {tag}
                     </div>
