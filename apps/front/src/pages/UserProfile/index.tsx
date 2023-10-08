@@ -166,20 +166,22 @@ export default function UserProfile() {
                   sx={{ width: 100, height: 100 }}
                   src={data?.profilePicId}
                 />
-                <Button
-                  component="label"
-                  variant={'contained'}
-                  size={'small'}
-                  startIcon={<CloudUploadIcon />}
-                  className={'profile-pic-update-button'}
-                >
-                  Update
-                  <VisuallyHiddenInput
-                    onChange={handleProfilePicUpdate}
-                    type="file"
-                    required
-                  />
-                </Button>
+                {userId === user?.id && (
+                  <Button
+                    component="label"
+                    variant={'contained'}
+                    size={'small'}
+                    startIcon={<CloudUploadIcon />}
+                    className={'profile-pic-update-button'}
+                  >
+                    Update
+                    <VisuallyHiddenInput
+                      onChange={handleProfilePicUpdate}
+                      type="file"
+                      required
+                    />
+                  </Button>
+                )}
               </div>
               <div className={'user-profile-information-container'}>
                 {!yearEdit.isEditing ? (
