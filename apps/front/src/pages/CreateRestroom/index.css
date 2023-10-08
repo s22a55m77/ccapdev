@@ -24,7 +24,7 @@
     margin-top: 50px;
     margin-left: 100px;
     margin-right: 100px;
-    padding: 10px;
+    padding: 10px 40px;
     display:flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
@@ -173,6 +173,10 @@ textarea:not(:placeholder-shown) ~ label {
     transition: 0.2s;
 }
 
+.building-input {
+    max-width: 30vw;
+}
+
 .smallbox {
     margin: 30px 0;
     display: flex;
@@ -222,6 +226,7 @@ textarea:not(:placeholder-shown) ~ label {
 }
 
 .second-column {
+    /*flex: 1;*/
 }
 
 .select-box {
