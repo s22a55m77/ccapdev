@@ -149,10 +149,10 @@ export default function Restroom() {
               </div>
               {/*TODO MCO2*/}
               <div className={'restroom-image-container'}>
-                {restroomData?.restroomImageIds.map((id) => {
+                {restroomData?.restroomImageIds.map((id, index) => {
                   return (
                     <img
-                      key={id}
+                      key={id + index}
                       style={{ marginTop: 10 }}
                       src={id}
                       alt={'img'}
@@ -160,10 +160,10 @@ export default function Restroom() {
                     />
                   );
                 })}
-                {restroomData?.locationImageIds.map((id) => {
+                {restroomData?.locationImageIds.map((id, index) => {
                   return (
                     <img
-                      key={id}
+                      key={id + index}
                       style={{ marginTop: 10 }}
                       src={id}
                       alt={'img'}

@@ -53,10 +53,10 @@ export default function RestroomCard({
               <div className={'card-content'}> {location} </div>
               <div className={'restroom-card-image-container'}>
                 {/*TODO MCO2*/}
-                {restroomImageIds.map((id) => {
+                {restroomImageIds.map((id, index) => {
                   return (
                     <img
-                      key={id}
+                      key={id + index}
                       style={{ marginTop: 10 }}
                       src={id}
                       alt={'img'}
