@@ -226,7 +226,6 @@ textarea:not(:placeholder-shown) ~ label {
 }
 
 .second-column {
-    /*flex: 1;*/
 }
 
 .select-box {
