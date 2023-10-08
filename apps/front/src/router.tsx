@@ -32,7 +32,6 @@ const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        // TODO 想办法加上路由守卫
         path: '/admin-table',
         element: <RequireAuth allowedRoles={['ADMIN']} />,
         children: [
@@ -51,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+  {
+    path: '/404',
+    element: <Error404 />,
   },
   {
     path: '*',

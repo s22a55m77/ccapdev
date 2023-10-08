@@ -317,9 +317,9 @@ export default function configureMock(mock: MockAdapter) {
       const result = config.url.match(/^\/restroom\/(\d+)$/);
       if (result) {
         const id = result[1];
-        const restroom = restrooms.filter(
-          (restroom) => restroom.id === id,
-        )[0];
+        const restroom = restrooms.find((restroom) => restroom.id === id);
+
+        if (!restroom) return [404];
 
         const response: API.RestroomDetailResponse =
           createResponse(restroom);

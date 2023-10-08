@@ -21,8 +21,9 @@ import {
   updateUserProfile,
 } from '../../services/api.ts';
 import { AlertContent } from '../../declaration';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUserStore } from '../Login/user.store.ts';
+import { AxiosError } from 'axios';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -52,9 +53,13 @@ export default function UserProfile() {
 
   const { userId } = useParams();
   const { user } = useUserStore();
+  const navigate = useNavigate();
 
   let { data, mutate } = useRequest(getUserProfile, {
     defaultParams: [userId || '0'],
+    onError: (e) => {
+      if ((e as AxiosError).response?.status === 404) navigate('/404');
+    },
   });
 
   const { run: updateProfile } = useRequest(updateUserProfile, {
