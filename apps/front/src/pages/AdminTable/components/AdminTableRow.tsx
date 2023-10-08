@@ -119,7 +119,7 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
               fontSize={'medium'}
             />
           )}
-          {/* 
+          {/*
           <Chip
             label={
               adminRestroomData?.status === 0
@@ -139,6 +139,9 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
             color={'green'}
             onClick={handleApprove}
             disabled={adminRestroomData?.status === 1}
+            style={{
+              marginRight: 5,
+            }}
           >
             Approve
           </Button>
