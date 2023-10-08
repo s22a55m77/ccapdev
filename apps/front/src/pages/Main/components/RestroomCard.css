@@ -44,8 +44,9 @@
 }
 
 .tag {
-    width: 40px;
+    width: fit-content;
     height: 20px;
+    padding: 0 5px;
     background-color: #EAEAEA;
     border-radius: 5px;
     font-size: 10px;
