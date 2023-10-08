@@ -16,7 +16,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import './index.css';
 import ReplyCard from './components/ReplyCard.tsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import {
@@ -26,6 +26,7 @@ import {
 } from '../../services/api.ts';
 import { useState } from 'react';
 import { AlertContent } from '../../declaration';
+import { AxiosError } from 'axios';
 
 type UserRating = {
   rating: number;
@@ -45,12 +46,17 @@ export default function Restroom() {
     severity: 'success',
   });
 
+  const navigate = useNavigate();
+
   const {
     data: restroomData,
     run,
     mutate,
   } = useRequest(getRestroomDetail, {
     defaultParams: [restroomId || '0'],
+    onError: (e) => {
+      if ((e as AxiosError).response?.status === 404) navigate('/404');
+    },
   });
 
   const { run: vote } = useRequest(voteRestroom, {
