@@ -128,22 +128,32 @@ export function getRestroomDetail(id: string): Promise<API.RestroomData> {
 // POST /restroom
 export function createRestroom({
   location,
-  locationImageIds,
-  restroomImageIds,
+  locationImages,
+  restroomImages,
   building,
   floor,
   gender,
   tags,
 }: API.CreateRestroomParams): Promise<API.RestroomData> {
-  return APIClient.post<API.CreateRestroomResponse>('/restroom', {
-    location,
-    locationImageIds,
-    restroomImageIds,
-    building,
-    floor,
-    gender,
-    tags,
-  }).then((res) => res.data.data);
+  // TODO need test on MCO2
+  return APIClient.post<API.CreateRestroomResponse>(
+    '/restroom',
+    {
+      location,
+      building,
+      floor,
+      gender,
+      tags,
+      locationImages,
+      restroomImages,
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: localStorage.getItem('token'),
+      },
+    },
+  ).then((res) => res.data.data);
 }
 
 // POST /restroom/:id/review

@@ -93,8 +93,8 @@ declare namespace API {
 
   type CreateRestroomParams = {
     location: string;
-    locationImageIds: string[];
-    restroomImageIds: string[];
+    locationImages: FileList[];
+    restroomImages: FileList[];
     building: string;
     floor: number;
     gender: 'MALE' | 'FEMALE';
