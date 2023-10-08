@@ -9,6 +9,10 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
+type LoginForm = API.LoginParams & {
+  rememberMe?: boolean;
+};
+
 export default function LoginPage() {
   const [name, setName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -16,7 +20,7 @@ export default function LoginPage() {
   const [errMsg, setErrMsg] = useState('');
 
   const { setUser } = useUserStore();
-  const { register, handleSubmit } = useForm<API.LoginParams>();
+  const { register, handleSubmit } = useForm<LoginForm>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,11 +41,13 @@ export default function LoginPage() {
       });
   }, []);
 
-  const onSubmit = async (data: API.LoginParams) => {
+  const onSubmit = async (data: LoginForm) => {
     try {
-      await login(data);
+      await login({ username: data.username, password: data.password });
       const userData = await me();
       setUser(userData);
+      if (data.rememberMe)
+        localStorage.setItem('lastLoginTime', new Date().toDateString());
       navigate('/');
     } catch (error) {
       // TODO: set error message based on the errors ex. Wrong Credentials
@@ -108,7 +114,7 @@ export default function LoginPage() {
               </div>
               <div className="forget">
                 <label>
-                  <input type="checkbox" />
+                  <input {...register('rememberMe')} type="checkbox" />
                   Remember Me
                   <a href="#">Forget Password</a>
                 </label>
@@ -118,8 +124,8 @@ export default function LoginPage() {
               </button>
               <div className="register">
                 <p>
-                  Don't have an account?{' '}
-                  <Link to="/register">Register Now!</Link>
+                  Don't have an account?
+                  <Link to="/register"> Register Now!</Link>
                 </p>
                 <p>
                   <Link to="/">Go Back &#8594;</Link>

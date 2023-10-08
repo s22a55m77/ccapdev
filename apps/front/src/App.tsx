@@ -10,7 +10,7 @@ import {
 import Sidebar from './pages/Sidebar';
 import { useEffect } from 'react';
 import { useUserStore } from './pages/Login/user.store.ts';
-import { me } from './services/api.ts';
+import { me, refreshToken } from './services/api.ts';
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
@@ -60,6 +60,10 @@ function App() {
       .then((userData) => {
         setUserLoginState(true);
         setUser(userData);
+
+        const lastLoginTime = localStorage.getItem('lastLoginTime');
+        if (lastLoginTime)
+          if (new Date().toDateString() > lastLoginTime) refreshToken();
       })
       .catch(() => {
         setUserLoginState(false);
