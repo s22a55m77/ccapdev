@@ -36,7 +36,6 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
     severity: 'success',
   });
 
-  // TODO 使用useRequest请求更详细的数据放到drawer中，API: getRestroomCreationInfo()
   const { data: adminRestroomData, mutate } = useRequest(
     getRestroomCreationInfo,
     {
@@ -44,7 +43,6 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
     },
   );
 
-  // TODO 加删除和通过按钮，跟他们的逻辑。删除也是通过changeRestroomStatus来删除
   const handleApprove = () => {
     modifyRestroomStatus({ newStatus: 1, restroomId });
   };

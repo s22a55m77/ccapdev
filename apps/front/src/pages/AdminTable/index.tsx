@@ -14,7 +14,6 @@ import { useRequest } from 'ahooks';
 import { getAdminRestroomsList } from '../../services/api';
 
 export default function AdminTable() {
-  // TODO 使用 useRequest获取数据 API: getAdminRestroomsList
   const { data } = useRequest(getAdminRestroomsList);
 
   return (

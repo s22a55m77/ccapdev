@@ -69,7 +69,7 @@ const buildingInfo: BuildingInfo[] = [
     maxFloor: 20,
   },
   {
-    buildingName: 'Milagros R. del Rosario Building', //Laguna Campus I didnt add all
+    buildingName: 'Milagros R. del Rosario Building',
     maxFloor: 5,
   },
   {

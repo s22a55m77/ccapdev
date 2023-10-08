@@ -11,12 +11,10 @@ import { useUserStore } from '../Login/user.store.ts';
 
 export default function Sidebar() {
   const location = useLocation();
-  // TODO 把initialState改为false
   const [isAdmin, setIsAdmin] = useState(false);
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    //   TODO 调用useUserStore取出user, 如果role是Admin再调用setIsAdmin改为true
     if (user && user.role === 'ADMIN') {
       setIsAdmin(true);
     }

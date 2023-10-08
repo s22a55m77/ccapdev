@@ -50,7 +50,6 @@ export default function LoginPage() {
         localStorage.setItem('lastLoginTime', new Date().toDateString());
       navigate('/');
     } catch (error) {
-      // TODO: set error message based on the errors ex. Wrong Credentials
       setErrMsg('Err Msg');
     }
   };
