@@ -29,10 +29,6 @@ const buildingInfo: BuildingInfo[] = [
     maxFloor: 7,
   },
   {
-    buildingName: 'Salikneta Mart', //应该不用了
-    maxFloor: 0,
-  },
-  {
     buildingName: 'St. Joseph Hall',
     maxFloor: 6,
   },
@@ -57,10 +53,6 @@ const buildingInfo: BuildingInfo[] = [
     maxFloor: 10,
   },
   {
-    buildingName: 'Solar/Eco Car Shelter',//应该不用了
-    maxFloor: 0,
-  },
-  {
     buildingName: 'Gokongwei Hall',
     maxFloor: 4,
   },
@@ -69,32 +61,12 @@ const buildingInfo: BuildingInfo[] = [
     maxFloor: 4,
   },
   {
-    buildingName: 'Inventory Management OFF/ROTC/MAINTENANCE Shop',//应该不用了
-    maxFloor: 0,
-  },
-  {
     buildingName: 'Enrique Razon Sports Center',
     maxFloor: 10,
   },
   {
     buildingName: 'Br Andrew Gonzalez Hall',
     maxFloor: 20,
-  },
-  {
-    buildingName: 'Retreat House',//应该不用了
-    maxFloor: 0,
-  },
-  {
-    buildingName: 'Preschool',//应该不用了
-    maxFloor: 0,
-  },
-  {
-    buildingName: 'Bahay KanlunganlLegal Aid Clinic',//应该不用了
-    maxFloor: 0,
-  },
-  {
-    buildingName: 'Carpentry & Painting Contractor Workshop',//应该不用了
-    maxFloor: 0,
   },
   {
     buildingName: 'Milagros R. del Rosario Building', //Laguna Campus I didnt add all
