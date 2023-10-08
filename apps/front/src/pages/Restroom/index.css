@@ -11,6 +11,12 @@
     background-attachment: fixed;
 }
 
+@media only screen and (max-width: 320px) {
+    .restroom-container {
+        padding: 0;
+    }
+}
+
 .restroom {
     padding: 25px;
 }
@@ -26,6 +32,8 @@
 .restroom-footer {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: baseline;
 }
 
 .restroom-tags {
@@ -52,6 +60,7 @@
 .restroom-activity {
     padding-top: 20px;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -81,6 +90,16 @@
     padding: 0px 447px 9px 0px;
     margin: auto;
     width: 100%;
+}
+
+.vote-button {
+    box-shadow: none;
+}
+
+@media only screen and (max-width: 560px)  {
+    .vote-button {
+        width: 100%;
+    }
 }
 
 .submit-box {

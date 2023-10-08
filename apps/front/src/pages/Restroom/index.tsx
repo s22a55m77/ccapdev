@@ -200,6 +200,7 @@ export default function Restroom() {
                     variant="contained"
                     color="error"
                     style={{ boxShadow: 'none' }}
+                    className={'vote-button'}
                     disabled={restroomData?.isDownVoted}
                     onClick={() => {
                       handleVote({ downVote: true });
@@ -212,6 +213,7 @@ export default function Restroom() {
                     variant="contained"
                     color="primary"
                     style={{ boxShadow: 'none' }}
+                    className={'vote-button'}
                     disabled={restroomData?.isUpVoted}
                     onClick={() => {
                       handleVote({ upVote: true });
