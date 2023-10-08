@@ -188,11 +188,17 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
           <h3 className={'drawer-h3'}>Location Image</h3>
         </motion.div>
         <div className={'image-container'}>
-          <img
-            src={'src/assets/toilet.png'}
-            alt="toilet"
-            style={{ width: '20vw' }}
-          />
+          {adminRestroomData?.locationImageIds.map((imageId, index) => {
+            return (
+              // TODO MCO2
+              <img
+                key={imageId + index}
+                src={imageId}
+                alt="toilet"
+                style={{ width: '20vw' }}
+              />
+            );
+          })}
         </div>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -201,11 +207,17 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
           <h3 className={'drawer-h3'}>Restroom Image</h3>
         </motion.div>
         <div className={'image-container'}>
-          <img
-            src={'src/assets/toilet.png'}
-            alt="toilet"
-            style={{ width: '20vw' }}
-          />
+          {adminRestroomData?.restroomImageIds.map((imageId, index) => {
+            return (
+              // TODO MCO2
+              <img
+                key={imageId + index}
+                src={imageId}
+                alt="toilet"
+                style={{ width: '20vw' }}
+              />
+            );
+          })}
         </div>
       </Drawer>
       <tr>
