@@ -174,6 +174,7 @@ declare namespace API {
     upVote: number;
     isUpVoted: boolean;
     isDownVoted: boolean;
+    isAdmin: boolean;
     childComments: string[];
   };
 

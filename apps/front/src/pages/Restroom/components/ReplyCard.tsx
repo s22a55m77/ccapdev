@@ -54,8 +54,6 @@ export default function ReplyCard({
     message: 'default message',
     severity: 'success',
   });
-  // TODO isAdmin
-  const [isAdmin, setIsAdmin] = useState(true);
 
   const { data: commentDetail, mutate } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
@@ -214,7 +212,9 @@ export default function ReplyCard({
                   <Link to={`/user/${commentDetail?.commentByUserId}`}>
                     {commentDetail?.commentBy}
                   </Link>
-                  {isAdmin && <span className={'admin-tag'}>Admin</span>}
+                  {commentDetail?.isAdmin && (
+                    <span className={'admin-tag'}>Admin</span>
+                  )}
                 </>
               }
               subheader={commentDetail?.commentAt}
@@ -297,7 +297,9 @@ export default function ReplyCard({
                       by @{commentDetail?.commentBy}
                     </Link>
 
-                    {isAdmin && <span className={'admin-tag'}>Admin</span>}
+                    {commentDetail?.isAdmin && (
+                      <span className={'admin-tag'}>Admin</span>
+                    )}
                   </span>
                 )}
               </div>

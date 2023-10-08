@@ -166,6 +166,7 @@ const comments: API.CommentDetailData[] = [
     upVote: 1,
     isDownVoted: false,
     isUpVoted: true,
+    isAdmin: true,
     childComments: ['3'],
   },
   {
@@ -179,6 +180,7 @@ const comments: API.CommentDetailData[] = [
     upVote: 0,
     isDownVoted: false,
     isUpVoted: false,
+    isAdmin: false,
     childComments: [],
   },
   {
@@ -194,6 +196,7 @@ const comments: API.CommentDetailData[] = [
     upVote: 0,
     isDownVoted: false,
     isUpVoted: false,
+    isAdmin: false,
     childComments: [],
   },
 ];
@@ -412,13 +415,14 @@ export default function configureMock(mock: MockAdapter) {
         commentTo: data?.commentTo,
         commentToUser: parentComment?.commentBy,
         commentToUserId: parentComment?.commentByUserId,
-        commentBy: 'User1',
+        commentBy: 'user1',
         commentByUserId: '1',
         commentAt: getCurrentFormattedDate(),
         downVote: 0,
         upVote: 0,
         isUpVoted: false,
         isDownVoted: false,
+        isAdmin: true,
         childComments: [],
       };
       parentComment?.childComments.push(comment.id);
@@ -427,13 +431,14 @@ export default function configureMock(mock: MockAdapter) {
         id: comments[comments.length - 1].id + 1,
         rating: data.rating,
         content: data?.content,
-        commentBy: 'User1',
+        commentBy: 'user1',
         commentByUserId: '1',
         commentAt: getCurrentFormattedDate(),
         downVote: 0,
         upVote: 0,
         isUpVoted: false,
         isDownVoted: false,
+        isAdmin: true,
         childComments: [],
       };
 
