@@ -15,8 +15,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
-import { me, updateUserProfile } from '../../services/api.ts';
+import { getUserProfile, updateUserProfile } from '../../services/api.ts';
 import { AlertContent } from '../../declaration';
+import { useParams } from 'react-router-dom';
+import { useUserStore } from '../Login/user.store.ts';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -43,7 +45,13 @@ export default function UserProfile() {
     message: 'default message',
     severity: 'success',
   });
-  let { data, mutate } = useRequest(me);
+
+  const { userId } = useParams();
+  const { user } = useUserStore();
+
+  let { data, mutate } = useRequest(getUserProfile, {
+    defaultParams: [userId || '0'],
+  });
 
   const { run: updateProfile } = useRequest(updateUserProfile, {
     manual: true,
@@ -147,12 +155,14 @@ export default function UserProfile() {
                       Year in DLSU:
                     </span>
                     {data?.yearsInDLSU}
-                    <EditIcon
-                      fontSize={'inherit'}
-                      onClick={() => {
-                        setYearEdit({ ...yearEdit, isEditing: true });
-                      }}
-                    />
+                    {data?.id === user?.id && (
+                      <EditIcon
+                        fontSize={'inherit'}
+                        onClick={() => {
+                          setYearEdit({ ...yearEdit, isEditing: true });
+                        }}
+                      />
+                    )}
                   </span>
                 ) : (
                   <TextField
@@ -174,12 +184,14 @@ export default function UserProfile() {
                       Description:
                     </span>
                     {data?.description}
-                    <EditIcon
-                      fontSize={'inherit'}
-                      onClick={() => {
-                        setDescEdit({ ...descEdit, isEditing: true });
-                      }}
-                    />
+                    {data?.id === user?.id && (
+                      <EditIcon
+                        fontSize={'inherit'}
+                        onClick={() => {
+                          setDescEdit({ ...descEdit, isEditing: true });
+                        }}
+                      />
+                    )}
                   </span>
                 ) : (
                   <TextField
@@ -205,67 +217,40 @@ export default function UserProfile() {
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}
       >
-        {/*TODO 把这个弄成另一个组件，然后从这里请求的数据中.map循环再通过props传过去*/}
-        <Card
-          sx={{ maxWidth: '80%' }}
-          className={'user-profile-reply-card'}
-        >
-          <CardContent>
-            <h4>Title --- Review</h4>
-            <div className="user-profile-reply-rating">
-              <Rating name="read-only" value={5} readOnly />
-            </div>
-            <div className={'user-profile-reply-content'}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
-              amet, consectetur adipiscing elit. Consequat aliquet maecenas
-              ut sit nulla
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-      >
-        <Card
-          sx={{ maxWidth: '80%' }}
-          className={
-            'user-profile-reply-card user-profile-reply-border-blue'
-          }
-        >
-          <CardContent>
-            <h4>Title --- Reply</h4>
-            <b>@user</b>
-            <div className={'user-profile-reply-content'}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
-              amet, consectetur adipiscing elit. Consequat aliquet maecenas
-              ut sit nulla
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-      >
-        <Card
-          sx={{ maxWidth: '80%' }}
-          className={
-            'user-profile-reply-card user-profile-submit-border-orange'
-          }
-        >
-          <CardContent>
-            <h4>Title --- Submit</h4>
-            <div className={'user-profile-reply-content'}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Consequat aliquet maecenas ut sit nulla Lorem ipsum dolor sit
-              amet, consectetur adipiscing elit. Consequat aliquet maecenas
-              ut sit nulla
-            </div>
-          </CardContent>
-        </Card>
+        {data?.history.length &&
+          data?.history.map((history: API.UserHistory, index) => {
+            return (
+              <Card
+                key={index}
+                sx={{ maxWidth: '80%' }}
+                className={`user-profile-reply-card ${
+                  history.type === 'Review'
+                    ? ''
+                    : history.type === 'Reply'
+                    ? 'user-profile-reply-border-blue'
+                    : 'user-profile-submit-border-orange'
+                }`}
+              >
+                <CardContent>
+                  <h4>
+                    {history.title} --- {history.type}
+                  </h4>
+                  {history.rating && (
+                    <div className="user-profile-reply-rating">
+                      <Rating
+                        name="read-only"
+                        value={history.rating}
+                        readOnly
+                      />
+                    </div>
+                  )}
+                  <div className={'user-profile-reply-content'}>
+                    {history.content}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
       </motion.div>
     </div>
   );

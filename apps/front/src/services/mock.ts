@@ -37,6 +37,29 @@ function getCurrentFormattedDate() {
   return formattedDate;
 }
 
+const users: API.UserData[] = [
+  {
+    id: '1',
+    username: 'user1',
+    reviews: 1,
+    yearsInDLSU: 1,
+    description: 'this is a short description',
+    role: 'ADMIN',
+    // role: 'USER',
+    profilePicId: '/src/assets/dlsu.jpg',
+  },
+  {
+    id: '2',
+    username: 'user2',
+    reviews: 1,
+    yearsInDLSU: 2,
+    description: "this is user2's short description",
+    // role: 'ADMIN',
+    role: 'USER',
+    profilePicId: '/src/assets/dlsu.jpg',
+  },
+];
+
 const user: API.UserData = {
   id: '1',
   username: 'user1',
@@ -229,7 +252,19 @@ export default function configureMock(mock: MockAdapter) {
     const data = JSON.parse(config.data);
     if (data.description) user.description = data.description;
     if (data.yearsInDLSU) user.yearsInDLSU = data.yearsInDLSU;
-    return [200, createResponse<API.UserData>(user)];
+
+    const profileData: API.UserProfileData = {
+      id: user.id,
+      username: user.username,
+      reviews: user.reviews,
+      yearsInDLSU: user.yearsInDLSU,
+      description: user.description,
+      role: user.role,
+      profilePicId: user.profilePicId,
+      history: getUserHistory(user),
+    };
+
+    return [200, createResponse<API.UserProfileData>(profileData)];
   });
 
   // GET /restroom
@@ -600,12 +635,10 @@ export default function configureMock(mock: MockAdapter) {
       if (result) {
         const id = result[1];
         // TODO 找出user和他以前给过的review
-        // TODO check here
-        if (id != user.id) return [400];
+        const user = users.find((user) => user.id === id);
+        if (!user) return [404];
+        console.log(user);
 
-        const userComments = comments.filter(
-          (comment) => comment.commentByUserId === id,
-        );
         const profileData: API.UserProfileData = {
           id: user.id,
           username: user.username,
@@ -614,7 +647,7 @@ export default function configureMock(mock: MockAdapter) {
           description: user.description,
           role: user.role,
           profilePicId: user.profilePicId,
-          history: userComments,
+          history: getUserHistory(user),
         };
 
         const response: API.GetUserProfileResponse =
@@ -626,3 +659,44 @@ export default function configureMock(mock: MockAdapter) {
     return [400];
   });
 }
+
+const getUserHistory = (user: API.UserData) => {
+  const userHistories: API.UserHistory[] = [];
+
+  comments.forEach((comment) => {
+    if (comment.commentByUserId === user.id) {
+      const restroom = restrooms.find((restroom) =>
+        restroom.commentsIds.includes(comment.id),
+      );
+
+      if (!restroom) return [500];
+
+      userHistories.push({
+        id: comment.id,
+        title: restroom.title,
+        content: comment.content,
+        rating: comment.rating,
+        commentTo: comment.commentTo,
+        commentToUser: comment.commentToUser,
+        commentByUserId: comment.commentByUserId,
+        commentBy: comment.commentBy,
+        type: comment.commentTo ? 'Reply' : 'Review',
+      });
+    }
+  });
+
+  restrooms.forEach((restroom) => {
+    if (restroom.createdByUser === user.username) {
+      userHistories.push({
+        id: restroom.id,
+        title: restroom.title,
+        content: restroom.location,
+        commentBy: restroom.createdByUser,
+        commentByUserId: user.id,
+        type: 'Submit',
+      });
+    }
+  });
+
+  return userHistories;
+};

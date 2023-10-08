@@ -51,7 +51,7 @@ declare namespace API {
     description?: string;
   };
 
-  type UpdateUserProfileResponse = BaseResponse<UserData>;
+  type UpdateUserProfileResponse = BaseResponse<UserProfileData>;
 
   type RestroomList = Omit<
     RestroomData,
@@ -143,7 +143,7 @@ declare namespace API {
   type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
   type ChangeRestroomStatusParams = {
-    newStatus: number;  // 0-disapproved, 1-approved, 2-pending
+    newStatus: number; // 0-disapproved, 1-approved, 2-pending
     restroomId: string;
   };
 
@@ -200,8 +200,20 @@ declare namespace API {
 
   type GetAdminRestroomDetailResponse = BaseResponse<AdminRestroomData>;
 
+  type UserHistory = {
+    id: string;
+    title: string;
+    content: string;
+    rating?: number;
+    commentTo?: string; // comment ID to which it comments to
+    commentToUser?: string; // username
+    commentByUserId: string; // userId
+    commentBy?: string; // username
+    type: 'Reply' | 'Submit' | 'Review';
+  };
+
   type UserProfileData = UserData & {
-    history: CommentDetailData[];
+    history: UserHistory[];
   };
 
   type GetUserProfileResponse = BaseResponse<UserProfileData>;

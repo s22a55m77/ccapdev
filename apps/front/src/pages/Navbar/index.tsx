@@ -4,25 +4,17 @@ import { Avatar, Button, Menu, MenuItem } from '@mui/material';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../Login/user.store.ts';
 import { logout } from '../../services/api.ts';
 
 export default function Navbar() {
-  const [isLogin, setIsLogin] = useState(false);
+  const { user, isLogin } = useUserStore();
   const [avatarAnchor, setAvatarAnchor] = useState<null | HTMLElement>();
   const open = Boolean(avatarAnchor);
 
   const navigate = useNavigate();
-
-  const user = useUserStore((state) => state.user);
-
-  useEffect(() => {
-    if (user) {
-      setIsLogin(true);
-    }
-  }, [user]);
 
   const handleAvatarClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -91,7 +83,7 @@ export default function Navbar() {
         }}
       >
         <MenuItem onClick={handleAvataClose}>
-          <Link to="/user-profile">
+          <Link to={`/user/${user?.id}`}>
             <span className={'user-profile'}>
               <PersonIcon />
               User Profile
