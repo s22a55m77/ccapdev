@@ -11,8 +11,6 @@ const RequireAuth: FC<RequireAuthProps> = ({ allowedRoles }) => {
   const isLogin = useUserStore((state) => state.isLogin);
   const location = useLocation();
 
-  console.log(user);
-
   if (isLogin === undefined) return '';
 
   if (!isLogin)

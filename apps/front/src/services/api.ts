@@ -47,7 +47,6 @@ export function me(): Promise<API.UserData> {
 
 //GET /auth/refresh
 export function refreshToken(): Promise<API.RefreshTokenData> {
-  console.log('@@@');
   return APIClient.get<API.RefreshTokenResponse>('/auth/refresh', {
     headers: {
       Authorization: localStorage.getItem('token'),

@@ -618,7 +618,6 @@ export default function configureMock(mock: MockAdapter) {
         // TODO 找出user和他以前给过的review
         const user = users.find((user) => user.id === id);
         if (!user) return [404];
-        console.log(user);
 
         const profileData: API.UserProfileData = {
           id: user.id,
