@@ -15,7 +15,11 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
-import { getUserProfile, updateUserProfile } from '../../services/api.ts';
+import {
+  getUserProfile,
+  updateProfilePic,
+  updateUserProfile,
+} from '../../services/api.ts';
 import { AlertContent } from '../../declaration';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from '../Login/user.store.ts';
@@ -76,6 +80,25 @@ export default function UserProfile() {
     },
   });
 
+  const { run: updatePic } = useRequest(updateProfilePic, {
+    manual: true,
+    onSuccess: () => {
+      // TODO MCO2 update the picture
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Edited',
+        severity: 'success',
+      });
+    },
+    onError: () => {
+      setAlertContent({
+        isOpen: true,
+        message: 'Error Occurred',
+        severity: 'error',
+      });
+    },
+  });
+
   const handleKeyDown = (
     event: React.KeyboardEvent,
     identifier: string,
@@ -107,6 +130,12 @@ export default function UserProfile() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setYearEdit({ ...yearEdit, value: e.target.value });
+  };
+
+  const handleProfilePicUpdate = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (e.target.files) updatePic(e.target.files[0]);
   };
 
   return (
@@ -145,7 +174,11 @@ export default function UserProfile() {
                   className={'profile-pic-update-button'}
                 >
                   Update
-                  <VisuallyHiddenInput type={'file'} />
+                  <VisuallyHiddenInput
+                    onChange={handleProfilePicUpdate}
+                    type="file"
+                    required
+                  />
                 </Button>
               </div>
               <div className={'user-profile-information-container'}>
