@@ -109,29 +109,22 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
         </TableCell>
         <TableCell>{adminRestroomData?.floor}</TableCell>
         <TableCell>
-          {adminRestroomData?.status === 1 ? (
-            <CheckCircleIcon color="success" fontSize={'medium'} />
-          ) : adminRestroomData?.status === 0 ? (
-            <CancelIcon color="error" fontSize={'medium'} />
-          ) : (
-            <AccessTimeFilledOutlinedIcon
-              color="warning"
-              fontSize={'medium'}
-            />
-          )}
-          {/*
-          <Chip
-            label={
-              adminRestroomData?.status === 0
-                ? 'disapproved'
-                : adminRestroomData?.status === 1
-                ? 'approved'
-                : adminRestroomData?.status === 2
-                ? 'pending'
-                : 'unknown'
-            }
-            color="green"
-          /> */}
+          <motion.div
+            key={adminRestroomData?.status}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            {adminRestroomData?.status === 1 ? (
+              <CheckCircleIcon color="success" fontSize={'medium'} />
+            ) : adminRestroomData?.status === 0 ? (
+              <CancelIcon color="error" fontSize={'medium'} />
+            ) : (
+              <AccessTimeFilledOutlinedIcon
+                color="warning"
+                fontSize={'medium'}
+              />
+            )}
+          </motion.div>
         </TableCell>
         <TableCell>
           <Button
