@@ -5,13 +5,16 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../Login/user.store.ts';
+import { logout } from '../../services/api.ts';
 
 export default function Navbar() {
   const [isLogin, setIsLogin] = useState(false);
   const [avatarAnchor, setAvatarAnchor] = useState<null | HTMLElement>();
   const open = Boolean(avatarAnchor);
+
+  const navigate = useNavigate();
 
   const user = useUserStore((state) => state.user);
 
@@ -30,6 +33,13 @@ export default function Navbar() {
   const handleAvataClose = () => {
     setAvatarAnchor(null);
   };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setAvatarAnchor(null);
+  };
+
   return (
     <div className={'nav-container'}>
       <Link to="/">
@@ -88,7 +98,7 @@ export default function Navbar() {
             </span>
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleAvataClose}>
+        <MenuItem onClick={handleLogout}>
           <span className={'logout'}>
             <LogoutIcon />
             Logout
