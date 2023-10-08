@@ -22,7 +22,6 @@ export default function Sidebar() {
     }
   }, [user]);
 
-  const restroomList = useRestroomList((state) => state.restroomList);
   const originalList = useRestroomList((state) => state.originalList);
   const setRestroomList = useRestroomList(
     (state) => state.setRestroomList,
