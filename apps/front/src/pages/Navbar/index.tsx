@@ -58,10 +58,19 @@ export default function Navbar() {
               variant="contained"
               color={'green'}
               startIcon={<PersonAddAltIcon />}
+              onClick={() => {
+                navigate('/register');
+              }}
             >
               Register
             </Button>
-            <Button style={{ marginLeft: '10px' }} variant="outlined">
+            <Button
+              style={{ marginLeft: '10px' }}
+              variant="outlined"
+              onClick={() => {
+                navigate('/login');
+              }}
+            >
               Login
             </Button>
           </div>
