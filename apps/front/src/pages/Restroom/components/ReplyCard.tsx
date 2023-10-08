@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Chip,
   Popover,
   Rating,
   Snackbar,
@@ -53,6 +54,8 @@ export default function ReplyCard({
     message: 'default message',
     severity: 'success',
   });
+  // TODO isAdmin
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const { data: commentDetail, mutate } = useRequest(getCommentDetail, {
     defaultParams: [commentId],
@@ -206,7 +209,12 @@ export default function ReplyCard({
           {isParent && (
             <CardHeader
               avatar={<Avatar />}
-              title={commentDetail?.commentBy}
+              title={
+                <>
+                  {commentDetail?.commentBy}
+                  {isAdmin && <span className={'admin-tag'}>Admin</span>}
+                </>
+              }
               subheader={commentDetail?.commentAt}
             />
           )}
@@ -280,6 +288,7 @@ export default function ReplyCard({
                 {!isParent && (
                   <span className={'reply-user'}>
                     by @{commentDetail?.commentBy}
+                    {isAdmin && <span className={'admin-tag'}>Admin</span>}
                   </span>
                 )}
               </div>
@@ -287,7 +296,7 @@ export default function ReplyCard({
                 {
                   /*TODO 删除按钮只会出现在：
                             当前登录用户是comment的， ??? === commentDetail?.commentByUserId
-                            当前用户是admin ???.role === 'ADMIN' 
+                            当前用户是admin ???.role === 'ADMIN'
                             TODO: CHECK*/
                   (currentUser?.id === commentDetail?.commentByUserId ||
                     currentUser?.role === 'ADMIN') && (
