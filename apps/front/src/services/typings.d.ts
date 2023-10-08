@@ -166,6 +166,7 @@ declare namespace API {
     rating?: number;
     commentTo?: string; // comment ID to which it comments to
     commentToUser?: string; // username
+    commentToUserId?: string;
     commentByUserId: string; // userId
     commentBy?: string; // username
     commentAt: string; // date

@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   Popover,
   Rating,
   Snackbar,
@@ -28,6 +27,7 @@ import {
 } from '../../../services/api.ts';
 import { AlertContent } from '../../../declaration';
 import { useUserStore } from '../../Login/user.store.ts';
+import { Link } from 'react-router-dom';
 
 type ReplyCardProps = {
   restroomId: string;
@@ -211,7 +211,9 @@ export default function ReplyCard({
               avatar={<Avatar />}
               title={
                 <>
-                  {commentDetail?.commentBy}
+                  <Link to={`/user/${commentDetail?.commentByUserId}`}>
+                    {commentDetail?.commentBy}
+                  </Link>
                   {isAdmin && <span className={'admin-tag'}>Admin</span>}
                 </>
               }
@@ -221,7 +223,11 @@ export default function ReplyCard({
 
           <CardContent>
             {commentDetail?.commentToUser && (
-              <b>@{commentDetail?.commentToUser}</b>
+              <b>
+                <Link to={`/user/${commentDetail?.commentToUserId}`}>
+                  @{commentDetail?.commentToUser}
+                </Link>
+              </b>
             )}
             {!edit.isEdit ? (
               <div className={'reply-content'}>
@@ -287,7 +293,10 @@ export default function ReplyCard({
                 </div>
                 {!isParent && (
                   <span className={'reply-user'}>
-                    by @{commentDetail?.commentBy}
+                    <Link to={`/user/${commentDetail?.commentByUserId}`}>
+                      by @{commentDetail?.commentBy}
+                    </Link>
+
                     {isAdmin && <span className={'admin-tag'}>Admin</span>}
                   </span>
                 )}
