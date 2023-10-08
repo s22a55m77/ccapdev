@@ -1,8 +1,9 @@
 import {
+  Alert,
   Button,
-  Chip,
   Drawer,
   IconButton,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -19,10 +20,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import AdminRestroomList = API.AdminRestroomList;
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import {
-  getRestroomCreationInfo,
-  getRestroomDetail,
-} from '../../../services/api';
+import { getRestroomCreationInfo } from '../../../services/api';
 import { AlertContent } from '../../../declaration';
 import { useRequest } from 'ahooks';
 import { changeRestroomStatus } from '../../../services/api.ts';
@@ -39,13 +37,12 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
   });
 
   // TODO 使用useRequest请求更详细的数据放到drawer中，API: getRestroomCreationInfo()
-  const {
-    data: adminRestroomData,
-    run,
-    mutate,
-  } = useRequest(getRestroomCreationInfo, {
-    defaultParams: [restroomId],
-  });
+  const { data: adminRestroomData, mutate } = useRequest(
+    getRestroomCreationInfo,
+    {
+      defaultParams: [restroomId],
+    },
+  );
 
   // TODO 加删除和通过按钮，跟他们的逻辑。删除也是通过changeRestroomStatus来删除
   const handleApprove = () => {
@@ -59,7 +56,6 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
   const { run: modifyRestroomStatus } = useRequest(changeRestroomStatus, {
     manual: true,
     onSuccess: (data) => {
-      // check
       mutate(data);
       setAlertContent({
         isOpen: true,
@@ -212,6 +208,21 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
           />
         </div>
       </Drawer>
+      <tr>
+        <td>
+          <Snackbar
+            open={alertContent.isOpen}
+            autoHideDuration={1000}
+            onClose={() => {
+              setAlertContent({ ...alertContent, isOpen: false });
+            }}
+          >
+            <Alert severity={alertContent.severity}>
+              {alertContent.message}
+            </Alert>
+          </Snackbar>
+        </td>
+      </tr>
     </>
   );
 }
