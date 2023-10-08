@@ -98,7 +98,9 @@ export default function LoginPage() {
                   onChange={(e) => setName(e.target.value)}
                 />
 
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username" style={{ color: 'white' }}>
+                  Username
+                </label>
               </div>
               <div className="inputbox">
                 <LockOutlinedIcon className={'login-icon'} />
@@ -110,13 +112,14 @@ export default function LoginPage() {
                   required
                   onChange={(e) => setPwd(e.target.value)}
                 />
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password" style={{ color: 'white' }}>
+                  Password
+                </label>
               </div>
               <div className="forget">
                 <label>
                   <input {...register('rememberMe')} type="checkbox" />
                   Remember Me
-                  <a href="#">Forget Password</a>
                 </label>
               </div>
               <button className="login-button" disabled={!btnStatus}>

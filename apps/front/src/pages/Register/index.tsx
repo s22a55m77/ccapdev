@@ -9,7 +9,7 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-type RegisterFormValues = { 
+type RegisterFormValues = {
   username: string;
   email: string;
   password1: string;
@@ -35,8 +35,8 @@ export default function RegisterPage() {
       setErrMsg('Passwords do not match');
 
       setTimeout(() => {
-        setErrMsg(''); 
-      }, 2000); 
+        setErrMsg('');
+      }, 2000);
 
       return;
     }
@@ -95,7 +95,9 @@ export default function RegisterPage() {
                   placeholder=""
                   aria-label="Username"
                 />
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username" style={{ color: 'white' }}>
+                  Username
+                </label>
               </div>
               <div className="inputbox">
                 <EmailOutlinedIcon className="register-icon" />
@@ -116,7 +118,9 @@ export default function RegisterPage() {
                   placeholder=" "
                   aria-label="Email"
                 />
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" style={{ color: 'white' }}>
+                  Email
+                </label>
               </div>
               <div className="inputbox">
                 <LockOutlinedIcon className="register-icon" />
@@ -135,7 +139,9 @@ export default function RegisterPage() {
                   id="password1"
                   placeholder=" "
                 />
-                <label htmlFor="password1">Password</label>
+                <label htmlFor="password1" style={{ color: 'white' }}>
+                  Password
+                </label>
               </div>
               <div className="inputbox">
                 <LockOutlinedIcon className="register-icon" />
@@ -154,7 +160,9 @@ export default function RegisterPage() {
                   id="password2"
                   placeholder=" "
                 />
-                <label htmlFor="password2">Repeat Password</label>
+                <label htmlFor="password2" style={{ color: 'white' }}>
+                  Repeat Password
+                </label>
               </div>
               <button
                 className="register-button"
