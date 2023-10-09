@@ -9,6 +9,12 @@
     background-attachment: fixed;
 }
 
+@media only screen and (max-width: 320px) {
+    .main-container {
+        padding: 0;
+    }
+}
+
 .flex {
     display: flex;
     gap: 10px;
