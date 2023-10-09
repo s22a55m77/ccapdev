@@ -232,3 +232,16 @@ textarea:not(:placeholder-shown) ~ label {
     display: flex;
 }
 
+.first-column {
+    width: 40%;
+    max-width: 40%;
+}
+
+@media only screen and (max-width: 499px) {
+    .first-column {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+

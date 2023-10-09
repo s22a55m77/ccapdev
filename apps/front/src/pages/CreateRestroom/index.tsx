@@ -107,7 +107,7 @@ export default function Index() {
           exit={{ opacity: 0, x: 50 }}
           className={'form-box'}
         >
-          <div style={{ width: '40%', maxWidth: '40%' }}>
+          <div className={'first-column'}>
             <form id="restroomForm" onSubmit={handleSubmit(onSubmit)}>
               <h2 className="restroom-form-h2">Restroom forms</h2>
               <Controller
