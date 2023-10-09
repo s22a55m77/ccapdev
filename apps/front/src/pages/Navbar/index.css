@@ -30,3 +30,9 @@
     color: #595959;
 }
 
+@media only screen and (max-width: 499px) {
+    #navbar-register {
+        display: none;
+    }
+}
+

@@ -55,6 +55,7 @@ export default function Navbar() {
         {!isLogin ? (
           <div>
             <Button
+              id="navbar-register"
               variant="contained"
               color={'green'}
               startIcon={<PersonAddAltIcon />}
