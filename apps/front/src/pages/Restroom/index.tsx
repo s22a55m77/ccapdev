@@ -106,10 +106,23 @@ export default function Restroom() {
         restroomId,
         content: userRating.comment,
         rating: userRating.rating,
-      }).then(() => {
-        setUserRating({ rating: 0, comment: '', isButtonDisable: true });
-        run(restroomId);
-      });
+      })
+        .then(() => {
+          setUserRating({ rating: 0, comment: '', isButtonDisable: true });
+          run(restroomId);
+          setAlertContent({
+            isOpen: true,
+            message: 'Successfully Rated',
+            severity: 'success',
+          });
+        })
+        .catch(() => {
+          setAlertContent({
+            isOpen: true,
+            message: 'Error Occurred',
+            severity: 'error',
+          });
+        });
   };
 
   return (
@@ -257,7 +270,9 @@ export default function Restroom() {
                 <Button
                   variant="contained"
                   color="green"
-                  disabled={userRating.isButtonDisable}
+                  disabled={
+                    userRating.isButtonDisable || userRating.rating == 0
+                  }
                   onClick={handleRateSubmit}
                 >
                   Rate
