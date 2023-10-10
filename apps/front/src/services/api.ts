@@ -5,16 +5,23 @@ export function login({
   username,
   password,
 }: API.LoginParams): Promise<API.LoginData> {
-  return APIClient.post<API.LoginResponse>('/auth/login', {
-    username,
-    password,
-  }).then((res) => {
+  return APIClient.post<API.LoginResponse>(
+    '/auth/login',
+    {
+      username,
+      password,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  ).then((res) => {
     localStorage.setItem('token', res.data.data.token);
     return res.data.data;
   });
 }
 
-// POST /auth/logout
 export function logout(): void {
   localStorage.removeItem('token');
   localStorage.removeItem('lastLoginTime');
@@ -26,11 +33,19 @@ export function register({
   email,
   password,
 }: API.RegisterParams): Promise<API.RegisterData> {
-  return APIClient.post<API.RegisterResponse>('/auth/register', {
-    username,
-    password,
-    email,
-  }).then((res) => {
+  return APIClient.post<API.RegisterResponse>(
+    '/auth/register',
+    {
+      username,
+      password,
+      email,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  ).then((res) => {
     localStorage.setItem('token', res.data.data.token);
     return res.data.data;
   });
@@ -171,6 +186,7 @@ export function createRestroomReview({
     },
     {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem('token'),
       },
     },
@@ -212,6 +228,7 @@ export function updateRestroomReview({
     },
     {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem('token'),
       },
     },
@@ -244,6 +261,7 @@ export function changeVoteStatus({
     },
     {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem('token'),
       },
     },
@@ -290,6 +308,7 @@ export function changeRestroomStatus({
     },
     {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: localStorage.getItem('token'),
       },
     },
