@@ -6,8 +6,8 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useRestroomList } from '../Main/restroom-list.store.ts';
-import { useUserStore } from '../Login/user.store.ts';
+import { useRestroomList } from '../../pages/Main/restroom-list.store.ts';
+import { useUserStore } from '../../pages/Login/user.store.ts';
 
 export default function Sidebar() {
   const location = useLocation();

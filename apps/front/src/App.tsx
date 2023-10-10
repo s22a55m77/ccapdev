@@ -1,13 +1,13 @@
 import './App.css';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Outlet } from 'react-router-dom';
-import Navbar from './pages/Navbar';
+import Navbar from './components/Navbar';
 import {
   createTheme,
   ThemeProvider,
   PaletteColorOptions,
 } from '@mui/material';
-import Sidebar from './pages/Sidebar';
+import Sidebar from './components/Sidebar';
 import { useEffect } from 'react';
 import { useUserStore } from './pages/Login/user.store.ts';
 import { me, refreshToken } from './services/api.ts';
