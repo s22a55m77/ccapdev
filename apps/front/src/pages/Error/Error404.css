@@ -1,13 +1,25 @@
 .text-404 {
     color: #444444;
+    font-size: 10vw;
+    border-bottom: 10px solid var(--primary-green);
+    padding: 5px;
+    text-align: center;
+}
+
+.container-404 {
+    width: 50vw;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 10vw;
-    border-bottom: 10px solid var(--primary-green);
-    padding: 5px;
 }
+
+.back-404 {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
 
 .box {
     position: absolute;

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import './Error404.css';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Error404() {
   useEffect(() => {
@@ -23,7 +24,12 @@ export default function Error404() {
           repeatDelay: 1,
         }}
       />
-      <div className="text-404">404 Error</div>
+      <div className="container-404">
+        <div className="text-404">404 Error</div>
+        <div className="back-404">
+          <Link to={'/'}>Back to Main</Link>
+        </div>
+      </div>
     </div>
   );
 }
