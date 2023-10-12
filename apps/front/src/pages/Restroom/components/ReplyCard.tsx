@@ -231,7 +231,11 @@ export default function ReplyCard({
               <div className={'reply-content'}>
                 {isParent && (
                   <div className="reply-rating">
-                    <Rating name="read-only" value={5} readOnly />
+                    <Rating
+                      name="read-only"
+                      value={commentDetail?.rating || 0}
+                      readOnly
+                    />
                   </div>
                 )}
 
