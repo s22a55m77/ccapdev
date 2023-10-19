@@ -10,3 +10,5 @@ front = https://ccapdev.azurewebsites.net/
 3. start frontend
     - `pnpm run front:dev` without mock
     - `pnpm run front:dev:mock` with mock
+4. start backend
+    - `pnpm run back:dev`
