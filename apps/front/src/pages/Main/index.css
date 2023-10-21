@@ -66,3 +66,18 @@
 .green {
     color: var(--secondary-green);
 }
+
+#tabs {
+    position: relative;
+}
+
+#cascader-container {
+    position: absolute;
+    left: 140px;
+}
+
+.ant-cascader {
+    background-color: red;
+    opacity: 0%;
+    z-index: -100;
+}

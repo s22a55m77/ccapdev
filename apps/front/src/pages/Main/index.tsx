@@ -2,15 +2,31 @@ import './index.css';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { motion } from 'framer-motion';
-import { Button, Menu, MenuItem, Radio } from '@mui/material';
-import { useEffect, useState } from 'react';
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Popover,
+  Popper,
+  Radio,
+} from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
 import { getRestroomList } from '../../services/api.ts';
 import { useRequest } from 'ahooks';
 import buildingInfo from './buildingInfo.ts';
 import { useRestroomList } from './restroom-list.store.ts';
+import { Cascader } from 'antd';
+import { regions, provinces, cities } from 'select-philippines-address';
+import { Simulate } from 'react-dom/test-utils';
+import focus = Simulate.focus;
+
+type optionItem = {
+  label: string;
+  value: string;
+  children?: optionItem[];
+};
 
 export default function Main() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -38,6 +54,88 @@ export default function Main() {
   const setOriginalList = useRestroomList(
     (state) => state.setOriginalList,
   );
+  const [regionData, setRegion] = useState([]);
+  const [option, setOption] = useState<optionItem[]>();
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    regions().then((response: []) => {
+      setRegion(response);
+    });
+  }, []);
+
+  async function convertData(inputData: { regions: [] | never[] }) {
+    const outputData = [];
+    for (const region of inputData.regions) {
+      const provinceList: optionItem[] = [];
+      const regex = /\(([^)]+)\)/;
+      const match = regex.exec(region.region_name);
+      const regionNode = {
+        label: match[1],
+        value: match[1],
+        children: provinceList,
+      };
+
+      await provinces(region.region_code).then(
+        (response: { province_name: string; province_code: string }[]) => {
+          response?.forEach(
+            (item: { province_name: string; province_code: string }) => {
+              const cityList: optionItem[] = [];
+              const provinceNode = {
+                label: item.province_name,
+                value: item.province_name,
+                children: cityList,
+              };
+
+              cities(item.province_code).then(
+                (res: { city_name: string }[]) => {
+                  res?.forEach((cityItem: { city_name: string }) => {
+                    const cityNode = {
+                      label: cityItem.city_name,
+                      value: cityItem.city_name,
+                    };
+                    cityList.push(cityNode);
+                  });
+                },
+              );
+
+              provinceList.push(provinceNode);
+            },
+          );
+        },
+      );
+
+      outputData.push(regionNode);
+    }
+
+    return outputData;
+  }
+  useEffect(() => {
+    if (regionData?.length > 0) {
+      const genderNode = [
+        { label: 'Male', value: 'Male' },
+        { label: 'Female', value: 'Female' },
+      ];
+
+      const availabilityNode = [
+        { label: 'Hand Sanitizer', value: 'Hand' },
+        { label: 'Vending Machine', value: 'Vending' },
+        { label: 'Bag Hook', value: 'Bag' },
+      ];
+      // You can call convertData within your component or elsewhere, using regionData.
+      convertData({ regions: regionData }).then((res) => {
+        setOption([
+          { label: 'Location', value: 'Location', children: res },
+          { label: 'Gender', value: 'Gender', children: genderNode },
+          {
+            label: 'Availability',
+            value: 'Availability',
+            children: availabilityNode,
+          },
+        ]);
+      });
+    }
+  }, [regionData]);
 
   const { run, error } = useRequest(getRestroomList, {
     defaultParams: [query],
@@ -106,6 +204,10 @@ export default function Main() {
   };
 
   useEffect(() => {
+    regions().then((region) => console.log(region));
+  }, []);
+
+  useEffect(() => {
     run(query);
   }, [query]);
 
@@ -151,7 +253,9 @@ export default function Main() {
               query.building || query.floor ? 'tab-button-active' : ''
             }`}
             id="basic-button"
-            onClick={handleFilterClick}
+            onClick={() => {
+              setFilterOpen(!filterOpen);
+            }}
           >
             <div style={{ display: 'flex' }}>
               <FilterAltIcon
@@ -161,6 +265,22 @@ export default function Main() {
               Filter
             </div>
           </button>
+          {filterOpen && (
+            <div id="cascader-container">
+              <Cascader
+                multiple
+                options={option}
+                tagRender={() => {
+                  return <></>;
+                }}
+                open={filterOpen}
+                onBlur={() => {
+                  setFilterOpen(false);
+                }}
+                autoFocus={true}
+              />
+            </div>
+          )}
         </div>
 
         {restroomList &&
@@ -189,84 +309,6 @@ export default function Main() {
             );
           })}
         {error && <span>Something go wrong</span>}
-        {/*  MENU Building*/}
-        <Menu
-          id="filter-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleFilterClose}
-          PaperProps={{
-            style: {
-              padding: '0px',
-              width: '200px',
-            },
-          }}
-        >
-          {buildingInfo.map((building) => {
-            return (
-              <MenuItem
-                style={{
-                  padding: '0px',
-                }}
-                key={building.buildingName}
-              >
-                <Radio
-                  checked={selectedBuilding === building.buildingName}
-                  onClick={(e) => handleBuildingRadioClick(e)}
-                  name="building"
-                  value={building.buildingName}
-                  size="small"
-                />
-                <Button
-                  onClick={() => {
-                    handleMenuClick(building.buildingName);
-                  }}
-                  endIcon={<ArrowForwardIosIcon />}
-                  color={'green'}
-                  className={'menu-button'}
-                  value={building.buildingName}
-                  style={{ justifyContent: 'end' }}
-                >
-                  <span className={'text-wrap'}>
-                    {building.buildingName}
-                  </span>
-                </Button>
-              </MenuItem>
-            );
-          })}
-        </Menu>
-
-        {/*  MENU Floor*/}
-        <Menu
-          id="filter-menu"
-          anchorEl={anchorMenuEl}
-          open={openMenu}
-          onClose={handleFilterClose}
-        >
-          {[...Array(buildingFloorCount)].map((_, i) => {
-            const floor = i + 1;
-
-            return (
-              <MenuItem
-                style={{
-                  padding: '0px',
-                  paddingLeft: '3px',
-                  paddingRight: '10px',
-                }}
-                key={i}
-              >
-                <Radio
-                  checked={selectedFloor === floor.toString()}
-                  onClick={(e) => handleFloorRadioClick(e)}
-                  name="floor"
-                  value={floor}
-                  size="small"
-                />
-                <span className={'green'}>{floor}</span>
-              </MenuItem>
-            );
-          })}
-        </Menu>
       </motion.div>
     </div>
   );
