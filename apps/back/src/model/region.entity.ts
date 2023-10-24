@@ -11,11 +11,10 @@ export class RegionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  // TODO unique
+  @Column({ unique: true })
   name: string;
 
   // TODO typo
-  @OneToMany(() => ProvinceEntity, (provice) => provice.region)
+  @OneToMany(() => ProvinceEntity, (province) => province.region)
   provinces: ProvinceEntity[];
 }
