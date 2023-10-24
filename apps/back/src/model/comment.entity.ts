@@ -17,7 +17,6 @@ export enum Type {
 
 @Entity('comment')
 export class CommentEntity {
-  // TODO
   @PrimaryGeneratedColumn()
   id: number;
 

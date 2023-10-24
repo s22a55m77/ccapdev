@@ -16,19 +16,21 @@ export enum RoleType {
 
 @Entity('user')
 export class UserEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 
+  // TODO unique
   @Column({ unique: true })
   username: string;
 
+  // TODO unique
   @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
+  // TODO 换成dateRegistered
   @Column('smallint')
   yearsInDLSU: number;
 

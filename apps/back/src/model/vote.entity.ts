@@ -14,7 +14,6 @@ export enum VoteType {
 
 @Entity('vote')
 export class VoteEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 

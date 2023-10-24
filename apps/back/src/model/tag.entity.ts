@@ -8,10 +8,10 @@ import { RestroomTagEntity } from './restroom-tag.entity';
 
 @Entity('tag')
 export class TagEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 
+  // TODO unique
   @Column({ unique: true })
   name: string;
 

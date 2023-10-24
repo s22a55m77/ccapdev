@@ -2,9 +2,9 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { RestroomEntity } from './restroom.entity';
 import { TagEntity } from './tag.entity';
 
+// TODO restroom和tag unique
 @Entity('restroomTag')
 export class RestroomTagEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 

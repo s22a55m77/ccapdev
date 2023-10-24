@@ -10,11 +10,11 @@ import { BuildingEntity } from './building.entity';
 
 @Entity('city')
 export class CityEntity {
-  // TODO
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
+  // unique
   name: string;
 
   @ManyToOne(() => ProvinceEntity, (province) => province.cities)
