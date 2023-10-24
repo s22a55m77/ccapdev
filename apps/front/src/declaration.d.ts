@@ -10,4 +10,8 @@ export interface AlertContent {
   isOpen: boolean;
   message: string;
   severity: AlertColor;
+  direction?: {
+    vertical: string;
+    horizontal: string;
+  };
 }

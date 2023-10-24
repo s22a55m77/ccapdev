@@ -131,12 +131,6 @@ export default function UserProfile() {
     setDescEdit({ ...descEdit, value: e.target.value });
   };
 
-  const handleYearChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setYearEdit({ ...yearEdit, value: e.target.value });
-  };
-
   const handleProfilePicUpdate = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -147,6 +141,12 @@ export default function UserProfile() {
     <div className={'user-profile-container'}>
       <Snackbar
         open={alertContent.isOpen}
+        anchorOrigin={
+          alertContent.direction && {
+            vertical: 'top',
+            horizontal: 'center',
+          }
+        }
         autoHideDuration={1000}
         onClose={() => {
           setAlertContent({ ...alertContent, isOpen: false });
@@ -189,35 +189,12 @@ export default function UserProfile() {
                 )}
               </div>
               <div className={'user-profile-information-container'}>
-                {!yearEdit.isEditing ? (
-                  <span className={'user-profile-color'}>
-                    <span className={'user-profile-weight'}>
-                      Year in DLSU:
-                    </span>
-                    {data?.yearsInDLSU}
-                    {data?.id === user?.id && (
-                      <EditIcon
-                        fontSize={'inherit'}
-                        onClick={() => {
-                          setYearEdit({ ...yearEdit, isEditing: true });
-                        }}
-                      />
-                    )}
+                <span className={'user-profile-color'}>
+                  <span className={'user-profile-weight'}>
+                    Date Registered:
                   </span>
-                ) : (
-                  <TextField
-                    label="Year in DLSU"
-                    className={'year-input'}
-                    value={yearEdit?.value || data?.yearsInDLSU}
-                    type={'number'}
-                    onKeyDown={(event) => {
-                      handleKeyDown(event, 'year');
-                    }}
-                    autoFocus
-                    size={'small'}
-                    onChange={handleYearChange}
-                  />
-                )}
+                  {data?.dateRegistered}
+                </span>
                 {!descEdit.isEditing ? (
                   <span className={'user-profile-color'}>
                     <span className={'user-profile-weight'}>
@@ -229,6 +206,16 @@ export default function UserProfile() {
                         fontSize={'inherit'}
                         onClick={() => {
                           setDescEdit({ ...descEdit, isEditing: true });
+                          setAlertContent({
+                            isOpen: true,
+                            message:
+                              'Press ESC to cancel and Enter to submit',
+                            severity: 'info',
+                            direction: {
+                              vertical: 'top',
+                              horizontal: 'center',
+                            },
+                          });
                         }}
                       />
                     )}

@@ -32,7 +32,7 @@ declare namespace API {
     id: string;
     username;
     reviews: number;
-    yearsInDLSU: number;
+    dateRegistered: number;
     description: string;
     role: 'USER' | 'ADMIN';
     profilePicId: string;
@@ -61,9 +61,14 @@ declare namespace API {
   type RestroomListData = RestroomList[];
 
   type RestroomListQuery = {
+    region?: string;
+    province?: string;
+    city?: string;
     building?: string;
     sort: 'RATING' | 'NEW';
-    floor?: number;
+    floor?: string;
+    gender?: 'MALE' | 'FEMALE';
+    availability?: string;
   };
 
   type RestroomListResponse = BaseResponse<RestroomListData>;
@@ -83,10 +88,6 @@ declare namespace API {
     gender: 'MALE' | 'FEMALE';
     createdByUser: string;
     createdAt: string;
-    downVote: number;
-    upVote: number;
-    isUpVoted: boolean;
-    isDownVoted: boolean;
   };
 
   type RestroomDetailResponse = BaseResponse<RestroomData>;
@@ -142,12 +143,12 @@ declare namespace API {
 
   type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
-  type ChangeRestroomStatusParams = {
+  type ChangeReportStatusParams = {
     newStatus: number; // 0-disapproved, 1-approved, 2-pending
-    restroomId: string;
+    reportId: string;
   };
 
-  type AdminRestroomData = Omit<
+  type AdminReportData = Omit<
     RestroomData,
     | 'commentsIds'
     | 'totalComments'
@@ -155,10 +156,8 @@ declare namespace API {
     | 'downVote'
     | 'rating'
     | 'tags'
-    | 'isUpVoted'
-    | 'isDownVoted'
   > & { status: number };
-  type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
+  type ChangeRestroomStatusResponse = BaseResponse<AdminReportData>;
 
   type CommentDetailData = {
     id: string;
@@ -188,19 +187,22 @@ declare namespace API {
 
   type VoteRestroomResponse = BaseResponse<RestroomData>;
 
-  type AdminRestroomList = {
+  type AdminReportList = {
     id: string;
     title: string;
+    region: string;
+    province: string;
+    city: string;
     building: string;
     floor: number;
     status: number;
   };
 
-  type AdminRestroomListData = AdminRestroomList[];
+  type AdminReportListData = AdminReportList[];
 
-  type GetAdminRestroomListResponse = BaseResponse<AdminRestroomListData>;
+  type GetAdminReportListResponse = BaseResponse<AdminReportListData>;
 
-  type GetAdminRestroomDetailResponse = BaseResponse<AdminRestroomData>;
+  type GetAdminReportDetailResponse = BaseResponse<AdminReportData>;
 
   type UserHistory = {
     id: string;
@@ -219,4 +221,14 @@ declare namespace API {
   };
 
   type GetUserProfileResponse = BaseResponse<UserProfileData>;
+
+  type FilterDataType = {
+    label: string;
+    value: string;
+    children: FilterDataType;
+  };
+
+  type GetFilterOptionsData = FilterDataType;
+
+  type GetFilterOptionsResponse = BaseResponse<GetFilterOptionsData>;
 }

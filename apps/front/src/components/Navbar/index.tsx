@@ -40,13 +40,13 @@ export default function Navbar() {
             <img
               src={logo}
               alt="logo"
-              className={'image'}
-              width={40}
+              className={'navbar-image'}
+              width={70}
               height={40}
             />
           </div>
           <div className={'v-center m-10'}>
-            DLSU toiletTo<b>PICK</b>
+            toiletTo<b>PICK</b>
           </div>
         </div>
       </Link>

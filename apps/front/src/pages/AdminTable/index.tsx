@@ -11,10 +11,10 @@ import {
 import { motion } from 'framer-motion';
 import { AdminTableRow } from './components/AdminTableRow.tsx';
 import { useRequest } from 'ahooks';
-import { getAdminRestroomsList } from '../../services/api';
+import { getAdminReportList } from '../../services/api';
 
 export default function AdminTable() {
-  const { data } = useRequest(getAdminRestroomsList);
+  const { data } = useRequest(getAdminReportList);
 
   return (
     <div className={'admin-table-container'}>
@@ -30,7 +30,7 @@ export default function AdminTable() {
                 <TableCell>ID</TableCell>
                 <TableCell sx={{ width: '20vw' }}>Title</TableCell>
                 <TableCell sx={{ width: '10vw' }}>Building</TableCell>
-                <TableCell>Floor</TableCell>
+                <TableCell>Location</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>

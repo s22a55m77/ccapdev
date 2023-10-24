@@ -112,20 +112,37 @@ export function getUserProfile(id: string): Promise<API.UserProfileData> {
   ).then((res) => res.data.data);
 }
 
+// GET /restroom/filter
+export function getFilterOptions(): Promise<API.GetFilterOptionsData> {
+  return APIClient.get<API.GetFilterOptionsResponse>(
+    '/restroom/filter',
+  ).then((res) => res.data.data);
+}
+
 // GET /restroom
 // query building
 // query floor
 // query sort
 export function getRestroomList({
+  region,
+  province,
+  city,
   building,
-  sort,
   floor,
+  gender,
+  availability,
+  sort,
 }: API.RestroomListQuery): Promise<API.RestroomListData> {
   return APIClient.get<API.RestroomListResponse>('/restroom', {
     params: {
+      region,
+      province,
+      city,
       building,
-      sort,
       floor,
+      gender,
+      availability,
+      sort,
     },
   }).then((res) => res.data.data);
 }
@@ -193,27 +210,6 @@ export function createRestroomReview({
   ).then((res) => res.data.data);
 }
 
-// POST /restroom/:id/vote
-export function voteRestroom({
-  restroomId,
-  upVote,
-  downVote,
-}: API.VoteRestroomParams): Promise<API.RestroomData> {
-  return APIClient.post<API.VoteRestroomResponse>(
-    `/restroom/${restroomId}/vote`,
-    {
-      upVote,
-      downVote,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
-      },
-    },
-  ).then((res) => res.data.data);
-}
-
 // PATCH /restroom/:id/review
 export function updateRestroomReview({
   restroomId,
@@ -271,8 +267,8 @@ export function changeVoteStatus({
 // admin
 
 // GET /restroom/creation
-export function getAdminRestroomsList(): Promise<API.AdminRestroomListData> {
-  return APIClient.get<API.GetAdminRestroomListResponse>(
+export function getAdminReportList(): Promise<API.AdminReportListData> {
+  return APIClient.get<API.GetAdminReportListResponse>(
     '/restroom/creation',
     {
       headers: {
@@ -282,27 +278,22 @@ export function getAdminRestroomsList(): Promise<API.AdminRestroomListData> {
   ).then((res) => res.data.data);
 }
 
-// GET  /restroom/creation/:id >> review restroom creation
-export function getRestroomCreationInfo(
-  id: string,
-): Promise<API.AdminRestroomData> {
-  return APIClient.get<API.GetAdminRestroomDetailResponse>(
-    `/restroom/creation/${id}`,
-    {
-      headers: {
-        Authorization: localStorage.getItem('token'),
-      },
+// GET  /report/:id >> review restroom creation
+export function getReportDetail(id: string): Promise<API.AdminReportData> {
+  return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem('token'),
     },
-  ).then((res) => res.data.data);
+  }).then((res) => res.data.data);
 }
 
-// POST /restroom/creation/:id/status   >> handle restroom creation(approve, reject, delete)
-export function changeRestroomStatus({
+// PATCH /report/:id   >> handle restroom creation(approve, reject, delete)
+export function changeReportStatus({
   newStatus,
-  restroomId,
-}: API.ChangeRestroomStatusParams): Promise<API.AdminRestroomData> {
+  reportId,
+}: API.ChangeReportStatusParams): Promise<API.AdminReportData> {
   return APIClient.post<API.ChangeRestroomStatusResponse>(
-    `/restroom/creation/${restroomId}/status`,
+    `/report/${reportId}`,
     {
       status: newStatus,
     },
