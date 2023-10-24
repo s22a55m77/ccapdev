@@ -88,10 +88,6 @@ declare namespace API {
     gender: 'MALE' | 'FEMALE';
     createdByUser: string;
     createdAt: string;
-    downVote: number;
-    upVote: number;
-    isUpVoted: boolean;
-    isDownVoted: boolean;
   };
 
   type RestroomDetailResponse = BaseResponse<RestroomData>;
@@ -160,8 +156,6 @@ declare namespace API {
     | 'downVote'
     | 'rating'
     | 'tags'
-    | 'isUpVoted'
-    | 'isDownVoted'
   > & { status: number };
   type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
 
