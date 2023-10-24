@@ -32,7 +32,7 @@ declare namespace API {
     id: string;
     username;
     reviews: number;
-    yearsInDLSU: number;
+    dateRegistered: number;
     description: string;
     role: 'USER' | 'ADMIN';
     profilePicId: string;

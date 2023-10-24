@@ -42,7 +42,7 @@ const users: API.UserData[] = [
     id: '1',
     username: 'user1',
     reviews: 1,
-    yearsInDLSU: 1,
+    dateRegistered: 1,
     description: 'this is a short description',
     role: 'ADMIN',
     profilePicId: '/src/assets/dlsu.jpg',
@@ -51,7 +51,7 @@ const users: API.UserData[] = [
     id: '2',
     username: 'user2',
     reviews: 1,
-    yearsInDLSU: 2,
+    dateRegistered: 2,
     description: "this is user2's short description",
     role: 'USER',
     profilePicId: '/src/assets/dlsu.jpg',
@@ -60,7 +60,7 @@ const users: API.UserData[] = [
     id: '3',
     username: 'user3',
     reviews: 0,
-    yearsInDLSU: 3,
+    dateRegistered: 3,
     description: "this is user3's short description",
     role: 'USER',
     profilePicId: '/src/assets/dlsu.jpg',
@@ -69,7 +69,7 @@ const users: API.UserData[] = [
     id: '4',
     username: 'user4',
     reviews: 0,
-    yearsInDLSU: 1,
+    dateRegistered: 1,
     description: "this is user4's short description",
     role: 'USER',
     profilePicId: '/src/assets/dlsu.jpg',
@@ -78,7 +78,7 @@ const users: API.UserData[] = [
     id: '5',
     username: 'user5',
     reviews: 0,
-    yearsInDLSU: 2,
+    dateRegistered: 2,
     description: "this is user5's short description",
     role: 'USER',
     profilePicId: '/src/assets/dlsu.jpg',
@@ -89,7 +89,7 @@ const user: API.UserData = {
   id: '1',
   username: 'user1',
   reviews: 1,
-  yearsInDLSU: 1,
+  dateRegistered: 1,
   description: 'this is a short description',
   role: 'ADMIN',
   // role: 'USER',
@@ -384,13 +384,13 @@ export default function configureMock(mock: MockAdapter) {
   mock.onPatch('/user/profile').reply((config) => {
     const data = JSON.parse(config.data);
     if (data.description) user.description = data.description;
-    if (data.yearsInDLSU) user.yearsInDLSU = data.yearsInDLSU;
+    if (data.dateRegistered) user.dateRegistered = data.dateRegistered;
 
     const profileData: API.UserProfileData = {
       id: user.id,
       username: user.username,
       reviews: user.reviews,
-      yearsInDLSU: user.yearsInDLSU,
+      dateRegistered: user.dateRegistered,
       description: user.description,
       role: user.role,
       profilePicId: user.profilePicId,
@@ -752,7 +752,7 @@ export default function configureMock(mock: MockAdapter) {
           id: user.id,
           username: user.username,
           reviews: user.reviews,
-          yearsInDLSU: user.yearsInDLSU,
+          dateRegistered: user.dateRegistered,
           description: user.description,
           role: user.role,
           profilePicId: user.profilePicId,
