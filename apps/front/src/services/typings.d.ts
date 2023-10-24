@@ -61,9 +61,14 @@ declare namespace API {
   type RestroomListData = RestroomList[];
 
   type RestroomListQuery = {
+    region?: string;
+    province?: string;
+    city?: string;
     building?: string;
     sort: 'RATING' | 'NEW';
-    floor?: number;
+    floor?: string;
+    gender?: 'MALE' | 'FEMALE';
+    availability?: string;
   };
 
   type RestroomListResponse = BaseResponse<RestroomListData>;

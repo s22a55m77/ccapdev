@@ -3,24 +3,14 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { motion } from 'framer-motion';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Popover,
-  Popper,
-  Radio,
-} from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import RestroomCard from './components/RestroomCard.tsx';
 import { getRestroomList } from '../../services/api.ts';
 import { useRequest } from 'ahooks';
-import buildingInfo from './buildingInfo.ts';
 import { useRestroomList } from './restroom-list.store.ts';
 import { Cascader } from 'antd';
+// FIXME after backend is completed
 import { regions, provinces, cities } from 'select-philippines-address';
-import { Simulate } from 'react-dom/test-utils';
-import focus = Simulate.focus;
 
 type optionItem = {
   label: string;
@@ -29,23 +19,12 @@ type optionItem = {
 };
 
 export default function Main() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [anchorMenuEl, setAnchorMenuEl] = useState<null | HTMLElement>(
-    null,
-  );
-  const [selectedBuilding, setSelectedBuilding] = useState<string>('');
-  const [lastSelectedBuilding, setLastSelectedBuilding] = useState('');
-  const [selectedFloor, setSelectedFloor] = useState<string>('');
-  const open = Boolean(anchorEl);
-  const openMenu = Boolean(anchorMenuEl);
-
   // this control the params of getRestroomList
   const [query, setQuery] = useState<API.RestroomListQuery>({
     sort: 'NEW',
   });
 
-  // this is control the floor of the building in filter
-  const [buildingFloorCount, setBuildingFloorCount] = useState(3);
+  const [isfilterActive, setIsfilterActive] = useState(false);
 
   const restroomList = useRestroomList((state) => state.restroomList);
   const setRestroomList = useRestroomList(
@@ -145,67 +124,50 @@ export default function Main() {
     },
   });
 
-  const handleFilterClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    setAnchorEl(event.currentTarget);
+  const handleFilterChange = (data: Record<any, any>[]) => {
+    if (data.length === 0) setIsfilterActive(false);
+    else setIsfilterActive(true);
+
+    let regions: string[] = [];
+    let provinces: string[] = [];
+    let cities: string[] = [];
+    let buildings: string[] = [];
+    let floors: string[] = [];
+    let genders: 'MALE' | 'FEMALE' | undefined;
+    let availabilities: string[] = [];
+    data.forEach((item) => {
+      if (item[0] === 'Location' && item.length > 1) {
+        if (!regions.includes(item[1])) regions.push(item[1]);
+        if (item[2] && !provinces.includes(item[2]))
+          provinces.push(item[2]);
+        if (item[3] && !cities.includes(item[3])) cities.push(item[3]);
+        if (item[4] && !buildings.includes(item[4]))
+          buildings.push(item[4]);
+        if (item[5] && !floors.includes(item[5])) floors.push(item[5]);
+      }
+      if (item[0] === 'Gender' && item.length > 1) {
+        genders = item[1];
+      }
+
+      if (item[0] === 'Availability' && item.length > 1) {
+        if (!availabilities.includes(item[1]))
+          availabilities.push(item[1]);
+      }
+    });
+
+    setQuery({
+      ...query,
+      region: regions.length ? JSON.stringify(regions) : undefined,
+      province: provinces.length ? JSON.stringify(provinces) : undefined,
+      city: cities.length ? JSON.stringify(cities) : undefined,
+      building: buildings.length ? JSON.stringify(buildings) : undefined,
+      floor: floors.length ? JSON.stringify(floors) : undefined,
+      gender: genders ?? undefined,
+      availability: availabilities.length
+        ? JSON.stringify(availabilities)
+        : undefined,
+    });
   };
-  const handleFilterClose = () => {
-    setAnchorEl(null);
-    setAnchorMenuEl(null);
-  };
-
-  const handleMenuClick = (selectedBuilding: string) => {
-    setLastSelectedBuilding(selectedBuilding);
-    setAnchorMenuEl(anchorEl);
-    setAnchorEl(null);
-
-    const matchBuilding = buildingInfo.find(
-      (building) => building.buildingName === selectedBuilding,
-    );
-
-    if (matchBuilding) {
-      setBuildingFloorCount(matchBuilding.maxFloor);
-    }
-  };
-
-  const handleBuildingRadioClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    const building = (e.target as HTMLInputElement).value;
-
-    if (building == selectedBuilding) {
-      setSelectedBuilding('');
-      setQuery({ ...query, building: undefined });
-    } else {
-      setSelectedBuilding(building);
-      setQuery({ ...query, building });
-    }
-  };
-
-  const handleFloorRadioClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    const floor = (e.target as HTMLInputElement).value;
-
-    if (floor == selectedFloor) {
-      setSelectedFloor('');
-      setQuery({ ...query, floor: undefined, building: undefined });
-      setSelectedBuilding('');
-    } else {
-      setSelectedBuilding(lastSelectedBuilding);
-      setSelectedFloor(floor);
-      setQuery({
-        ...query,
-        floor: Number(floor),
-        building: lastSelectedBuilding,
-      });
-    }
-  };
-
-  useEffect(() => {
-    regions().then((region) => console.log(region));
-  }, []);
 
   useEffect(() => {
     run(query);
@@ -250,12 +212,13 @@ export default function Main() {
           </button>
           <button
             className={`tab-button ${
-              query.building || query.floor ? 'tab-button-active' : ''
+              isfilterActive ? 'tab-button-active' : ''
             }`}
             id="basic-button"
             onClick={() => {
               setFilterOpen(!filterOpen);
             }}
+            style={{ zIndex: 1000 }}
           >
             <div style={{ display: 'flex' }}>
               <FilterAltIcon
@@ -265,8 +228,11 @@ export default function Main() {
               Filter
             </div>
           </button>
-          {filterOpen && (
-            <div id="cascader-container">
+          {
+            <div
+              id="cascader-container"
+              style={{ display: `${filterOpen ? '' : 'none'}` }}
+            >
               <Cascader
                 multiple
                 options={option}
@@ -274,13 +240,14 @@ export default function Main() {
                   return <></>;
                 }}
                 open={filterOpen}
+                onChange={handleFilterChange}
                 onBlur={() => {
                   setFilterOpen(false);
                 }}
                 autoFocus={true}
               />
             </div>
-          )}
+          }
         </div>
 
         {restroomList &&
