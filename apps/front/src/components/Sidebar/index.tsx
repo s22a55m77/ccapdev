@@ -94,7 +94,7 @@ export default function Sidebar() {
                     fontSize={'inherit'}
                     className={'v-center'}
                   />
-                  Table
+                  Report
                 </div>
               </Link>
             )}

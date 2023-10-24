@@ -24,6 +24,7 @@ import { getRestroomCreationInfo } from '../../../services/api';
 import { AlertContent } from '../../../declaration';
 import { useRequest } from 'ahooks';
 import { changeRestroomStatus } from '../../../services/api.ts';
+import { Link } from 'react-router-dom';
 
 type AdminTableRowProps = AdminRestroomList;
 
@@ -130,7 +131,7 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
               marginRight: 5,
             }}
           >
-            Approve
+            Reject
           </Button>
 
           <Button
@@ -178,7 +179,16 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
               </TableRow>
             </TableBody>
           </Table>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <Link to={`/restroom/${adminRestroomData?.id}`}>
+              <Button color="green">To the Post</Button>
+            </Link>
+          </motion.div>
         </TableContainer>
+
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
