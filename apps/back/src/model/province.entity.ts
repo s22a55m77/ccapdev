@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -10,15 +11,21 @@ import { CityEntity } from './city.entity';
 
 @Entity('province')
 export class ProvinceEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @ManyToOne(() => RegionEntity, (region) => region.provinces)
+  @JoinColumn({
+    name: 'regionId',
+    foreignKeyConstraintName: 'province_regionId_region_id',
+    referencedColumnName: 'id',
+  })
   region: RegionEntity;
+
+  regionId: number;
 
   @OneToMany(() => CityEntity, (city) => city.province)
   cities: CityEntity[];

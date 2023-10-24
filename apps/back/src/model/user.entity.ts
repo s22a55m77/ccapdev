@@ -20,18 +20,15 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // TODO unique
   @Column({ unique: true })
   username: string;
 
-  // TODO unique
   @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  // TODO 换成dateRegistered
   @CreateDateColumn()
   dateRegistered: Date;
 

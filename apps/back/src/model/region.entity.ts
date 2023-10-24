@@ -14,7 +14,6 @@ export class RegionEntity {
   @Column({ unique: true })
   name: string;
 
-  // TODO typo
   @OneToMany(() => ProvinceEntity, (province) => province.region)
   provinces: ProvinceEntity[];
 }

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -18,7 +19,14 @@ export class FloorEntity {
   floor: number;
 
   @ManyToOne(() => BuildingEntity, (building) => building.floors)
+  @JoinColumn({
+    name: 'buildingId',
+    foreignKeyConstraintName: 'floor_buildingId_building_id',
+    referencedColumnName: 'id',
+  })
   building: BuildingEntity;
+
+  buildingId: number;
 
   @OneToMany(() => RestroomEntity, (restroom) => restroom.floorId)
   restrooms: RestroomEntity[];

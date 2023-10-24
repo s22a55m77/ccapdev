@@ -13,7 +13,6 @@ export enum ImageType {
 
 @Entity('image')
 export class ImageEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 

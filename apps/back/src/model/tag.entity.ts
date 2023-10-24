@@ -11,7 +11,6 @@ export class TagEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // TODO unique
   @Column({ unique: true })
   name: string;
 
