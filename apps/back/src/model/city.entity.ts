@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProvinceEntity } from './province.entity';
-import { BarangayEntity } from './barangay.entity';
+import { BuildingEntity } from './building.entity';
 
 @Entity('city')
 export class CityEntity {
@@ -20,6 +20,6 @@ export class CityEntity {
   @ManyToOne(() => ProvinceEntity, (provice) => provice.cities)
   province: ProvinceEntity;
 
-  @OneToMany(() => BarangayEntity, (barangay) => barangay.city)
-  barangays: BarangayEntity[];
+  @OneToMany(() => BuildingEntity, (building) => building.city)
+  buildings: BuildingEntity[];
 }
