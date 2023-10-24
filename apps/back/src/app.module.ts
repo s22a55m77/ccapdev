@@ -16,6 +16,11 @@ import { RestroomTagEntity } from './model/restroom-tag.entity';
 import { TagEntity } from './model/tag.entity';
 import { UserEntity } from './model/user.entity';
 import { VoteEntity } from './model/vote.entity';
+import { RestroomModule } from './module/restroom/restroom.module';
+import { AuthModule } from './module/auth/auth.module';
+import { ReportModule } from './module/report/report.module';
+import { CommentModule } from './module/comment/comment.module';
+import { UserModule } from './module/user/user.module';
 
 @Module({
   imports: [
@@ -52,6 +57,11 @@ import { VoteEntity } from './model/vote.entity';
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
+    RestroomModule,
+    ReportModule,
+    CommentModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
