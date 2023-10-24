@@ -1,5 +1,6 @@
 import {
   Alert,
+  Breadcrumbs,
   Button,
   Drawer,
   IconButton,
@@ -86,7 +87,7 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
         <TableCell>{adminRestroomData?.id}</TableCell>
         <TableCell>
           <div style={{ width: '20vw' }}>
-            <Tooltip title="Title">
+            <Tooltip title={adminRestroomData?.title}>
               <Typography noWrap fontSize={'inherit'}>
                 {adminRestroomData?.title}
               </Typography>
@@ -95,14 +96,35 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
         </TableCell>
         <TableCell>
           <div style={{ width: '10vw' }}>
-            <Tooltip title="Building">
+            <Tooltip title={adminRestroomData?.building}>
               <Typography noWrap fontSize={'inherit'}>
                 {adminRestroomData?.building}
               </Typography>
             </Tooltip>
           </div>
         </TableCell>
-        <TableCell>{adminRestroomData?.floor}</TableCell>
+        <TableCell>
+          <Tooltip
+            title={
+              <Breadcrumbs
+                style={{
+                  height: '10px',
+                  color: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '10px',
+                }}
+              >
+                <span>MUI</span>
+                <span>MUI</span>
+              </Breadcrumbs>
+            }
+          >
+            <Typography noWrap fontSize={'inherit'}>
+              Location Location
+            </Typography>
+          </Tooltip>
+        </TableCell>
         <TableCell>
           <motion.div
             key={adminRestroomData?.status}
@@ -166,6 +188,10 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
                 <TableCell>{adminRestroomData?.location}</TableCell>
               </TableRow>
               <TableRow>
+                <TableCell>Floor</TableCell>
+                <TableCell>{adminRestroomData?.floor}</TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell>Gender</TableCell>
                 <TableCell>{adminRestroomData?.gender}</TableCell>
               </TableRow>
@@ -179,15 +205,15 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
               </TableRow>
             </TableBody>
           </Table>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            <Link to={`/restroom/${adminRestroomData?.id}`}>
-              <Button color="green">To the Post</Button>
-            </Link>
-          </motion.div>
         </TableContainer>
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <Link to={`/restroom/${adminRestroomData?.id}`}>
+            <Button color="green">To the Post</Button>
+          </Link>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 50 }}

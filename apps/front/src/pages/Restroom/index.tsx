@@ -10,10 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import FlagIcon from '@mui/icons-material/Flag';
 import './index.css';
 import ReplyCard from './components/ReplyCard.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -59,35 +56,26 @@ export default function Restroom() {
     },
   });
 
-  const { run: vote } = useRequest(voteRestroom, {
-    manual: true,
-    onSuccess: (data) => {
-      mutate(data);
-      setAlertContent({
-        isOpen: true,
-        message: 'Successfully Voted',
-        severity: 'success',
-      });
-    },
-    onError: () => {
-      setAlertContent({
-        isOpen: true,
-        message: 'Error Occurred',
-        severity: 'error',
-      });
-    },
-  });
+  // const { run: vote } = useRequest(voteRestroom, {
+  //   manual: true,
+  //   onSuccess: (data) => {
+  //     mutate(data);
+  //     setAlertContent({
+  //       isOpen: true,
+  //       message: 'Successfully Voted',
+  //       severity: 'success',
+  //     });
+  //   },
+  //   onError: () => {
+  //     setAlertContent({
+  //       isOpen: true,
+  //       message: 'Error Occurred',
+  //       severity: 'error',
+  //     });
+  //   },
+  // });
 
-  const handleVote = ({
-    upVote,
-    downVote,
-  }: {
-    upVote?: boolean;
-    downVote?: boolean;
-  }) => {
-    if (restroomId && upVote) vote({ restroomId, upVote });
-    else if (restroomId && downVote) vote({ restroomId, downVote });
-  };
+  const handleReport = () => {};
 
   const handleRateClick = (value: number | null) => {
     if (value) setUserRating({ ...userRating, rating: value });
@@ -207,38 +195,16 @@ export default function Restroom() {
                     <ChatBubbleOutlineIcon fontSize={'inherit'} />
                     {restroomData?.totalComments}
                   </div>
-                  <div className={'restroom-activity-content'}>
-                    <ArrowDownwardIcon fontSize={'inherit'} />
-                    {restroomData?.downVote}
-                  </div>
-                  <div className={'restroom-activity-content'}>
-                    <ArrowUpwardIcon fontSize={'inherit'} />
-                    {restroomData?.upVote}
-                  </div>
                   <Button
                     variant="contained"
                     color="error"
                     style={{ boxShadow: 'none' }}
+                    disabled={true}
                     className={'vote-button'}
-                    disabled={restroomData?.isDownVoted}
-                    onClick={() => {
-                      handleVote({ downVote: true });
-                    }}
+                    size="small"
+                    onClick={handleReport}
                   >
-                    <ThumbDownAltIcon />
-                  </Button>
-                  <Button
-                    startIcon={<ThumbUpAltIcon />}
-                    variant="contained"
-                    color="primary"
-                    style={{ boxShadow: 'none' }}
-                    className={'vote-button'}
-                    disabled={restroomData?.isUpVoted}
-                    onClick={() => {
-                      handleVote({ upVote: true });
-                    }}
-                  >
-                    Upvote
+                    <FlagIcon />
                   </Button>
                 </div>
               </footer>
