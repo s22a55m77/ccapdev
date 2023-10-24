@@ -49,7 +49,7 @@ export class RestroomEntity {
   })
   status: StatusType;
 
-  @ManyToOne(() => RegionEntity, (region) => region.)
+  @ManyToOne(() => RegionEntity, (region) => region)
   region: RegionEntity;
 
   @ManyToOne(() => ProvinceEntity)
