@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,10 +19,22 @@ export class VoteEntity {
   id: number;
 
   @ManyToOne(() => UserEntity, (user) => user.votings)
+  @JoinColumn({
+    name: 'voteById',
+    foreignKeyConstraintName: 'vote_voteById_voteBy_id',
+    referencedColumnName: 'id',
+  })
   voteBy: UserEntity;
+  voteById: number;
 
   @ManyToOne(() => CommentEntity, (comment) => comment.votings)
+  @JoinColumn({
+    name: 'voteToId',
+    foreignKeyConstraintName: 'vote_voteToId_voteTo_id',
+    referencedColumnName: 'id',
+  })
   voteTo: CommentEntity;
+  voteToId: number;
 
   @Column({
     type: 'enum',

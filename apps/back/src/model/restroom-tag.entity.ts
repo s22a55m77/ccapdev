@@ -1,5 +1,6 @@
 import {
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -15,8 +16,20 @@ export class RestroomTagEntity {
   id: number;
 
   @ManyToOne(() => RestroomEntity, (restroom) => restroom.tags)
+  @JoinColumn({
+    name: 'restroomId',
+    foreignKeyConstraintName: 'restroomTag_restroomId_restroom_id',
+    referencedColumnName: 'id',
+  })
   restroom: RestroomEntity;
+  restroomId: number;
 
   @ManyToOne(() => TagEntity, (tag) => tag.restroomTags)
+  @JoinColumn({
+    name: 'tagId',
+    foreignKeyConstraintName: 'restroomTag_tagId_tag_id',
+    referencedColumnName: 'id',
+  })
   tag: TagEntity;
+  tagId: number;
 }

@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -33,7 +34,13 @@ export class RestroomEntity {
   id: number;
 
   @ManyToOne(() => UserEntity, (user) => user.createdRestrooms)
+  @JoinColumn({
+    name: 'createdById',
+    foreignKeyConstraintName: 'gender_createdById_createdBy_id',
+    referencedColumnName: 'id',
+  })
   createdBy: UserEntity;
+  createdById: number;
 
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;
@@ -51,7 +58,13 @@ export class RestroomEntity {
   status: StatusType;
 
   @ManyToOne(() => FloorEntity, (floor) => floor.restrooms)
-  floorId: FloorEntity;
+  @JoinColumn({
+    name: 'floorId',
+    foreignKeyConstraintName: 'gender_floorId_floor_id',
+    referencedColumnName: 'id',
+  })
+  floor: FloorEntity;
+  floorId: number;
 
   @Column('text')
   description: string;

@@ -24,7 +24,6 @@ export class BuildingEntity {
     referencedColumnName: 'id',
   })
   city: CityEntity;
-
   cityId: number;
 
   @OneToMany(() => FloorEntity, (floor) => floor.floor)

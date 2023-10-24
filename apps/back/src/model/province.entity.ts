@@ -24,7 +24,6 @@ export class ProvinceEntity {
     referencedColumnName: 'id',
   })
   region: RegionEntity;
-
   regionId: number;
 
   @OneToMany(() => CityEntity, (city) => city.province)

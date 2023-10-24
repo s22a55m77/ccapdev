@@ -28,6 +28,6 @@ export class FloorEntity {
 
   buildingId: number;
 
-  @OneToMany(() => RestroomEntity, (restroom) => restroom.floorId)
+  @OneToMany(() => RestroomEntity, (restroom) => restroom.floor)
   restrooms: RestroomEntity[];
 }

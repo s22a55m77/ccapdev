@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,7 +21,13 @@ export class ImageEntity {
   image: Buffer;
 
   @ManyToOne(() => RestroomEntity, (restroom) => restroom.images)
+  @JoinColumn({
+    name: 'restroomId',
+    foreignKeyConstraintName: 'image_restroomId_restroom_id',
+    referencedColumnName: 'id',
+  })
   restroom: RestroomEntity;
+  restroomId: number;
 
   @Column({
     type: 'enum',
