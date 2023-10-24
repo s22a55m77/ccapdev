@@ -224,4 +224,14 @@ declare namespace API {
   };
 
   type GetUserProfileResponse = BaseResponse<UserProfileData>;
+
+  type FilterDataType = {
+    label: string;
+    value: string;
+    children: FilterDataType;
+  };
+
+  type GetFilterOptionsData = FilterDataType;
+
+  type GetFilterOptionsResponse = BaseResponse<GetFilterOptionsData>;
 }
