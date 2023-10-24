@@ -112,20 +112,37 @@ export function getUserProfile(id: string): Promise<API.UserProfileData> {
   ).then((res) => res.data.data);
 }
 
+// GET /restroom/filter
+export function getFilterOptions(): Promise<API.GetFilterOptionsData> {
+  return APIClient.get<API.GetFilterOptionsResponse>(
+    '/restroom/filter',
+  ).then((res) => res.data.data);
+}
+
 // GET /restroom
 // query building
 // query floor
 // query sort
 export function getRestroomList({
+  region,
+  province,
+  city,
   building,
-  sort,
   floor,
+  gender,
+  availability,
+  sort,
 }: API.RestroomListQuery): Promise<API.RestroomListData> {
   return APIClient.get<API.RestroomListResponse>('/restroom', {
     params: {
+      region,
+      province,
+      city,
       building,
-      sort,
       floor,
+      gender,
+      availability,
+      sort,
     },
   }).then((res) => res.data.data);
 }
