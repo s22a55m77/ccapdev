@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -31,8 +32,8 @@ export class UserEntity {
   password: string;
 
   // TODO 换成dateRegistered
-  @Column('smallint')
-  yearsInDLSU: number;
+  @CreateDateColumn()
+  dateRegistered: Date;
 
   @Column('text', { nullable: true })
   description: string | null;
