@@ -17,7 +17,7 @@ export class ImageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('longblob')
+  @Column('bytea')
   image: Buffer;
 
   @ManyToOne(() => RestroomEntity, (restroom) => restroom.images)

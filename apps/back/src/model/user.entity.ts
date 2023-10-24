@@ -42,7 +42,7 @@ export class UserEntity {
   })
   role: RoleType;
 
-  @Column('longblob', { nullable: true })
+  @Column('bytea', { nullable: true })
   profilePicId: Buffer | null;
 
   @OneToMany(() => CommentEntity, (comment) => comment.commentBy)
