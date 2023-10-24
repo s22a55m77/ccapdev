@@ -76,9 +76,6 @@ declare namespace API {
   type RestroomData = {
     id: string;
     title: string;
-    region: string;
-    province: string;
-    city: string;
     building: string;
     floor: number;
     location: string; // location detail
@@ -146,12 +143,12 @@ declare namespace API {
 
   type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
-  type ChangeRestroomStatusParams = {
+  type ChangeReportStatusParams = {
     newStatus: number; // 0-disapproved, 1-approved, 2-pending
-    restroomId: string;
+    reportId: string;
   };
 
-  type AdminRestroomData = Omit<
+  type AdminReportData = Omit<
     RestroomData,
     | 'commentsIds'
     | 'totalComments'
@@ -160,7 +157,7 @@ declare namespace API {
     | 'rating'
     | 'tags'
   > & { status: number };
-  type ChangeRestroomStatusResponse = BaseResponse<AdminRestroomData>;
+  type ChangeRestroomStatusResponse = BaseResponse<AdminReportData>;
 
   type CommentDetailData = {
     id: string;
@@ -190,19 +187,22 @@ declare namespace API {
 
   type VoteRestroomResponse = BaseResponse<RestroomData>;
 
-  type AdminRestroomList = {
+  type AdminReportList = {
     id: string;
     title: string;
+    region: string;
+    province: string;
+    city: string;
     building: string;
     floor: number;
     status: number;
   };
 
-  type AdminRestroomListData = AdminRestroomList[];
+  type AdminReportListData = AdminReportList[];
 
-  type GetAdminRestroomListResponse = BaseResponse<AdminRestroomListData>;
+  type GetAdminReportListResponse = BaseResponse<AdminReportListData>;
 
-  type GetAdminRestroomDetailResponse = BaseResponse<AdminRestroomData>;
+  type GetAdminReportDetailResponse = BaseResponse<AdminReportData>;
 
   type UserHistory = {
     id: string;

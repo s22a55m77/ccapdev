@@ -18,18 +18,17 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import AccessTimeFilledOutlinedIcon from '@mui/icons-material/AccessTimeFilledOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import AdminRestroomList = API.AdminRestroomList;
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { getRestroomCreationInfo } from '../../../services/api';
+import { getReportDetail } from '../../../services/api';
 import { AlertContent } from '../../../declaration';
 import { useRequest } from 'ahooks';
-import { changeRestroomStatus } from '../../../services/api.ts';
+import { changeReportStatus } from '../../../services/api.ts';
 import { Link } from 'react-router-dom';
 
-type AdminTableRowProps = AdminRestroomList;
+type AdminTableRowProps = API.AdminReportList;
 
-export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
+export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [alertContent, setAlertContent] = useState<AlertContent>({
@@ -38,22 +37,19 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
     severity: 'success',
   });
 
-  const { data: adminRestroomData, mutate } = useRequest(
-    getRestroomCreationInfo,
-    {
-      defaultParams: [restroomId],
-    },
-  );
+  const { data: adminRestroomData, mutate } = useRequest(getReportDetail, {
+    defaultParams: [reportId],
+  });
 
-  const handleApprove = () => {
-    modifyRestroomStatus({ newStatus: 1, restroomId });
+  const handleReject = () => {
+    modifyReportStatus({ newStatus: 1, reportId });
   };
 
   const handleDelete = () => {
-    modifyRestroomStatus({ newStatus: 0, restroomId });
+    modifyReportStatus({ newStatus: 0, reportId });
   };
 
-  const { run: modifyRestroomStatus } = useRequest(changeRestroomStatus, {
+  const { run: modifyReportStatus } = useRequest(changeReportStatus, {
     manual: true,
     onSuccess: (data) => {
       mutate(data);
@@ -147,7 +143,7 @@ export function AdminTableRow({ id: restroomId }: AdminTableRowProps) {
           <Button
             variant="contained"
             color={'green'}
-            onClick={handleApprove}
+            onClick={handleReject}
             disabled={adminRestroomData?.status === 1}
             style={{
               marginRight: 5,

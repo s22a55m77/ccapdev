@@ -1,3 +1,5 @@
+// Deprecated
+
 import * as MockAdapter from 'axios-mock-adapter';
 
 function createResponse<Data>(

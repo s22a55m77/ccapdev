@@ -11,10 +11,10 @@ import {
 import { motion } from 'framer-motion';
 import { AdminTableRow } from './components/AdminTableRow.tsx';
 import { useRequest } from 'ahooks';
-import { getAdminRestroomsList } from '../../services/api';
+import { getAdminReportList } from '../../services/api';
 
 export default function AdminTable() {
-  const { data } = useRequest(getAdminRestroomsList);
+  const { data } = useRequest(getAdminReportList);
 
   return (
     <div className={'admin-table-container'}>
