@@ -7,14 +7,12 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { CityEntity } from './city.entity';
-import { ProvinceEntity } from './province.entity';
-import { RegionEntity } from './region.entity';
 import { UserEntity } from './user.entity';
 import { CommentEntity } from './comment.entity';
 import { ImageEntity } from './image.entity';
 import { ReportEntity } from './report.entity';
 import { RestroomTagEntity } from './restroom-tag.entity';
+import { FloorEntity } from './floor.entity';
 
 export enum GenderType {
   MALE = 'male',
@@ -52,23 +50,8 @@ export class RestroomEntity {
   })
   status: StatusType;
 
-  @ManyToOne(() => RegionEntity, (region) => region)
-  region: RegionEntity;
-
-  @ManyToOne(() => ProvinceEntity)
-  province: ProvinceEntity;
-
-  @ManyToOne(() => CityEntity)
-  city: CityEntity;
-
-  @Column({ type: 'integer', unique: true, nullable: true })
-  barangayId: number | null;
-
-  @Column({ type: 'integer', unique: true, nullable: true })
-  buildingId: number | null;
-
-  @Column({ type: 'integer', unique: true, nullable: true })
-  floorId: number | null;
+  @ManyToOne(() => FloorEntity, (floor) => floor.restrooms)
+  floorId: FloorEntity;
 
   @Column('text')
   description: string;
