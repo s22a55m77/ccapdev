@@ -267,8 +267,6 @@ export default function Main() {
                   restroomImageIds={restroom.restroomImageIds}
                   createdByUser={restroom.createdByUser}
                   createdAt={restroom.createdAt}
-                  downVote={restroom.downVote}
-                  upVote={restroom.upVote}
                   totalComments={restroom.totalComments}
                   location={restroom.location}
                 />

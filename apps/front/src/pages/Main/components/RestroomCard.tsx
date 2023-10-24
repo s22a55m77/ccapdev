@@ -82,16 +82,6 @@ export default function RestroomCard({
                     <ChatBubbleOutlineIcon fontSize={'inherit'} />{' '}
                     {totalComments}
                   </div>
-                  <div className={'activity-content'}>
-                    {/*DownVote*/}
-                    <ArrowDownwardIcon fontSize={'inherit'} />
-                    {downVote}
-                  </div>
-                  <div className={'activity-content'}>
-                    {/*Up Vote*/}
-                    <ArrowUpwardIcon fontSize={'inherit'} />
-                    {upVote}
-                  </div>
                 </div>
               </footer>
             </CardContent>

@@ -19,7 +19,6 @@ import { useRequest } from 'ahooks';
 import {
   createRestroomReview,
   getRestroomDetail,
-  voteRestroom,
 } from '../../services/api.ts';
 import { useState } from 'react';
 import { AlertContent } from '../../declaration';
@@ -55,25 +54,6 @@ export default function Restroom() {
       if ((e as AxiosError).response?.status === 404) navigate('/404');
     },
   });
-
-  // const { run: vote } = useRequest(voteRestroom, {
-  //   manual: true,
-  //   onSuccess: (data) => {
-  //     mutate(data);
-  //     setAlertContent({
-  //       isOpen: true,
-  //       message: 'Successfully Voted',
-  //       severity: 'success',
-  //     });
-  //   },
-  //   onError: () => {
-  //     setAlertContent({
-  //       isOpen: true,
-  //       message: 'Error Occurred',
-  //       severity: 'error',
-  //     });
-  //   },
-  // });
 
   const handleReport = () => {};
 

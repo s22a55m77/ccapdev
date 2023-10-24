@@ -76,6 +76,9 @@ declare namespace API {
   type RestroomData = {
     id: string;
     title: string;
+    region: string;
+    province: string;
+    city: string;
     building: string;
     floor: number;
     location: string; // location detail
