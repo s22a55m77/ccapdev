@@ -17,7 +17,7 @@ export class CityEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => ProvinceEntity, (provice) => provice.cities)
+  @ManyToOne(() => ProvinceEntity, (province) => province.cities)
   province: ProvinceEntity;
 
   @OneToMany(() => BuildingEntity, (building) => building.city)

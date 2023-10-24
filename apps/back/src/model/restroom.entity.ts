@@ -17,7 +17,7 @@ import { RestroomTagEntity } from './restroom-tag.entity';
 
 export enum GenderType {
   MALE = 'male',
-  FEMAILE = 'female',
+  FEMALE = 'female',
 }
 
 export enum StatusType {
