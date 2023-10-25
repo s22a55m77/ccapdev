@@ -1,5 +1,6 @@
-import { Controller, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Param, Patch } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
+import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 
 @Controller('restroom')
 export class RestroomController {
@@ -7,7 +8,10 @@ export class RestroomController {
 
   // PATCH /restroom/:id/review
   @Patch(':id/review')
-  getRestroomReview(@Param('id') id: string) {
+  updateRestroomReview(
+    @Param('id') id: string,
+    @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
+  ) {
     return id;
   }
 }
