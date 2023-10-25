@@ -24,4 +24,8 @@ export class AuthController {
     const user = this.userService.getUserById(1);
     return ResponseVo.success(user);
   }
+
+  //GET /auth/refresh
+  @Get('refresh')
+  refreshToken() {}
 }

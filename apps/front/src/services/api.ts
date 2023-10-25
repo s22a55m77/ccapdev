@@ -278,7 +278,7 @@ export function getAdminReportList(): Promise<API.AdminReportListData> {
   ).then((res) => res.data.data);
 }
 
-// GET  /report/:id >> review restroom creation
+// GET  /report/:id
 export function getReportDetail(id: string): Promise<API.AdminReportData> {
   return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
     headers: {
@@ -287,7 +287,7 @@ export function getReportDetail(id: string): Promise<API.AdminReportData> {
   }).then((res) => res.data.data);
 }
 
-// PATCH /report/:id   >> handle restroom creation(approve, reject, delete)
+// PATCH /report/:id
 export function changeReportStatus({
   newStatus,
   reportId,

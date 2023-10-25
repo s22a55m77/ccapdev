@@ -1,9 +1,17 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  //PATCH /user/profile
+  @Patch('profile')
+  updateUserProfile() {}
+
+  // PATCH /user/profile/pic
+  @Patch('profile/pic')
+  updateProfilePic() {}
 
   // GET /user/:id/profile
   @Get(':id/profile')
