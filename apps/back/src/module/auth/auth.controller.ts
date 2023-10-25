@@ -60,5 +60,13 @@ export class AuthController {
   // TODO 通过@Auth的话就返回新的token
   //GET /auth/refresh
   @Get('refresh')
-  refreshToken() {}
+  @Auth([RoleType.USER, RoleType.ADMIN])
+  async refreshToken(@AuthUser() user: UserEntity) {
+    const newToken = await this.authService.createAccessToken({
+      userId: user.id,
+      role: user.role,
+    });
+  
+    return ResponseVo.success({ token: newToken });
+  }
 }
