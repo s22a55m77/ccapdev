@@ -1,7 +1,5 @@
-<<<<<<< Updated upstream
-import { Body, Controller, Param, Patch } from '@nestjs/common';
-=======
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -9,7 +7,6 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
->>>>>>> Stashed changes
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 
