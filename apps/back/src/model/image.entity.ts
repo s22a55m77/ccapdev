@@ -27,6 +27,8 @@ export class ImageEntity {
     referencedColumnName: 'id',
   })
   restroom: RestroomEntity;
+
+  @Column()
   restroomId: number;
 
   @Column({

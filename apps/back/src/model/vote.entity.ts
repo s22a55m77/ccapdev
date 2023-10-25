@@ -25,6 +25,8 @@ export class VoteEntity {
     referencedColumnName: 'id',
   })
   voteBy: UserEntity;
+
+  @Column()
   voteById: number;
 
   @ManyToOne(() => CommentEntity, (comment) => comment.votings)
@@ -34,6 +36,8 @@ export class VoteEntity {
     referencedColumnName: 'id',
   })
   voteTo: CommentEntity;
+
+  @Column()
   voteToId: number;
 
   @Column({

@@ -40,6 +40,8 @@ export class RestroomEntity {
     referencedColumnName: 'id',
   })
   createdBy: UserEntity;
+
+  @Column()
   createdById: number;
 
   @CreateDateColumn({ name: 'createdAt' })
@@ -64,6 +66,8 @@ export class RestroomEntity {
     referencedColumnName: 'id',
   })
   floor: FloorEntity;
+
+  @Column()
   floorId: number;
 
   @Column('text')

@@ -27,6 +27,8 @@ export class ReportEntity {
     referencedColumnName: 'id',
   })
   restroom: RestroomEntity;
+
+  @Column()
   restroomId: number;
 
   @ManyToOne(() => UserEntity, (user) => user.reports)
@@ -36,6 +38,8 @@ export class ReportEntity {
     referencedColumnName: 'id',
   })
   reportedBy: UserEntity;
+
+  @Column()
   reportedById: number;
 
   @CreateDateColumn()
@@ -54,5 +58,7 @@ export class ReportEntity {
     referencedColumnName: 'id',
   })
   processBy: UserEntity;
+
+  @Column()
   processById: number;
 }

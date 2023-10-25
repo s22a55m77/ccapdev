@@ -1,4 +1,5 @@
 import {
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -22,6 +23,8 @@ export class RestroomTagEntity {
     referencedColumnName: 'id',
   })
   restroom: RestroomEntity;
+
+  @Column()
   restroomId: number;
 
   @ManyToOne(() => TagEntity, (tag) => tag.restroomTags)
@@ -31,5 +34,7 @@ export class RestroomTagEntity {
     referencedColumnName: 'id',
   })
   tag: TagEntity;
+
+  @Column()
   tagId: number;
 }

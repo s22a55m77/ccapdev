@@ -25,6 +25,7 @@ export class CityEntity {
   })
   province: ProvinceEntity;
 
+  @Column()
   provinceId: number;
 
   @OneToMany(() => BuildingEntity, (building) => building.city)

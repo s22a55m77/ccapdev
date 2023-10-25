@@ -31,6 +31,8 @@ export class CommentEntity {
     referencedColumnName: 'id',
   })
   commentBy: UserEntity;
+
+  @Column()
   commentById: number;
 
   @ManyToOne(() => UserEntity, (user) => user.receivedComments)
@@ -40,6 +42,8 @@ export class CommentEntity {
     referencedColumnName: 'id',
   })
   commentTo: UserEntity;
+
+  @Column()
   commentToId: number;
 
   @Column('text')
@@ -52,6 +56,8 @@ export class CommentEntity {
     referencedColumnName: 'id',
   })
   restroom: RestroomEntity;
+
+  @Column()
   restroomId: number;
 
   @Column({

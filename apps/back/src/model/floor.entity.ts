@@ -26,6 +26,7 @@ export class FloorEntity {
   })
   building: BuildingEntity;
 
+  @Column()
   buildingId: number;
 
   @OneToMany(() => RestroomEntity, (restroom) => restroom.floor)
