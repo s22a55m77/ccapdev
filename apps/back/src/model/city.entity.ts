@@ -14,7 +14,7 @@ export class CityEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @ManyToOne(() => ProvinceEntity, (province) => province.cities)
