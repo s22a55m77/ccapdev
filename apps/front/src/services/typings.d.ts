@@ -47,7 +47,7 @@ declare namespace API {
   type RefreshTokenResponse = BaseResponse<RefreshTokenData>;
 
   type UpdateUserProfileParams = {
-    yearsInDLSU?: number;
+    dateRegistered?: Date;
     description?: string;
   };
 

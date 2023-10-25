@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ReportService } from './report.service';
 
 @Controller('report')
@@ -11,5 +11,5 @@ export class ReportController {
 
   // PATCH /report/:id
   @Patch(':id')
-  changeReportStatus(@Param('id') id: string) {}
+  changeReportStatus(@Param('id') id: string, @Body() status: number) {}
 }

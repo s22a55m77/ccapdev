@@ -1,5 +1,13 @@
-import { Controller, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  UploadedFile,
+} from '@nestjs/common';
 import { UserService } from './user.service';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 
 @Controller('user')
 export class UserController {
@@ -7,11 +15,11 @@ export class UserController {
 
   //PATCH /user/profile
   @Patch('profile')
-  updateUserProfile() {}
+  updateUserProfile(@Body() updateUserProfileDto: UpdateUserProfileDto) {}
 
   // PATCH /user/profile/pic
   @Patch('profile/pic')
-  updateProfilePic() {}
+  updateProfilePic(@UploadedFile() file) {}
 
   // GET /user/:id/profile
   @Get(':id/profile')

@@ -9,6 +9,9 @@ import {
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
+import { GetRestroomListDto } from './dto/get-restroom-list.dto';
+import { CreateRestroomDto } from './dto/create-restroom.dto';
+import { CreateRestroomReviewDto } from './dto/create-restroom-review.dto';
 
 @Controller('restroom')
 export class RestroomController {
@@ -20,7 +23,7 @@ export class RestroomController {
 
   // GET /restroom
   @Get()
-  getRestroomList() {}
+  getRestroomList(@Body() getRestroomListDto: GetRestroomListDto) {}
 
   // GET /restroom/:id
   @Get(':id')
@@ -28,11 +31,14 @@ export class RestroomController {
 
   // POST /restroom
   @Post()
-  createRestroom() {}
+  createRestroom(@Body() createRestroomDto: CreateRestroomDto) {}
 
   // POST /restroom/:id/review
   @Post(':id/review')
-  createRestroomReview(@Param('id') id: string) {}
+  createRestroomReview(
+    @Param('id') id: string,
+    @Body() createRestroomReviewDto: CreateRestroomReviewDto,
+  ) {}
 
   // PATCH /restroom/:id/review
   @Patch(':id/review')
@@ -45,7 +51,7 @@ export class RestroomController {
 
   // DELETE /restroom/:id/review/
   @Delete(':id/review')
-  deleteRestroomReview(@Param('id') id: string) {}
+  deleteRestroomReview(@Param('id') id: string, @Body() status: number) {}
 
   // POST /restroom/review/:id/vote
   @Post('review/:id/vote')

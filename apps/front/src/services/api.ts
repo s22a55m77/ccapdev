@@ -71,13 +71,13 @@ export function refreshToken(): Promise<API.RefreshTokenData> {
 
 //PATCH /user/profile
 export function updateUserProfile({
-  yearsInDLSU,
+  dateRegistered,
   description,
 }: API.UpdateUserProfileParams) {
   return APIClient.patch<API.UpdateUserProfileResponse>(
     '/user/profile',
     {
-      yearsInDLSU,
+      dateRegistered,
       description,
     },
     {
