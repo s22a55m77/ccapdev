@@ -32,7 +32,7 @@ export class AuthService {
       await this.userService.getUserByUsername(loginDto.username);
 
     if (!user) {
-      throw new NotFoundException('User is not exists');
+      throw new NotFoundException('User does not exist');
     }
 
     // FIXME MCO3 compare with encrypted password
