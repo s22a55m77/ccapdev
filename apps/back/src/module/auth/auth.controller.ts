@@ -9,6 +9,10 @@ import { RolesGuard } from './roles.guard';
 import { AuthGuard } from './auth.guard';
 import { Auth } from './auth';
 import { AuthUser } from './auth-user';
+import { LoginVo } from './vo/login.vo';
+import { RegisterVo } from './vo/register.vo';
+import { MeVo } from './vo/me.vo';
+import { RefreshTokenVo } from './vo/refresh-token.vo';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +23,7 @@ export class AuthController {
 
   // POST /auth/login
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(@Body() loginDto: LoginDto): Promise<ResponseVo<LoginVo>> {
     const user = await this.authService.validateUser(loginDto);
     const token = await this.authService.createAccessToken({
       userId: user.id,
@@ -30,7 +34,9 @@ export class AuthController {
 
   // POST /auth/register
   @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
+  async register(
+    @Body() registerDto: RegisterDto,
+  ): Promise<ResponseVo<RegisterVo>> {
     const user = new UserEntity();
     user.role = RoleType.USER;
     user.username = registerDto.username;
@@ -61,12 +67,14 @@ export class AuthController {
   //GET /auth/refresh
   @Get('refresh')
   @Auth([RoleType.USER, RoleType.ADMIN])
-  async refreshToken(@AuthUser() user: UserEntity) {
+  async refreshToken(
+    @AuthUser() user: UserEntity,
+  ): Promise<ResponseVo<RefreshTokenVo>> {
     const newToken = await this.authService.createAccessToken({
       userId: user.id,
       role: user.role,
     });
-  
+
     return ResponseVo.success({ token: newToken });
   }
 }
