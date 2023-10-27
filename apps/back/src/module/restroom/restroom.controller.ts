@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 import { GetRestroomListDto } from './dto/get-restroom-list.dto';
 import { CreateRestroomDto } from './dto/create-restroom.dto';
 import { CreateRestroomReviewDto } from './dto/create-restroom-review.dto';
+import { GetFilterOptionsVo } from './vo/get-filter-options.vo';
+import { ResponseVo } from '../../common/response.vo';
 
 @Controller('restroom')
 export class RestroomController {
@@ -19,7 +22,11 @@ export class RestroomController {
 
   // GET /restroom/filter
   @Get('filter')
-  getFilterOptions() {}
+  async getFilterOptions(): Promise<ResponseVo<GetFilterOptionsVo>> {
+    const filter: GetFilterOptionsVo =
+      await this.restroomService.getFilterOptions();
+    return ResponseVo.success(filter);
+  }
 
   // GET /restroom
   @Get()

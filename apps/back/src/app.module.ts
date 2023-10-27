@@ -35,7 +35,7 @@ import { UserModule } from './module/user/user.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        logging: configService.get<boolean>('DB_LOG'),
+        logging: configService.get<boolean>('DB_LOG') ? true : false,
         ssl: configService.get<boolean>('DB_SSL'),
         migrationsRun: false,
         entities: [

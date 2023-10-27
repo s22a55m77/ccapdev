@@ -225,10 +225,14 @@ declare namespace API {
   type FilterDataType = {
     label: string;
     value: string;
-    children: FilterDataType;
+    children?: FilterDataType[];
   };
 
-  type GetFilterOptionsData = FilterDataType;
+  type GetFilterOptionsData = {
+    location: FilterDataType[];
+    gender: FilterDataType[];
+    availability: FilterDataType[];
+  };
 
   type GetFilterOptionsResponse = BaseResponse<GetFilterOptionsData>;
 }
