@@ -30,7 +30,27 @@ export class RestroomController {
 
   // GET /restroom
   @Get()
-  getRestroomList(@Body() getRestroomListDto: GetRestroomListDto) {}
+  getRestroomList(
+    @Query('sort') sort: 'RATING' | 'NEW',
+    @Query('region') region?: string,
+    @Query('province') province?: string,
+    @Query('city') city?: string,
+    @Query('building') building?: string,
+    @Query('floor') floor?: string,
+    @Query('gender') gender?: 'MALE' | 'FEMALE',
+    @Query('availability') availability?: string,
+  ) {
+    if (city) city = JSON.parse(city.substring(1).slice(0, -1));
+    if (region) region = JSON.parse(region.substring(1).slice(0, -1));
+    if (province)
+      province = JSON.parse(province.substring(1).slice(0, -1));
+    if (building)
+      building = JSON.parse(building.substring(1).slice(0, -1));
+    if (floor) floor = JSON.parse(floor.substring(1).slice(0, -1));
+
+    // TODO
+    return { city, region, gender, province, sort };
+  }
 
   // GET /restroom/:id
   @Get(':id')
