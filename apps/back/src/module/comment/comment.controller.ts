@@ -1,5 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { CommentService } from './comment.service';
+import { ResponseVo } from '../../common/response.vo';
+import { GetCommentDetailVo } from './vo/get-comment-detail.vo';
 
 @Controller('comment')
 export class CommentController {
@@ -7,5 +9,10 @@ export class CommentController {
 
   // GET /comment/:id
   @Get(':id')
-  getCommentDetail(@Param('id') id: string) {}
+  async getCommentDetail(
+    @Param('id') id: string,
+  ): Promise<ResponseVo<GetCommentDetailVo>> {
+    const comment = await this.commentService.getCommentDetail(id);
+    return ResponseVo.success(comment);
+  }
 }

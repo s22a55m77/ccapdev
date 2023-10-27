@@ -1,1 +1,3 @@
-export class DeleteRestroomReviewVo {}
+export class DeleteRestroomReviewVo {
+  success: true;
+}

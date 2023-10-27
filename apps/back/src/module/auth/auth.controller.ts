@@ -63,7 +63,6 @@ export class AuthController {
     return ResponseVo.success({ user });
   }
 
-  // TODO 通过@Auth的话就返回新的token
   //GET /auth/refresh
   @Get('refresh')
   @Auth([RoleType.USER, RoleType.ADMIN])

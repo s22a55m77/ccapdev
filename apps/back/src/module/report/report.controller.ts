@@ -1,5 +1,8 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ReportService } from './report.service';
+import { ResponseVo } from '../../common/response.vo';
+import { GetReportDetailVo } from './vo/get-report-detail.vo';
+import { ChangeReportStatusVo } from './vo/change-report-status.vo';
 
 @Controller('report')
 export class ReportController {
@@ -7,9 +10,20 @@ export class ReportController {
 
   // GET  /report/:id
   @Get(':id')
-  getReportDetail(@Param('id') id: string) {}
+  async getReportDetail(
+    @Param('id') id: string,
+  ): Promise<ResponseVo<GetReportDetailVo>> {
+    const report = await this.reportService.getReportDetail(id);
+    return ResponseVo.success(report);
+  }
 
   // PATCH /report/:id
   @Patch(':id')
-  changeReportStatus(@Param('id') id: string, @Body() status: number) {}
+  async changeReportStatus(
+    @Param('id') id: string,
+    @Body() status: number,
+  ): Promise<ResponseVo<ChangeReportStatusVo>> {
+    const report = await this.reportService.changeReportStatus(id, status);
+    return ResponseVo.success(report);
+  }
 }
