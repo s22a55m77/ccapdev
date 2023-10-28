@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../model/user.entity';
 import { InsertResult, Repository } from 'typeorm';
+import * as string_decoder from 'string_decoder';
 
 @Injectable()
 export class UserService {
@@ -47,5 +48,21 @@ export class UserService {
       .then((res) => res.identifiers[0].id as number);
 
     return this.getUserById(id);
+  }
+
+  async updateProfilePic(id: number, image: string): Promise<UserEntity> {
+    await this.userRepo.update(id, { profilePicId: image });
+    return this.getUserById(Number(id));
+  }
+
+  async getProfilePicById(id: number): Promise<UserEntity> {
+    return this.userRepo.findOne({
+      select: {
+        profilePicId: true,
+      },
+      where: {
+        id,
+      },
+    });
   }
 }

@@ -43,7 +43,7 @@ export class UserEntity {
   role: RoleType;
 
   @Column('bytea', { nullable: true })
-  profilePicId: Buffer | null;
+  profilePicId: string;
 
   @OneToMany(() => CommentEntity, (comment) => comment.commentBy)
   comments: CommentEntity[];
