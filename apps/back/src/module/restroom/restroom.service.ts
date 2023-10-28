@@ -46,7 +46,14 @@ export class RestroomService {
     // TODO add building and floor
     let location: FilterDataType[] = await this.regionRepo
       .createQueryBuilder('region')
-      .select(['region.name', 'provinces.name', 'cities.name'])
+      .select([
+        'region.name',
+        'region.id',
+        'provinces.name',
+        'provinces.id',
+        'cities.name',
+        'cities.id',
+      ])
       .leftJoin('region.provinces', 'provinces')
       .leftJoin('provinces.cities', 'cities')
       .orderBy('region.name, provinces.name, cities.name', 'ASC')
@@ -55,7 +62,7 @@ export class RestroomService {
       .then((res) => res as unknown as FilterDataType[]);
 
     location = renameKey(location, 'label', 'name');
-    location = addKeyFromExistingField(location, 'value', 'label');
+    location = renameKey(location, 'value', 'id');
     location = renameKey(location, 'children', 'provinces');
     location = renameKey(location, 'children', 'cities');
 
