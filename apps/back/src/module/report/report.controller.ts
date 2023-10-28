@@ -4,7 +4,8 @@ import { ResponseVo } from '../../common/response.vo';
 import { GetReportDetailVo } from './vo/get-report-detail.vo';
 import { ChangeReportStatusVo } from './vo/change-report-status.vo';
 import { Auth } from '../auth/auth';
-import { RoleType } from 'src/model/user.entity';
+import { RoleType, UserEntity } from 'src/model/user.entity';
+import { AuthUser } from '../auth/auth-user';
 
 @Controller('report')
 export class ReportController {
@@ -15,6 +16,7 @@ export class ReportController {
   @Auth([RoleType.ADMIN])
   async getReportDetail(
     @Param('id') id: string,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<GetReportDetailVo>> {
     const report = await this.reportService.getReportDetail(id);
     return ResponseVo.success(report);
@@ -26,6 +28,7 @@ export class ReportController {
   async changeReportStatus(
     @Param('id') id: string,
     @Body() status: number,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<ChangeReportStatusVo>> {
     const report = await this.reportService.changeReportStatus(id, status);
     return ResponseVo.success(report);

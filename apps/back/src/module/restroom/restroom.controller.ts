@@ -31,7 +31,8 @@ import {
   FileInterceptor,
 } from '@nestjs/platform-express';
 import { Auth } from '../auth/auth';
-import { RoleType } from 'src/model/user.entity';
+import { RoleType, UserEntity } from 'src/model/user.entity';
+import { AuthUser } from '../auth/auth-user';
 
 @Controller('restroom')
 export class RestroomController {
@@ -101,6 +102,7 @@ export class RestroomController {
       locationImages: Express.Multer.File[];
       restroomImages: Express.Multer.File[];
     },
+    @AuthUser() user: UserEntity,
   ) {
     const restroom = await this.restroomService.createRestroom(
       createRestroomDto,
@@ -115,6 +117,7 @@ export class RestroomController {
   async createRestroomReview(
     @Param('id') id: string,
     @Body() createRestroomReviewDto: CreateRestroomReviewDto,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<CreateRestroomReviewVo>> {
     const review = await this.restroomService.createRestroomReview(
       id,
@@ -130,6 +133,7 @@ export class RestroomController {
   async updateRestroomReview(
     @Param('id') id: string,
     @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<UpdateRestroomReviewVo>> {
     // TODO 判断是不是本人修改，不是返回403
     const review = await this.restroomService.updateRestroomReview(
@@ -145,6 +149,7 @@ export class RestroomController {
   @Auth([RoleType.USER, RoleType.USER])
   async deleteRestroomReview(
     @Param('id') id: string,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<DeleteRestroomReviewVo>> {
     // TODO 判断是不是本人修改，不是返回403
     try {
@@ -161,6 +166,7 @@ export class RestroomController {
   async changeVoteStatus(
     @Param('id') id: string,
     @Body() status: number,
+    @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<ChangeVoteStatusVo>> {
     const review = await this.restroomService.changeVoteStatus(id, status);
 
@@ -170,7 +176,9 @@ export class RestroomController {
   // GET /restroom/creation
   @Get('creation')
   @Auth([RoleType.ADMIN])
-  async getAdminReportList(): Promise<ResponseVo<GetAdminReportListVo>> {
+  async getAdminReportList(
+    @AuthUser() user: UserEntity,
+  ): Promise<ResponseVo<GetAdminReportListVo>> {
     const list = await this.restroomService.getAdminReportList();
     return ResponseVo.success(list);
   }
