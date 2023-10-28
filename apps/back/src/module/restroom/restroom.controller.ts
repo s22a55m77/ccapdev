@@ -30,6 +30,8 @@ import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
+import { Auth } from '../auth/auth';
+import { RoleType } from 'src/model/user.entity';
 
 @Controller('restroom')
 export class RestroomController {
@@ -91,6 +93,7 @@ export class RestroomController {
       { name: 'restroomImages' },
     ]),
   )
+  @Auth([RoleType.USER, RoleType.ADMIN])
   async createRestroom(
     @Body() createRestroomDto: CreateRestroomDto,
     @UploadedFiles()
@@ -108,6 +111,7 @@ export class RestroomController {
 
   // POST /restroom/:id/review
   @Post(':id/review')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   async createRestroomReview(
     @Param('id') id: string,
     @Body() createRestroomReviewDto: CreateRestroomReviewDto,
@@ -122,6 +126,7 @@ export class RestroomController {
 
   // PATCH /restroom/:id/review
   @Patch(':id/review')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   async updateRestroomReview(
     @Param('id') id: string,
     @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
@@ -137,6 +142,7 @@ export class RestroomController {
 
   // DELETE /restroom/:id/review/
   @Delete(':id/review')
+  @Auth([RoleType.USER, RoleType.USER])
   async deleteRestroomReview(
     @Param('id') id: string,
   ): Promise<ResponseVo<DeleteRestroomReviewVo>> {
@@ -151,6 +157,7 @@ export class RestroomController {
 
   // POST /restroom/review/:id/vote
   @Post('review/:id/vote')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   async changeVoteStatus(
     @Param('id') id: string,
     @Body() status: number,
@@ -162,6 +169,7 @@ export class RestroomController {
 
   // GET /restroom/creation
   @Get('creation')
+  @Auth([RoleType.ADMIN])
   async getAdminReportList(): Promise<ResponseVo<GetAdminReportListVo>> {
     const list = await this.restroomService.getAdminReportList();
     return ResponseVo.success(list);

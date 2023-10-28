@@ -23,6 +23,7 @@ export class UserController {
 
   //PATCH /user/profile
   @Patch('profile')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   updateUserProfile(@Body() updateUserProfileDto: UpdateUserProfileDto) {
     // TODO
   }
@@ -41,6 +42,7 @@ export class UserController {
 
   // GET /user/:id/profile
   @Get(':id/profile')
+  @Auth([RoleType.USER, RoleType.ADMIN])
   getUserProfile(@Param('id') id: string) {
     // TODO
     return id;
