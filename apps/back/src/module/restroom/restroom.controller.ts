@@ -8,6 +8,8 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
@@ -24,6 +26,10 @@ import { DeleteRestroomReviewVo } from './vo/delete-restroom-review.vo';
 import { ChangeVoteStatusVo } from './vo/change-vote-status.vo';
 import { ChangeVoteStatusDto } from './dto/change-vote-status.dto';
 import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 
 @Controller('restroom')
 export class RestroomController {
@@ -76,14 +82,26 @@ export class RestroomController {
     return ResponseVo.success(restroomDetail);
   }
 
-  // TODO 需要接收图片 https://docs.nestjs.com/techniques/file-upload
+  // TODO 需要接收图片 https://docs.nestjs.com/techniques/file-upload, 可以参考我在user controller做的
   // POST /restroom
   @Post()
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'locationImages' },
+      { name: 'restroomImages' },
+    ]),
+  )
   async createRestroom(
     @Body() createRestroomDto: CreateRestroomDto,
-  ): Promise<ResponseVo<CreateRestroomVo>> {
+    @UploadedFiles()
+    files: {
+      locationImages: Express.Multer.File[];
+      restroomImages: Express.Multer.File[];
+    },
+  ) {
     const restroom = await this.restroomService.createRestroom(
       createRestroomDto,
+      files,
     );
     return ResponseVo.success(restroom);
   }

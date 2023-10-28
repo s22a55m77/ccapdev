@@ -1,7 +1,8 @@
 export class CreateRestroomDto {
   location: string;
-  locationImages: FileList[];
-  restroomImages: FileList[];
+  region: string;
+  province: string;
+  city: string;
   building: string;
   floor: number;
   gender: 'MALE' | 'FEMALE';

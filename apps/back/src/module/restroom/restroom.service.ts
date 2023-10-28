@@ -98,6 +98,10 @@ export class RestroomService {
 
   async createRestroom(
     createRestroomDto: CreateRestroomDto,
+    files: {
+      locationImages: Express.Multer.File[];
+      restroomImages: Express.Multer.File[];
+    },
   ): Promise<CreateRestroomVo> {
     // TODO 需要insert到多个table
     return null;
