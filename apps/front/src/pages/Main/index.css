@@ -76,7 +76,7 @@
     left: 140px;
 }
 
-.ant-cascader {
+#cascader-container .ant-cascader {
     background-color: red;
     opacity: 0%;
     z-index: -100;
