@@ -53,7 +53,6 @@ export default function Index() {
   });
 
   const [option, setOption] = useState<API.FilterDataType[]>();
-  const [filterOpen, setFilterOpen] = useState(false);
   const [isBuildingDisable, setIsBuildingDisable] = useState(false);
   const [isFloorDisable, setIsFloorDisable] = useState(false);
 
@@ -98,8 +97,7 @@ export default function Index() {
     });
   };
 
-  const handleFilterChange = (data: Record<any, any>[]) => {
-    console.log(data);
+  const handleFilterChange = (data: string | any[]) => {
     if (data.length >= 4) setIsBuildingDisable(true);
     if (data.length >= 5) setIsFloorDisable(true);
   };
@@ -138,6 +136,7 @@ export default function Index() {
                       style={{ alignItems: 'center' }}
                     >
                       <Cascader
+                        multiple={false}
                         placeholder="Location"
                         options={option}
                         tagRender={() => {
@@ -154,7 +153,7 @@ export default function Index() {
               />
               <div>
                 <TextField
-                  {...register('Building')}
+                  {...register('building')}
                   label={'Building'}
                   sx={{
                     marginTop: '20px',
