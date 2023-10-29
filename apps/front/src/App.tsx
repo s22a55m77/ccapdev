@@ -54,7 +54,7 @@ function App() {
   const { setUser, setUserLoginState } = useUserStore();
 
   useEffect(() => {
-    document.title = 'DLSU toiletToPick';
+    document.title = 'toiletToPick';
     me()
       .then((userData) => {
         setUserLoginState(true);
