@@ -15,10 +15,11 @@ import {
 } from '@mui/material';
 import buildingInfo from '../Main/buildingInfo.ts';
 import { Controller, useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { createRestroom } from '../../services/api.ts';
+import { useEffect, useState } from 'react';
+import { createRestroom, getFilterOptions } from '../../services/api.ts';
 import { AlertContent } from '../../declaration';
 import { useRequest } from 'ahooks';
+import { Cascader } from 'antd';
 
 type SubmitRestroomForm = {
   building: string;
@@ -50,6 +51,17 @@ export default function Index() {
     message: 'default message',
     severity: 'success',
   });
+
+  const [option, setOption] = useState<API.FilterDataType[]>();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [isBuildingDisable, setIsBuildingDisable] = useState(false);
+  const [isFloorDisable, setIsFloorDisable] = useState(false);
+
+  const { data: filter } = useRequest(getFilterOptions);
+
+  useEffect(() => {
+    setOption(filter?.location);
+  }, [filter]);
 
   const { run: create } = useRequest(createRestroom, {
     manual: true,
@@ -86,6 +98,12 @@ export default function Index() {
     });
   };
 
+  const handleFilterChange = (data: Record<any, any>[]) => {
+    console.log(data);
+    if (data.length >= 4) setIsBuildingDisable(true);
+    if (data.length >= 5) setIsFloorDisable(true);
+  };
+
   return (
     <>
       <Snackbar
@@ -119,36 +137,32 @@ export default function Index() {
                       className={'flex'}
                       style={{ alignItems: 'center' }}
                     >
-                      <InputLabel id="building-label">Building</InputLabel>
-                      <Select
-                        {...register('building')}
-                        id="building"
-                        labelId="building-label"
-                        label="Building *"
-                        value={field.value}
-                        onChange={(e) => {
-                          setSelectedBuilding(e.target.value);
-                          setValue('building', e.target.value);
-                          setValue('floor', 1);
+                      <Cascader
+                        placeholder="Location"
+                        options={option}
+                        tagRender={() => {
+                          return <></>;
                         }}
-                        sx={{ width: '90%' }}
-                      >
-                        {buildingInfo.map((building) => {
-                          return (
-                            <MenuItem
-                              key={building.buildingName}
-                              value={building.buildingName}
-                            >
-                              {building.buildingName}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
+                        onChange={handleFilterChange}
+                        autoFocus={true}
+                        style={{ width: '90%' }}
+                      />
                       <LocationOnOutlinedIcon />
                     </div>
                   </FormControl>
                 )}
               />
+              <div>
+                <TextField
+                  {...register('Building')}
+                  label={'Building'}
+                  sx={{
+                    marginTop: '20px',
+                    width: '90%',
+                  }}
+                  disabled={isBuildingDisable}
+                />
+              </div>
 
               <div className="smallbox">
                 <Controller
@@ -160,33 +174,12 @@ export default function Index() {
                         className={'flex'}
                         style={{ alignItems: 'center' }}
                       >
-                        <InputLabel id="building-label">Floor</InputLabel>
-                        <Select
-                          {...register('floor')}
-                          id="building"
-                          labelId="building-label"
-                          label="Floor *"
-                          value={field.value}
+                        <TextField
+                          label="Floor"
                           sx={{ width: '70%' }}
-                        >
-                          {[
-                            ...Array(
-                              buildingInfo.find(
-                                (building) =>
-                                  building.buildingName ===
-                                  selectedBuilding,
-                              )!.maxFloor,
-                            ),
-                          ].map((_, i) => {
-                            const floor = i + 1;
-
-                            return (
-                              <MenuItem key={floor} value={floor}>
-                                {floor}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
+                          type="number"
+                          disabled={isFloorDisable}
+                        />
                         <LayersOutlinedIcon />
                       </div>
                     </FormControl>
