@@ -6,12 +6,12 @@ export class GetCommentDetailVo {
   commentToUser?: string; // username
   commentToUserId?: number;
   commentByUserId: number; // userId
-  commentBy?: string; // username
+  commentBy: string; // username
   commentAt: string; // date
   downVote: number;
   upVote: number;
   isUpVoted: boolean;
   isDownVoted: boolean;
   isAdmin: boolean;
-  childComments: string[];
+  childComments: string[]; // contents? or ids?
 }

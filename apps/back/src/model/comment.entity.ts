@@ -35,13 +35,13 @@ export class CommentEntity {
   @Column()
   commentById: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.receivedComments)
+  @ManyToOne(() => CommentEntity, (comment) => comment.receivedComments)
   @JoinColumn({
     name: 'commentToId',
     foreignKeyConstraintName: 'comment_commentToId_commentTo_id',
     referencedColumnName: 'id',
   })
-  commentTo?: UserEntity;
+  commentTo?: CommentEntity;
 
   @Column({ nullable: true })
   commentToId?: number;
@@ -68,4 +68,7 @@ export class CommentEntity {
 
   @OneToMany(() => VoteEntity, (vote) => vote.voteTo)
   votings: VoteEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.commentTo)
+  receivedComments: CommentEntity[];
 }

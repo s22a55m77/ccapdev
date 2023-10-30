@@ -48,9 +48,6 @@ export class UserEntity {
   @OneToMany(() => CommentEntity, (comment) => comment.commentBy)
   comments: CommentEntity[];
 
-  @OneToMany(() => CommentEntity, (comment) => comment.commentTo)
-  receivedComments: CommentEntity[];
-
   @OneToMany(() => ReportEntity, (report) => report.reportedBy)
   reports: ReportEntity[];
 
