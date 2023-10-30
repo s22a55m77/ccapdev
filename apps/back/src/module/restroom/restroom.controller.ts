@@ -74,7 +74,7 @@ export class RestroomController {
   // GET /restroom/:id
   @Get(':id')
   async getRestroomDetail(
-    @Param('id') id: string,
+    @Param('id') id: number,
   ): Promise<ResponseVo<GetRestroomDetailVo>> {
     const restroomDetail = await this.restroomService.getRestroomDetail(
       id,
@@ -164,7 +164,7 @@ export class RestroomController {
   @Post('review/:id/vote')
   @Auth([RoleType.USER, RoleType.ADMIN])
   async changeVoteStatus(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() status: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<ChangeVoteStatusVo>> {

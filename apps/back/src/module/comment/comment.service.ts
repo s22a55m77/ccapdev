@@ -3,6 +3,7 @@ import { CommentEntity } from '../../model/comment.entity';
 import { Repository } from 'typeorm';
 import { GetCommentDetailVo } from './vo/get-comment-detail.vo';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseVo } from 'src/common/response.vo';
 
 @Injectable()
 export class CommentService {
@@ -13,6 +14,7 @@ export class CommentService {
 
   async getCommentDetail(id: string): Promise<GetCommentDetailVo> {
     // TODO
-    return null;
+
+    return;
   }
 }

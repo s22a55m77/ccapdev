@@ -1,16 +1,18 @@
+import { GenderType } from 'src/model/restroom.entity';
+
 export class GetRestroomDetailVo {
-  id: string;
+  id: number;
   title: string;
   building: string;
   floor: number;
   location: string; // location detail
   rating: number;
   tags: string[];
-  locationImageIds: string[];
-  restroomImageIds: string[];
-  commentsIds: string[];
+  locationImageIds: number[];
+  restroomImageIds: number[];
+  commentsIds: number[];
   totalComments: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: GenderType;
   createdByUser: string;
   createdAt: string;
 }
