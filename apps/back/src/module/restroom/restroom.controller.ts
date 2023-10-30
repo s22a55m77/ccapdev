@@ -33,6 +33,7 @@ import {
 import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
+import { Not } from 'typeorm';
 
 @Controller('restroom')
 export class RestroomController {
@@ -157,6 +158,7 @@ export class RestroomController {
       return ResponseVo.success({ success: true });
     } catch (e) {
       // TODO 处理报错;
+      throw new NotFoundException('Review Not Found');
     }
   }
 
