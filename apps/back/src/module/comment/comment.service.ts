@@ -12,9 +12,25 @@ export class CommentService {
     private readonly commentRepo: Repository<CommentEntity>,
   ) {}
 
-  async getCommentDetail(id: string): Promise<GetCommentDetailVo> {
+  async getCommentDetail(id: number): Promise<GetCommentDetailVo> {
     // TODO
+    const getCommentDetailVo: GetCommentDetailVo =
+      new GetCommentDetailVo();
 
-    return;
+    const commentInfo: CommentEntity = await this.commentRepo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    getCommentDetailVo.id = commentInfo.id;
+    getCommentDetailVo.content = commentInfo.content;
+    if (commentInfo.rating !== null)
+      getCommentDetailVo.rating = commentInfo.rating;
+    if (commentInfo.commentTo !== null) {
+      getCommentDetailVo.commentTo = commentInfo.commentTo.id;
+    }
+
+    return getCommentDetailVo;
   }
 }

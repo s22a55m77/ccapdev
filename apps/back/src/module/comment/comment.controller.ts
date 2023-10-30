@@ -10,7 +10,7 @@ export class CommentController {
   // GET /comment/:id
   @Get(':id')
   async getCommentDetail(
-    @Param('id') id: string,
+    @Param('id') id: number,
   ): Promise<ResponseVo<GetCommentDetailVo>> {
     const comment = await this.commentService.getCommentDetail(id);
     return ResponseVo.success(comment);
