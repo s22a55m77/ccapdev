@@ -198,7 +198,9 @@ export class RestroomService {
         totalComments += 1;
       }
     });
-    rating = rating / ratingCount;
+    if (ratingCount !== 0) {
+      rating = rating / ratingCount;
+    }
 
     // tags
     const tagnames: string[] = [];
