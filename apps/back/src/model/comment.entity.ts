@@ -41,10 +41,10 @@ export class CommentEntity {
     foreignKeyConstraintName: 'comment_commentToId_commentTo_id',
     referencedColumnName: 'id',
   })
-  commentTo: UserEntity;
+  commentTo?: UserEntity;
 
-  @Column()
-  commentToId: number;
+  @Column({ nullable: true })
+  commentToId?: number;
 
   @Column('text')
   content: string;

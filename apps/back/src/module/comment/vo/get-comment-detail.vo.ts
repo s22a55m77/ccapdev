@@ -1,8 +1,8 @@
 export class GetCommentDetailVo {
-  id: string;
+  id: number;
   content: string;
   rating?: number;
-  commentTo?: string; // comment ID to which it comments to
+  commentTo?: number; // comment ID to which it comments to
   commentToUser?: string; // username
   commentToUserId?: string;
   commentByUserId: string; // userId

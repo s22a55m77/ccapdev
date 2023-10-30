@@ -79,7 +79,7 @@ export class RestroomController {
     const restroomDetail = await this.restroomService.getRestroomDetail(
       id,
     );
-    if (restroomDetail)
+    if (!restroomDetail)
       throw new NotFoundException('Restroom does not exist');
 
     return ResponseVo.success(restroomDetail);

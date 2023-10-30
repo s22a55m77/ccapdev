@@ -25,6 +25,8 @@ import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
 import { VoteEntity, VoteType } from 'src/model/vote.entity';
 import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
+import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
+import { UserEntity } from 'src/model/user.entity';
 
 @Injectable()
 export class RestroomService {
@@ -35,8 +37,14 @@ export class RestroomService {
     private readonly regionRepo: Repository<RegionEntity>,
     @InjectRepository(TagEntity)
     private readonly tagRepo: Repository<TagEntity>,
+    @InjectRepository(RestroomTagEntity)
+    private readonly restroomTagRepo: Repository<RestroomTagEntity>,
     @InjectRepository(ImageEntity)
     private readonly imageRepo: Repository<ImageEntity>,
+    @InjectRepository(ProvinceEntity)
+    private readonly provinceRepo: Repository<ProvinceEntity>,
+    @InjectRepository(CityEntity)
+    private readonly cityRepo: Repository<CityEntity>,
     @InjectRepository(BuildingEntity)
     private readonly buildingRepo: Repository<BuildingEntity>,
     @InjectRepository(FloorEntity)
@@ -45,6 +53,8 @@ export class RestroomService {
     private readonly commentRepo: Repository<CommentEntity>,
     @InjectRepository(VoteEntity)
     private readonly voteRepo: Repository<VoteEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
   ) {}
 
   async getFilterOptions(): Promise<GetFilterOptionsVo> {
@@ -108,11 +118,33 @@ export class RestroomService {
     // title
     var title: string;
     const gender: string = restroomInfo.gender.toString();
-    const floor: FloorEntity = restroomInfo.floor;
-    const building: BuildingEntity = restroomInfo.floor.building;
-    const city: CityEntity = building.city;
-    const province: ProvinceEntity = city.province;
-    const region: RegionEntity = province.region;
+    const floor: FloorEntity = await this.floorRepo.findOne({
+      where: {
+        id: restroomInfo.floorId,
+      },
+    });
+    const building: BuildingEntity = await this.buildingRepo.findOne({
+      where: {
+        id: floor.buildingId,
+      },
+    });
+
+    const city: CityEntity = await this.cityRepo.findOne({
+      where: {
+        id: building.cityId,
+      },
+    });
+    const province: ProvinceEntity = await this.provinceRepo.findOne({
+      where: {
+        id: city.provinceId,
+      },
+    });
+
+    const region: RegionEntity = await this.regionRepo.findOne({
+      where: {
+        id: province.regionId,
+      },
+    });
     title =
       building.name +
       '-' +
@@ -129,7 +161,13 @@ export class RestroomService {
     // location
     const locationImageIds: number[] = [];
     const restroomImageIds: number[] = [];
-    restroomInfo.images.forEach((image) => {
+
+    const images: ImageEntity[] = await this.imageRepo.find({
+      where: {
+        restroomId: id,
+      },
+    });
+    images.forEach((image) => {
       if (image.type === ImageType.LOCATION_IMG)
         locationImageIds.push(image.id);
       if (image.type === ImageType.RESTROOM_IMG)
@@ -141,7 +179,14 @@ export class RestroomService {
     var ratingCount: number = 0;
     const commentsIds: number[] = [];
     var totalComments: number = 0;
-    restroomInfo.comments.forEach((comment) => {
+
+    const comments: CommentEntity[] = await this.commentRepo.find({
+      where: {
+        restroomId: id,
+      },
+    });
+
+    comments.forEach((comment) => {
       if (comment.type !== Type.SUBMIT) {
         if (comment.type === Type.REVIEW) {
           if (comment.rating != null) {
@@ -155,21 +200,48 @@ export class RestroomService {
     });
     rating = rating / ratingCount;
 
+    // tags
+    const tagnames: string[] = [];
+    const tags: RestroomTagEntity[] = await this.restroomTagRepo.find({
+      where: {
+        restroomId: id,
+      },
+    });
+    const tagPromises = tags.map(async (restroomTag) => {
+      const tag: TagEntity = await this.tagRepo.findOne({
+        where: {
+          id: restroomTag.tagId,
+        },
+      });
+      return tag.name;
+    });
+
+    tagnames.push(...(await Promise.all(tagPromises)));
+
+    // createdByUser
+    const createdByUser: UserEntity = await this.userRepo.findOne({
+      where: {
+        id: restroomInfo.createdById,
+      },
+    });
+
     const restroomDetail = new GetRestroomDetailVo();
     restroomDetail.id = restroomInfo.id;
     restroomDetail.title = title;
-    restroomDetail.building = restroomInfo.floor.building.name;
-    restroomDetail.floor = restroomInfo.floor.floor;
+    restroomDetail.building = building.name;
+    restroomDetail.floor = floor.floor;
     restroomDetail.location = restroomInfo.description;
     restroomDetail.rating = rating;
-    restroomDetail.tags = restroomInfo.tags.map((tag) => tag.tag.name);
+    restroomDetail.tags = tagnames;
     restroomDetail.locationImageIds = locationImageIds;
     restroomDetail.restroomImageIds = restroomImageIds;
     restroomDetail.commentsIds = commentsIds;
     restroomDetail.totalComments = totalComments;
     restroomDetail.gender = restroomInfo.gender;
-    restroomDetail.createdByUser = restroomInfo.createdBy.username;
+    restroomDetail.createdByUser = createdByUser.username;
     restroomDetail.createdAt = restroomInfo.createdAt.toDateString();
+
+    console.log(restroomDetail);
 
     return restroomDetail;
   }
