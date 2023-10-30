@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
@@ -131,15 +132,25 @@ export class RestroomController {
   @Patch(':id/review')
   @Auth([RoleType.USER, RoleType.ADMIN])
   async updateRestroomReview(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<UpdateRestroomReviewVo>> {
-    // TODO 判断是不是本人修改，不是返回403
+    // TODO 判断是不是本人修改，不是返回403 not sure
     const review = await this.restroomService.updateRestroomReview(
       id,
       updateRestroomReviewDto,
     );
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+
+    if (user.id !== review.id) {
+      throw new ForbiddenException(
+        'You are not authorized to delete this review.',
+      );
+    }
 
     return ResponseVo.success(review);
   }
@@ -187,5 +198,7 @@ export class RestroomController {
   // TODO 返回图片 https://docs.nestjs.com/techniques/streaming-files
   // GET /restroom/:id/image
   @Get(':id/image')
-  async getImage() {}
+  async getImage() {
+    return;
+  }
 }
