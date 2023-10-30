@@ -1,13 +1,16 @@
+import { ReportType } from 'src/model/report.entity';
+import { GenderType } from 'src/model/restroom.entity';
+
 export class GetReportDetailVo {
-  id: string;
+  id: number;
   title: string;
   building: string;
   floor: number;
   location: string; // location detail
-  locationImageIds: string[];
-  restroomImageIds: string[];
-  gender: 'MALE' | 'FEMALE';
+  locationImageIds: number[];
+  restroomImageIds: number[];
+  gender: GenderType;
   createdByUser: string;
   createdAt: string;
-  status: number;
+  status: ReportType;
 }
