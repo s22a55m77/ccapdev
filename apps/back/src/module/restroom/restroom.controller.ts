@@ -33,7 +33,6 @@ import {
 import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
-import { Not } from 'typeorm';
 
 @Controller('restroom')
 export class RestroomController {
