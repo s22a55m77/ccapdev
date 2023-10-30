@@ -268,7 +268,7 @@ export class RestroomService {
   }
 
   async updateRestroomReview(
-    id: string,
+    id: number,
     updateRestroomReviewDto: UpdateRestroomReviewDto,
   ): Promise<UpdateRestroomReviewVo> {
     // TODO

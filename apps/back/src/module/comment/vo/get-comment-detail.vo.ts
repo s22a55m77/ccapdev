@@ -4,8 +4,8 @@ export class GetCommentDetailVo {
   rating?: number;
   commentTo?: number; // comment ID to which it comments to
   commentToUser?: string; // username
-  commentToUserId?: string;
-  commentByUserId: string; // userId
+  commentToUserId?: number;
+  commentByUserId: number; // userId
   commentBy?: string; // username
   commentAt: string; // date
   downVote: number;

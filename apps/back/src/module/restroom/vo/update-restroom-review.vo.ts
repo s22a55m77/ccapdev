@@ -1,5 +1,5 @@
 export class UpdateRestroomReviewVo {
-  id: string;
+  id: number;
   content: string;
   rating?: number;
   commentTo?: string; // comment ID to which it comments to
