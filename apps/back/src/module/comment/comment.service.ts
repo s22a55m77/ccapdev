@@ -18,7 +18,10 @@ export class CommentService {
     private readonly userService: UserService,
   ) {}
 
-  async getCommentDetail(id: number): Promise<GetCommentDetailVo> {
+  async getCommentDetail(
+    id: number,
+    currentUserId: number,
+  ): Promise<GetCommentDetailVo> {
     // TODO
     const getCommentDetailVo: GetCommentDetailVo =
       new GetCommentDetailVo();
@@ -57,8 +60,8 @@ export class CommentService {
     );
     getCommentDetailVo.commentByUserId = commentByUser.id;
     getCommentDetailVo.commentBy = commentByUser.username;
-    
-    getCommentDetailVo.commentAt =;
+
+    getCommentDetailVo.commentAt = commentInfo.commentAt.toString();
 
     // voting
     var upvoteCount = 0;
@@ -67,11 +70,11 @@ export class CommentService {
       where: {
         voteToId: id,
       },
-    })
+    });
 
     getCommentDetailVo.isUpVoted = false;
     getCommentDetailVo.isDownVoted = false;
-    votingInfos.forEach((voting) => {  
+    votingInfos.forEach((voting) => {
       if (voting.type === VoteType.UPVOTE) {
         upvoteCount += 1;
         if (voting.voteById === currentUserId) {
@@ -84,29 +87,31 @@ export class CommentService {
           getCommentDetailVo.isDownVoted = true;
         }
       }
-      
-    })
+    });
     getCommentDetailVo.downVote = downvoteCount;
     getCommentDetailVo.upVote = upvoteCount;
 
-    // isAdmin 
+    // isAdmin
     getCommentDetailVo.isAdmin = false;
-    const currentUser: UserEntity = await this.userService.getUserById(currentUserId);
-    if(currentUser !== null) {
-      if( currentUser.role === RoleType.ADMIN) getCommentDetailVo.isAdmin = false;
+    const currentUser: UserEntity = await this.userService.getUserById(
+      currentUserId,
+    );
+    if (currentUser !== null) {
+      if (currentUser.role === RoleType.ADMIN)
+        getCommentDetailVo.isAdmin = false;
     }
-    
+
     // childComments
     const childComments: string[] = [];
     const childCommentEntities = await this.commentRepo.find({
       where: {
         commentToId: id,
       },
-    })
+    });
 
     childCommentEntities.forEach((childCommentEntity) => {
-      childComments.push(childCommentEntity.content)
-    })
+      childComments.push(childCommentEntity.content);
+    });
     getCommentDetailVo.childComments = childComments;
 
     return getCommentDetailVo;
