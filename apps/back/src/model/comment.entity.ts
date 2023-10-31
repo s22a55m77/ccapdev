@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -71,4 +72,7 @@ export class CommentEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.commentTo)
   receivedComments: CommentEntity[];
+
+  @CreateDateColumn()
+  commentAt: Date;
 }
