@@ -108,6 +108,7 @@ export class RestroomController {
     const restroom = await this.restroomService.createRestroom(
       createRestroomDto,
       files,
+      user.id,
     );
     return ResponseVo.success(restroom);
   }

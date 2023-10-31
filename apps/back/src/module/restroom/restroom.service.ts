@@ -19,7 +19,11 @@ import { CreateRestroomReviewDto } from './dto/create-restroom-review.dto';
 import { CommentEntity, Type } from '../../model/comment.entity';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 import { UpdateRestroomReviewVo } from './vo/update-restroom-review.vo';
-import { GenderType, RestroomEntity } from '../../model/restroom.entity';
+import {
+  GenderType,
+  RestroomEntity,
+  StatusType,
+} from '../../model/restroom.entity';
 import { ChangeVoteStatusVo } from './vo/change-vote-status.vo';
 import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
 import { VoteEntity, VoteType } from 'src/model/vote.entity';
@@ -27,6 +31,7 @@ import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { UserEntity } from 'src/model/user.entity';
+import { AuthUser } from '../auth/auth-user';
 
 @Injectable()
 export class RestroomService {
@@ -243,8 +248,6 @@ export class RestroomService {
     restroomDetail.createdByUser = createdByUser.username;
     restroomDetail.createdAt = restroomInfo.createdAt.toDateString();
 
-    console.log(restroomDetail);
-
     return restroomDetail;
   }
 
@@ -254,9 +257,117 @@ export class RestroomService {
       locationImages: Express.Multer.File[];
       restroomImages: Express.Multer.File[];
     },
+    currentUserId: number,
   ): Promise<CreateRestroomVo> {
+    const { building, floor, gender, tags, city, province, location } =
+      createRestroomDto;
     // TODO 需要insert到多个table
-    return null;
+    // insert buildingRepo (if not exist)
+    const provinceEntity: ProvinceEntity = await this.provinceRepo.findOne(
+      {
+        where: {
+          name: province,
+        },
+      },
+    );
+
+    const cityEntity: CityEntity = await this.cityRepo.findOne({
+      where: {
+        name: city,
+        provinceId: provinceEntity.id,
+      },
+    });
+
+    let buildingEntity = await this.buildingRepo.findOne({
+      where: {
+        name: building,
+        cityId: cityEntity.id,
+      },
+    });
+
+    if (!buildingEntity) {
+      buildingEntity = this.buildingRepo.create({
+        name: building,
+        cityId: cityEntity.id,
+      });
+      await this.buildingRepo.save(buildingEntity);
+    }
+
+    // insert restroomRepo
+
+    // see if floor exist
+    let floorEntity: FloorEntity = await this.floorRepo.findOne({
+      where: {
+        buildingId: buildingEntity.id,
+        floor,
+      },
+    });
+    // yes -> use the existing floorId, no -> create new floor
+    if (!floorEntity) {
+      floorEntity = this.floorRepo.create({
+        floor,
+        buildingId: buildingEntity.id,
+      });
+    }
+    await this.floorRepo.save(floorEntity);
+
+    // create restroom
+    const restroomEntity = this.restroomRepo.create({
+      gender,
+      status: StatusType.APPROVED,
+      description: location,
+      createdById: currentUserId,
+      floorId: floorEntity.id,
+    });
+    await this.restroomRepo.save(restroomEntity);
+
+    // insert restroomTagRepo
+
+    for (const tag of tags) {
+      const tagEntity: TagEntity = await this.tagRepo.findOne({
+        where: {
+          name: tag,
+        },
+      });
+      const restroomTagEntity = this.restroomTagRepo.create({
+        restroomId: restroomEntity.id,
+        tagId: tagEntity.id,
+      });
+      await this.restroomTagRepo.save(restroomTagEntity);
+    }
+
+    // insert imageRepo
+    const saveImage = async (
+      type: ImageType,
+      file: Express.Multer.File,
+    ) => {
+      const imageEntity = this.imageRepo.create({
+        image: file.buffer, // not sure
+        restroomId: restroomEntity.id,
+        type,
+      });
+      await this.imageRepo.save(imageEntity);
+    };
+
+    for (const file of files.locationImages) {
+      await saveImage(ImageType.LOCATION_IMG, file);
+    }
+    for (const file of files.restroomImages) {
+      await saveImage(ImageType.RESTROOM_IMG, file);
+    }
+
+    // query
+    const createRestroomVo: CreateRestroomVo = new CreateRestroomVo();
+    // restroom
+    const getRestroomDetailVo: GetRestroomDetailVo =
+      await this.getRestroomDetail(restroomEntity.id);
+
+    for (let key in getRestroomDetailVo) {
+      if (getRestroomDetailVo.hasOwnProperty(key)) {
+        createRestroomVo[key] = getRestroomDetailVo[key];
+      }
+    }
+    return createRestroomVo;
   }
 
   async createRestroomReview(

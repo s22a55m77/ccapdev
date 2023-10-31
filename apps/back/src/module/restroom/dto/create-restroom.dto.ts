@@ -1,3 +1,5 @@
+import { GenderType } from 'src/model/restroom.entity';
+
 export class CreateRestroomDto {
   location: string;
   region: string;
@@ -5,6 +7,6 @@ export class CreateRestroomDto {
   city: string;
   building: string;
   floor: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: GenderType;
   tags: string[];
 }
