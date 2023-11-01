@@ -119,34 +119,6 @@ export default function Main() {
         <div id={'tabs'} className={'flex'}>
           <button
             className={`tab-button ${
-              query.sort === 'NEW' ? 'tab-button-active' : ''
-            }`}
-            onClick={() => setQuery({ ...query, sort: 'NEW' })}
-          >
-            <div style={{ display: 'flex' }}>
-              <AccessTimeIcon
-                fontSize={'inherit'}
-                style={{ marginRight: 5 }}
-              />
-              New
-            </div>
-          </button>
-          <button
-            className={`tab-button ${
-              query.sort === 'RATING' ? 'tab-button-active' : ''
-            }`}
-            onClick={() => setQuery({ ...query, sort: 'RATING' })}
-          >
-            <div style={{ display: 'flex' }}>
-              <CallMadeIcon
-                fontSize={'inherit'}
-                style={{ marginRight: 5 }}
-              />
-              Top
-            </div>
-          </button>
-          <button
-            className={`tab-button ${
               isFilterActive ? 'tab-button-active' : ''
             }`}
             id="basic-button"
@@ -183,6 +155,34 @@ export default function Main() {
               />
             </div>
           }
+          <button
+            className={`tab-button ${
+              query.sort === 'NEW' ? 'tab-button-active' : ''
+            }`}
+            onClick={() => setQuery({ ...query, sort: 'NEW' })}
+          >
+            <div style={{ display: 'flex' }}>
+              <AccessTimeIcon
+                fontSize={'inherit'}
+                style={{ marginRight: 5 }}
+              />
+              New
+            </div>
+          </button>
+          <button
+            className={`tab-button ${
+              query.sort === 'RATING' ? 'tab-button-active' : ''
+            }`}
+            onClick={() => setQuery({ ...query, sort: 'RATING' })}
+          >
+            <div style={{ display: 'flex' }}>
+              <CallMadeIcon
+                fontSize={'inherit'}
+                style={{ marginRight: 5 }}
+              />
+              Top
+            </div>
+          </button>
         </div>
 
         {restroomList &&

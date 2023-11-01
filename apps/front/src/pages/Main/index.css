@@ -73,7 +73,7 @@
 
 #cascader-container {
     position: absolute;
-    left: 140px;
+    left: 0px;
 }
 
 #cascader-container .ant-cascader {
