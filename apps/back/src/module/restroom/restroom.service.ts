@@ -61,7 +61,6 @@ export class RestroomService {
   ) {}
 
   async getFilterOptions(): Promise<GetFilterOptionsVo> {
-    // TODO add building and floor
     let location: FilterDataType[] = await this.regionRepo
       .createQueryBuilder('region')
       .select([
@@ -71,18 +70,33 @@ export class RestroomService {
         'provinces.id',
         'cities.name',
         'cities.id',
+        'buildings.id',
+        'buildings.name',
+        'floors.id',
+        'floors.floor',
       ])
       .leftJoin('region.provinces', 'provinces')
       .leftJoin('provinces.cities', 'cities')
+      .leftJoin('cities.buildings', 'buildings')
+      .leftJoin('buildings.floors', 'floors')
+      // .leftJoin(
+      //   BuildingEntity,
+      //   'buildings',
+      //   'buildings."cityId"=cities.id',
+      // )
+      // .leftJoin(FloorEntity, 'floors', 'floors."buildingId"=buildings.id')
       .orderBy('region.name, provinces.name, cities.name', 'ASC')
       .getMany()
       // FIXME type casting
       .then((res) => res as unknown as FilterDataType[]);
 
     location = renameKey(location, 'label', 'name');
+    location = renameKey(location, 'label', 'floor');
     location = renameKey(location, 'value', 'id');
     location = renameKey(location, 'children', 'provinces');
     location = renameKey(location, 'children', 'cities');
+    location = renameKey(location, 'children', 'buildings');
+    location = renameKey(location, 'children', 'floors');
 
     const gender: FilterDataType[] = [
       {

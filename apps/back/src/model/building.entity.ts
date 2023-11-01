@@ -28,6 +28,6 @@ export class BuildingEntity {
   @Column()
   cityId: number;
 
-  @OneToMany(() => FloorEntity, (floor) => floor.floor)
+  @OneToMany(() => FloorEntity, (floor) => floor.building)
   floors: FloorEntity[];
 }
