@@ -6,9 +6,7 @@ import {
   Rating,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './RestroomCard.css';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Link } from 'react-router-dom';
 
 type RestroomCardProps = Omit<
@@ -24,8 +22,6 @@ export default function RestroomCard({
   restroomImageIds,
   createdByUser,
   createdAt,
-  downVote,
-  upVote,
   totalComments,
   location,
 }: RestroomCardProps) {
@@ -58,7 +54,7 @@ export default function RestroomCard({
                     <img
                       key={id + index}
                       style={{ marginTop: 10 }}
-                      src={id}
+                      src={id.toString()}
                       alt={'img'}
                       width={'30%'}
                     />

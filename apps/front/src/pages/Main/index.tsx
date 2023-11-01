@@ -192,7 +192,7 @@ export default function Main() {
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 key={restroom.id}
-                layoutId={restroom.id}
+                layoutId={restroom.id.toString()}
               >
                 <RestroomCard
                   id={restroom.id}

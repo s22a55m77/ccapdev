@@ -29,13 +29,13 @@ declare namespace API {
   type RegisterResponse = BaseResponse<RegisterData>;
 
   type UserData = {
-    id: string;
+    id: number;
     username;
     reviews: number;
     dateRegistered: number;
     description: string;
     role: 'USER' | 'ADMIN';
-    profilePicId: string;
+    profilePicId: number;
   };
 
   type MeResponse = BaseResponse<UserData>;
@@ -74,16 +74,16 @@ declare namespace API {
   type RestroomListResponse = BaseResponse<RestroomListData>;
 
   type RestroomData = {
-    id: string;
+    id: number;
     title: string;
     building: string;
     floor: number;
     location: string; // location detail
     rating: number;
     tags: string[];
-    locationImageIds: string[];
-    restroomImageIds: string[];
-    commentsIds: string[];
+    locationImageIds: number[];
+    restroomImageIds: number[];
+    commentsIds: number[];
     totalComments: number;
     gender: 'MALE' | 'FEMALE';
     createdByUser: string;
@@ -105,21 +105,21 @@ declare namespace API {
   type CreateRestroomResponse = BaseResponse<RestroomData>;
 
   type RateRestroomParams = {
-    restroomId: string;
+    restroomId: number;
     rating: number;
   };
 
   type RateRestroomResponse = BaseResponse<RestroomData>;
 
   type UpdateProfilePicData = {
-    id: string;
+    id: number;
   };
 
   type UpdateProfilePicResponse = BaseResponse<UpdateProfilePicData>;
 
   type CreateRestroomReviewParams = {
     rating?: number;
-    restroomId: string;
+    restroomId: number;
     commentTo?: string; // comment ID to which it comments to
     content?: string;
   };
@@ -127,8 +127,8 @@ declare namespace API {
   type CreateRestroomReviewResponse = BaseResponse<CommentDetailData>;
 
   type UpdateRestroomReviewParams = {
-    restroomId: string;
-    commentId: string;
+    restroomId: number;
+    commentId: number;
     content: string;
   };
 
@@ -136,7 +136,7 @@ declare namespace API {
 
   type ChangeVoteStatusParams = {
     newStatus: number; // 0-none, 1-upvote, 2-downvote
-    commentId: string;
+    commentId: number;
   };
 
   type DeleteRestroomReviewResponse = BaseResponse<RestroomData>;
@@ -145,7 +145,7 @@ declare namespace API {
 
   type ChangeReportStatusParams = {
     newStatus: number; // 0-disapproved, 1-approved, 2-pending
-    reportId: string;
+    reportId: number;
   };
 
   type AdminReportData = Omit<
@@ -160,13 +160,13 @@ declare namespace API {
   type ChangeRestroomStatusResponse = BaseResponse<AdminReportData>;
 
   type CommentDetailData = {
-    id: string;
+    id: number;
     content: string;
     rating?: number;
     commentTo?: string; // comment ID to which it comments to
     commentToUser?: string; // username
-    commentToUserId?: string;
-    commentByUserId: string; // userId
+    commentToUserId?: number;
+    commentByUserId: number; // userId
     commentBy?: string; // username
     commentAt: string; // date
     downVote: number;
@@ -180,7 +180,7 @@ declare namespace API {
   type GetCommentDetailResponse = BaseResponse<CommentDetailData>;
 
   type VoteRestroomParams = {
-    restroomId: string;
+    restroomId: number;
     upVote?: boolean;
     downVote?: boolean;
   };
@@ -188,7 +188,7 @@ declare namespace API {
   type VoteRestroomResponse = BaseResponse<RestroomData>;
 
   type AdminReportList = {
-    id: string;
+    id: number;
     title: string;
     region: string;
     province: string;
@@ -205,13 +205,13 @@ declare namespace API {
   type GetAdminReportDetailResponse = BaseResponse<AdminReportData>;
 
   type UserHistory = {
-    id: string;
+    id: number;
     title: string;
     content: string;
     rating?: number;
     commentTo?: string; // comment ID to which it comments to
     commentToUser?: string; // username
-    commentByUserId: string; // userId
+    commentByUserId: number; // userId
     commentBy?: string; // username
     type: 'Reply' | 'Submit' | 'Review';
   };
