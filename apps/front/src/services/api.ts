@@ -55,7 +55,7 @@ export function register({
 export function me(): Promise<API.UserData> {
   return APIClient.get<API.MeResponse>('/auth/me', {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
@@ -64,7 +64,7 @@ export function me(): Promise<API.UserData> {
 export function refreshToken(): Promise<API.RefreshTokenData> {
   return APIClient.get<API.RefreshTokenResponse>('/auth/refresh', {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
@@ -83,7 +83,7 @@ export function updateUserProfile({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -99,7 +99,7 @@ export function updateProfilePic(
     {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -151,7 +151,7 @@ export function getRestroomList({
 export function getRestroomDetail(id: string): Promise<API.RestroomData> {
   return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`, {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
@@ -181,7 +181,7 @@ export function createRestroom({
     {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -204,7 +204,7 @@ export function createRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -225,7 +225,7 @@ export function updateRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -239,7 +239,7 @@ export function deleteRestroomReview(
     `/restroom/${restroomId}/review`,
     {
       headers: {
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -258,7 +258,7 @@ export function changeVoteStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -273,7 +273,7 @@ export function reportRestroom({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -285,7 +285,7 @@ export function reportRestroom({
 export function getAdminReportList(): Promise<API.AdminReportListData> {
   return APIClient.get<API.GetAdminReportListResponse>('/report', {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
@@ -294,7 +294,7 @@ export function getAdminReportList(): Promise<API.AdminReportListData> {
 export function getReportDetail(id: string): Promise<API.AdminReportData> {
   return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
@@ -312,7 +312,7 @@ export function changeReportStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   ).then((res) => res.data.data);
@@ -324,7 +324,7 @@ export function getCommentDetail(
 ): Promise<API.CommentDetailData> {
   return APIClient.get<API.GetCommentDetailResponse>(`/comment/${id}`, {
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   }).then((res) => res.data.data);
 }
