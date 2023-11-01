@@ -119,48 +119,25 @@ export class RestroomService {
 
     if (restroomInfo == null) return null;
 
-    // title
-    var title: string;
     const gender: string = restroomInfo.gender.toString();
-    const floor: FloorEntity = await this.floorRepo.findOne({
-      where: {
-        id: restroomInfo.floorId,
-      },
-    });
-    const building: BuildingEntity = await this.buildingRepo.findOne({
-      where: {
-        id: floor.buildingId,
-      },
-    });
 
-    const city: CityEntity = await this.cityRepo.findOne({
-      where: {
-        id: building.cityId,
-      },
-    });
-    const province: ProvinceEntity = await this.provinceRepo.findOne({
-      where: {
-        id: city.provinceId,
-      },
-    });
+    const locationInfo = await this.floorRepo
+      .createQueryBuilder('f')
+      .select([
+        'r2.name AS region',
+        'p.name AS province',
+        'c.name AS city',
+        'b.name AS building',
+        'f.floor AS floor',
+      ])
+      .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
+      .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
+      .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
+      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
+      .where('f.id = :id', { id: restroomInfo.floorId })
+      .getRawOne();
 
-    const region: RegionEntity = await this.regionRepo.findOne({
-      where: {
-        id: province.regionId,
-      },
-    });
-    title =
-      building.name +
-      '-' +
-      floor.floor +
-      '-' +
-      gender +
-      ' ' +
-      city.name +
-      ', ' +
-      province.name +
-      ', ' +
-      region.name;
+    const title = `${locationInfo.building} - ${locationInfo.floor} - ${gender} - ${locationInfo.city} - ${locationInfo.province} - ${locationInfo.region}`;
 
     // location
     const locationImageIds: number[] = [];
@@ -179,10 +156,10 @@ export class RestroomService {
     });
 
     // rating & comment
-    var rating: number = 0;
-    var ratingCount: number = 0;
+    let rating: number = 0;
+    let ratingCount: number = 0;
     const commentsIds: number[] = [];
-    var totalComments: number = 0;
+    let totalComments: number = 0;
 
     const comments: CommentEntity[] = await this.commentRepo.find({
       where: {
@@ -234,8 +211,8 @@ export class RestroomService {
     const restroomDetail = new GetRestroomDetailVo();
     restroomDetail.id = restroomInfo.id;
     restroomDetail.title = title;
-    restroomDetail.building = building.name;
-    restroomDetail.floor = floor.floor;
+    restroomDetail.building = locationInfo.building;
+    restroomDetail.floor = locationInfo.floor;
     restroomDetail.location = restroomInfo.description;
     restroomDetail.rating = rating;
     restroomDetail.tags = tagnames;
