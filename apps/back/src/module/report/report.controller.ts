@@ -7,10 +7,21 @@ import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
 import { ReportType } from 'src/model/report.entity';
+import { GetAdminReportListVo } from '../restroom/vo/get-admin-report-list.vo';
 
 @Controller('report')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
+
+  // GET /report
+  @Get()
+  @Auth([RoleType.ADMIN])
+  async getAdminReportList(
+    @AuthUser() user: UserEntity,
+  ): Promise<ResponseVo<GetAdminReportListVo[]>> {
+    const list = await this.reportService.getAdminReportList();
+    return ResponseVo.success(list);
+  }
 
   // GET  /report/:id
   @Get(':id')

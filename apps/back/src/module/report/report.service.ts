@@ -7,6 +7,14 @@ import { ChangeReportStatusVo } from './vo/change-report-status.vo';
 import { UserService } from '../user/user.service';
 import { RestroomService } from '../restroom/restroom.service';
 import { GetRestroomDetailVo } from '../restroom/vo/get-restroom-detail.vo';
+import { GetAdminReportListVo } from '../restroom/vo/get-admin-report-list.vo';
+import { RestroomTagEntity } from '../../model/restroom-tag.entity';
+import { FloorEntity } from '../../model/floor.entity';
+import { BuildingEntity } from '../../model/building.entity';
+import { CityEntity } from '../../model/city.entity';
+import { ProvinceEntity } from '../../model/province.entity';
+import { RegionEntity } from '../../model/region.entity';
+import { RestroomEntity } from '../../model/restroom.entity';
 
 @Injectable()
 export class ReportService {
@@ -94,5 +102,43 @@ export class ReportService {
     changeReportStatusVo.status = reportEntity.status;
 
     return changeReportStatusVo;
+  }
+
+  async getAdminReportList(): Promise<GetAdminReportListVo[]> {
+    const rawResult = await this.reportRepo
+      .createQueryBuilder('re')
+      .select([
+        're.id AS id',
+        'r2.name AS region',
+        'p.name AS province',
+        'c.name AS city',
+        'b.name AS building',
+        'f.floor AS floor',
+        're.status AS status',
+        'r.gender AS gender',
+      ])
+      .leftJoin(RestroomEntity, 'r', 're."restroomId"=r.id')
+      .leftJoin(FloorEntity, 'f', 'f.id=r."floorId"')
+      .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
+      .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
+      .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
+      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
+      .orderBy('re."reportedAt"', 'DESC')
+      .execute();
+
+    const result: GetAdminReportListVo[] = rawResult.map((raw) => {
+      const vo = new GetAdminReportListVo();
+      vo.id = raw.id;
+      vo.title = `${raw.building} - ${raw.floor} - ${raw.gender} - ${raw.city} - ${raw.province} - ${raw.region}`;
+      vo.region = raw.region;
+      vo.province = raw.province;
+      vo.city = raw.city;
+      vo.building = raw.building;
+      vo.floor = raw.floor;
+      vo.status = raw.status;
+      vo.gender = raw.gender;
+    });
+
+    return result;
   }
 }

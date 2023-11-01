@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
-import { GetRestroomListDto } from './dto/get-restroom-list.dto';
 import { CreateRestroomDto } from './dto/create-restroom.dto';
 import { CreateRestroomReviewDto } from './dto/create-restroom-review.dto';
 import { GetFilterOptionsVo } from './vo/get-filter-options.vo';
@@ -26,7 +25,6 @@ import { UpdateRestroomReviewVo } from './vo/update-restroom-review.vo';
 import { DeleteRestroomReviewVo } from './vo/delete-restroom-review.vo';
 import { ChangeVoteStatusVo } from './vo/change-vote-status.vo';
 import { ChangeVoteStatusDto } from './dto/change-vote-status.dto';
-import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -198,16 +196,6 @@ export class RestroomController {
     const review = await this.restroomService.changeVoteStatus(id, status);
 
     return ResponseVo.success(review);
-  }
-
-  // GET /restroom/creation
-  @Get('creation')
-  @Auth([RoleType.ADMIN])
-  async getAdminReportList(
-    @AuthUser() user: UserEntity,
-  ): Promise<ResponseVo<GetAdminReportListVo>> {
-    const list = await this.restroomService.getAdminReportList();
-    return ResponseVo.success(list);
   }
 
   // TODO 返回图片 https://docs.nestjs.com/techniques/streaming-files

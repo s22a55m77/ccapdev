@@ -496,10 +496,6 @@ export class RestroomService {
     return null;
   }
 
-  async getAdminReportList(): Promise<GetAdminReportListVo> {
-    return null;
-  }
-
   async getRestroomList({
     sort,
     gender,

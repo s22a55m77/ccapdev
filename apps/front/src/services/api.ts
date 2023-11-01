@@ -266,16 +266,13 @@ export function changeVoteStatus({
 
 // admin
 
-// GET /restroom/creation
+// GET /report
 export function getAdminReportList(): Promise<API.AdminReportListData> {
-  return APIClient.get<API.GetAdminReportListResponse>(
-    '/restroom/creation',
-    {
-      headers: {
-        Authorization: localStorage.getItem('token'),
-      },
+  return APIClient.get<API.GetAdminReportListResponse>('/report', {
+    headers: {
+      Authorization: localStorage.getItem('token'),
     },
-  ).then((res) => res.data.data);
+  }).then((res) => res.data.data);
 }
 
 // GET  /report/:id
