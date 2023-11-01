@@ -18,7 +18,7 @@ export class ImageEntity {
   id: number;
 
   @Column('bytea')
-  image: Buffer;
+  image: string;
 
   @ManyToOne(() => RestroomEntity, (restroom) => restroom.images)
   @JoinColumn({

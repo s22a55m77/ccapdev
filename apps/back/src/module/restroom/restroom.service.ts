@@ -342,7 +342,7 @@ export class RestroomService {
       file: Express.Multer.File,
     ) => {
       const imageEntity = this.imageRepo.create({
-        image: file.buffer, // not sure
+        image: file.buffer.toString('base64'),
         restroomId: restroomEntity.id,
         type,
       });
