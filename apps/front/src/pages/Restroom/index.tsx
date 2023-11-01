@@ -18,7 +18,9 @@ import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import {
   createRestroomReview,
+  getImage,
   getRestroomDetail,
+  reportRestroom,
 } from '../../services/api.ts';
 import { useState } from 'react';
 import { AlertContent } from '../../declaration';
@@ -44,18 +46,20 @@ export default function Restroom() {
 
   const navigate = useNavigate();
 
-  const {
-    data: restroomData,
-    run,
-    mutate,
-  } = useRequest(getRestroomDetail, {
+  const { data: restroomData, run } = useRequest(getRestroomDetail, {
     defaultParams: [restroomId || '0'],
     onError: (e) => {
       if ((e as AxiosError).response?.status === 404) navigate('/404');
     },
   });
 
-  const handleReport = () => {};
+  const { run: report } = useRequest(reportRestroom, {
+    manual: true,
+  });
+
+  const handleReport = () => {
+    if (restroomId) report({ id: Number(restroomId) });
+  };
 
   const handleRateClick = (value: number | null) => {
     if (value) setUserRating({ ...userRating, rating: value });
@@ -71,7 +75,7 @@ export default function Restroom() {
   const handleRateSubmit = () => {
     if (userRating?.rating && restroomId)
       createRestroomReview({
-        restroomId,
+        restroomId: Number(restroomId),
         content: userRating.comment,
         rating: userRating.rating,
       })
@@ -141,7 +145,7 @@ export default function Restroom() {
                     <img
                       key={id + index}
                       style={{ marginTop: 10 }}
-                      src={id}
+                      src={getImage(id)}
                       alt={'img'}
                       width={'30%'}
                     />
@@ -152,7 +156,7 @@ export default function Restroom() {
                     <img
                       key={id + index}
                       style={{ marginTop: 10 }}
-                      src={id}
+                      src={getImage(id)}
                       alt={'img'}
                       width={'30%'}
                     />

@@ -235,4 +235,14 @@ declare namespace API {
   };
 
   type GetFilterOptionsResponse = BaseResponse<GetFilterOptionsData>;
+
+  type ReportRestroomParam = {
+    id: number;
+  };
+
+  type ReportRestroomData = {
+    success: boolean;
+  };
+
+  type ReportRestroomResponse = BaseResponse<ReportRestroomData>;
 }

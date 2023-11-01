@@ -32,7 +32,7 @@ import { Link } from 'react-router-dom';
 type ReplyCardProps = {
   restroomId: string;
   isParent: boolean;
-  commentId: string;
+  commentId: number;
 };
 
 type Edit = {

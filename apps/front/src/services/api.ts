@@ -264,6 +264,21 @@ export function changeVoteStatus({
   ).then((res) => res.data.data);
 }
 
+export function reportRestroom({
+  id,
+}: API.ReportRestroomParam): Promise<API.ReportRestroomData> {
+  return APIClient.post<API.ReportRestroomResponse>(
+    `/report/${id}`,
+    {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('token'),
+      },
+    },
+  ).then((res) => res.data.data);
+}
+
 // admin
 
 // GET /report
@@ -312,4 +327,9 @@ export function getCommentDetail(
       Authorization: localStorage.getItem('token'),
     },
   }).then((res) => res.data.data);
+}
+
+export function getImage(id: number) {
+  const baseURL = APIClient.defaults.baseURL;
+  return `${baseURL}/restroom/${id}/image`;
 }
