@@ -26,10 +26,8 @@ import { VoteEntity, VoteType } from 'src/model/vote.entity';
 import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
-import { UserEntity } from 'src/model/user.entity';
 import { GetRestroomListVo } from './vo/get-restroom-list.vo';
 import { RoleType, UserEntity } from 'src/model/user.entity';
-import { CommentService } from '../comment/comment.service';
 import { UserService } from '../user/user.service';
 
 @Injectable()
