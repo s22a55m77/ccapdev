@@ -1,16 +1,16 @@
-type RestroomList = {
-  id: string;
+import { GenderType } from '../../../model/restroom.entity';
+
+export class GetRestroomListVo {
+  id: number;
   title: string;
   building: string;
   floor: number;
   location: string; // location detail
   rating: number;
   tags: string[];
-  restroomImageIds: string[];
+  restroomImageIds: number[];
   totalComments: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: GenderType;
   createdByUser: string;
   createdAt: string;
-};
-
-export type GetRestroomListVo = RestroomList[];
+}

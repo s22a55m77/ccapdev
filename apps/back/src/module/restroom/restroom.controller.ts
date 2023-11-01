@@ -34,6 +34,7 @@ import {
 import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
+import { GetRestroomListVo } from './vo/get-restroom-list.vo';
 
 @Controller('restroom')
 export class RestroomController {
@@ -47,10 +48,10 @@ export class RestroomController {
     return ResponseVo.success(filter);
   }
 
-  // TODO 这个可以留到最后，不然数据库没数据无法测试
+  // TODO 需要更多数据来测试
   // GET /restroom
   @Get()
-  getRestroomList(
+  async getRestroomList(
     @Query('sort') sort: 'RATING' | 'NEW',
     @Query('region') region?: string,
     @Query('province') province?: string,
@@ -59,7 +60,7 @@ export class RestroomController {
     @Query('floor') floor?: string,
     @Query('gender') gender?: 'MALE' | 'FEMALE',
     @Query('availability') availability?: string,
-  ) {
+  ): Promise<ResponseVo<GetRestroomListVo[]>> {
     if (city) city = JSON.parse(city.substring(1).slice(0, -1));
     if (region) region = JSON.parse(region.substring(1).slice(0, -1));
     if (province)
@@ -67,9 +68,21 @@ export class RestroomController {
     if (building)
       building = JSON.parse(building.substring(1).slice(0, -1));
     if (floor) floor = JSON.parse(floor.substring(1).slice(0, -1));
+    if (availability)
+      availability = JSON.parse(availability.substring(1).slice(0, -1));
 
-    // TODO
-    return { city, region, gender, province, sort };
+    const data = await this.restroomService.getRestroomList({
+      sort,
+      gender,
+      availability,
+      region,
+      province,
+      city,
+      building,
+      floor,
+    });
+
+    return ResponseVo.success(data);
   }
 
   // GET /restroom/:id

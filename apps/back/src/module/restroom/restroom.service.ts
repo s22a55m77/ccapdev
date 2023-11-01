@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegionEntity } from '../../model/region.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { addKeyFromExistingField, renameKey } from '../../common/utils';
+import { renameKey } from '../../common/utils';
 import {
   FilterDataType,
   GetFilterOptionsVo,
@@ -26,6 +26,8 @@ import { VoteEntity, VoteType } from 'src/model/vote.entity';
 import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
+import { UserEntity } from 'src/model/user.entity';
+import { GetRestroomListVo } from './vo/get-restroom-list.vo';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { CommentService } from '../comment/comment.service';
 import { UserService } from '../user/user.service';
@@ -96,12 +98,13 @@ export class RestroomService {
     ];
 
     let availability: FilterDataType[] = await this.tagRepo
-      .find({ select: { name: true } })
+      .find({ select: { name: true, id: true } })
       // FIXME type casting
       .then((res) => res as unknown as FilterDataType[]);
 
     availability = renameKey(availability, 'label', 'name');
-    availability = addKeyFromExistingField(availability, 'value', 'label');
+    availability = renameKey(availability, 'value', 'id');
+    // availability = addKeyFromExistingField(availability, 'value', 'label');
 
     return { location: location, gender: gender, availability };
   }
@@ -497,5 +500,70 @@ export class RestroomService {
 
   async getAdminReportList(): Promise<GetAdminReportListVo> {
     return null;
+  }
+
+  async getRestroomList({
+    sort,
+    gender,
+    availability,
+    region,
+    province,
+    city,
+    building,
+    floor,
+  }): Promise<GetRestroomListVo[]> {
+    const filterQB = this.restroomRepo
+      .createQueryBuilder('r')
+      .select('r.id AS id')
+      .leftJoin(RestroomTagEntity, 'rt', 'r.id=rt.restroomId')
+      .leftJoin(FloorEntity, 'f', 'f.id=r."floorId"')
+      .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
+      .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
+      .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
+      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"');
+
+    if (gender)
+      filterQB.where('r.gender = :gender', {
+        gender: gender.toLowerCase().replaceAll('"', ''),
+      });
+
+    if (availability)
+      filterQB.andWhere('rt.tagId IN (:...tags)', { tags: availability });
+
+    if (region) filterQB.andWhere('r2.id IN (:...region)', { region });
+
+    if (province)
+      filterQB.andWhere('p.id IN (:...province)', { province });
+
+    if (city) filterQB.andWhere('c.id IN (:...city)', { city });
+
+    if (building)
+      filterQB.andWhere('b.id IN (:...building)', { building });
+
+    if (floor) filterQB.andWhere('f.id IN (:...floor)', { floor });
+
+    const ids = await filterQB.execute();
+
+    const rawResult: GetRestroomListVo[] = [];
+
+    for (const id of ids) {
+      const detail = await this.getRestroomDetail(id.id);
+      delete detail.commentsIds;
+      delete detail.locationImageIds;
+      rawResult.push(detail);
+    }
+
+    let data: GetRestroomListVo[];
+    if (sort === '"RATING"')
+      data = rawResult.sort((a, b) => b.rating - a.rating);
+    else if (sort === '"NEW"')
+      data = rawResult.sort((a, b) => {
+        const dateA: Date = new Date(a.createdAt);
+        const dateB: Date = new Date(b.createdAt);
+
+        return dateB.valueOf() - dateA.valueOf();
+      });
+    else data = rawResult;
+    return data;
   }
 }
