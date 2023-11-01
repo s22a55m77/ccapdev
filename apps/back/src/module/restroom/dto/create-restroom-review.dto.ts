@@ -1,5 +1,5 @@
 export class CreateRestroomReviewDto {
-  rating: number;
-  commentTo: string;
+  rating?: number;
+  commentTo?: number;
   content: string;
 }

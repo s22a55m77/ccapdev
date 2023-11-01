@@ -117,13 +117,14 @@ export class RestroomController {
   @Post(':id/review')
   @Auth([RoleType.USER, RoleType.ADMIN])
   async createRestroomReview(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() createRestroomReviewDto: CreateRestroomReviewDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<CreateRestroomReviewVo>> {
     const review = await this.restroomService.createRestroomReview(
       id,
       createRestroomReviewDto,
+      user.id,
     );
 
     return ResponseVo.success(review);

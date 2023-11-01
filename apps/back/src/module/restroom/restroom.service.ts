@@ -19,11 +19,7 @@ import { CreateRestroomReviewDto } from './dto/create-restroom-review.dto';
 import { CommentEntity, Type } from '../../model/comment.entity';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 import { UpdateRestroomReviewVo } from './vo/update-restroom-review.vo';
-import {
-  GenderType,
-  RestroomEntity,
-  StatusType,
-} from '../../model/restroom.entity';
+import { RestroomEntity, StatusType } from '../../model/restroom.entity';
 import { ChangeVoteStatusVo } from './vo/change-vote-status.vo';
 import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
 import { VoteEntity, VoteType } from 'src/model/vote.entity';
@@ -31,7 +27,7 @@ import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { UserEntity } from 'src/model/user.entity';
-import { AuthUser } from '../auth/auth-user';
+import { CommentService } from '../comment/comment.service';
 
 @Injectable()
 export class RestroomService {
@@ -371,11 +367,39 @@ export class RestroomService {
   }
 
   async createRestroomReview(
-    id: string,
+    id: number,
     createRestroomReviewDto: CreateRestroomReviewDto,
+    currentUserId: number,
   ): Promise<CreateRestroomReviewVo> {
     // TODO insert完需要再查出返回数据
-    return null;
+    const { rating, commentTo, content } = createRestroomReviewDto;
+
+    if (rating !== null) {
+      const commentEntity: CommentEntity = this.commentRepo.create({
+        rating,
+        commentById: currentUserId,
+        content,
+        restroomId: id,
+        type: Type.REVIEW,
+      });
+      this.commentRepo.save(commentEntity);
+    }
+    if (commentTo !== null) {
+      const commentEntity: CommentEntity = this.commentRepo.create({
+        commentToId: commentTo,
+        commentById: currentUserId,
+        content,
+        restroomId: id,
+        type: Type.REVIEW,
+      });
+      this.commentRepo.save(commentEntity);
+    }
+
+    const createRestroomReviewVo: CreateRestroomReviewVo =
+      new CreateRestroomReviewVo();
+    // todo
+
+    return createRestroomReviewVo;
   }
 
   async updateRestroomReview(
