@@ -509,9 +509,10 @@ export class RestroomService {
 
     if (gender)
       filterQB.where('r.gender = :gender', {
-        gender: gender.toLowerCase().replaceAll('"', ''),
+        gender: gender.toLowerCase(),
       });
 
+    console.log(typeof availability);
     if (availability)
       filterQB.andWhere('rt.tagId IN (:...tags)', { tags: availability });
 
@@ -539,9 +540,9 @@ export class RestroomService {
     }
 
     let data: GetRestroomListVo[];
-    if (sort === '"RATING"')
+    if (sort === 'RATING')
       data = rawResult.sort((a, b) => b.rating - a.rating);
-    else if (sort === '"NEW"')
+    else if (sort === 'NEW')
       data = rawResult.sort((a, b) => {
         const dateA: Date = new Date(a.createdAt);
         const dateB: Date = new Date(b.createdAt);

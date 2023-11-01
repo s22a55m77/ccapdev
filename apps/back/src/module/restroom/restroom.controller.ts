@@ -59,15 +59,12 @@ export class RestroomController {
     @Query('gender') gender?: 'MALE' | 'FEMALE',
     @Query('availability') availability?: string,
   ): Promise<ResponseVo<GetRestroomListVo[]>> {
-    if (city) city = JSON.parse(city.substring(1).slice(0, -1));
-    if (region) region = JSON.parse(region.substring(1).slice(0, -1));
-    if (province)
-      province = JSON.parse(province.substring(1).slice(0, -1));
-    if (building)
-      building = JSON.parse(building.substring(1).slice(0, -1));
-    if (floor) floor = JSON.parse(floor.substring(1).slice(0, -1));
-    if (availability)
-      availability = JSON.parse(availability.substring(1).slice(0, -1));
+    if (city) city = JSON.parse(city);
+    if (region) region = JSON.parse(region);
+    if (province) province = JSON.parse(province);
+    if (building) building = JSON.parse(building);
+    if (floor) floor = JSON.parse(floor);
+    if (availability) availability = JSON.parse(availability);
 
     const data = await this.restroomService.getRestroomList({
       sort,
