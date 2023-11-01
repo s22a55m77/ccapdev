@@ -224,7 +224,7 @@ declare namespace API {
 
   type FilterDataType = {
     label: string;
-    value: string;
+    value: number;
     children?: FilterDataType[];
   };
 

@@ -13,13 +13,13 @@ import {
   Snackbar,
   TextField,
 } from '@mui/material';
-import buildingInfo from '../Main/buildingInfo.ts';
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { createRestroom, getFilterOptions } from '../../services/api.ts';
 import { AlertContent } from '../../declaration';
 import { useRequest } from 'ahooks';
 import { Cascader } from 'antd';
+import FilterDataType = API.FilterDataType;
 
 type SubmitRestroomForm = {
   building: string;
@@ -34,17 +34,13 @@ type SubmitRestroomForm = {
 };
 
 export default function Index() {
-  const { register, handleSubmit, setValue, control } =
+  const { register, handleSubmit, setValue, control, getValues } =
     useForm<SubmitRestroomForm>({
       defaultValues: {
-        building: buildingInfo[0].buildingName,
         floor: 1,
         gender: 'MALE',
       },
     });
-  const [selectedBuilding, setSelectedBuilding] = useState(
-    buildingInfo[0].buildingName,
-  );
 
   const [alertContent, setAlertContent] = useState<AlertContent>({
     isOpen: false,
@@ -97,9 +93,22 @@ export default function Index() {
     });
   };
 
-  const handleFilterChange = (data: string | any[]) => {
-    if (data.length >= 4) setIsBuildingDisable(true);
-    if (data.length >= 5) setIsFloorDisable(true);
+  const handleFilterChange = (data: (number | string)[]) => {
+    if (filter?.location) {
+      if (data.length >= 4) {
+        const obj = findObjectByValues(
+          filter.location,
+          data.slice(0, 4) as number[],
+        );
+        setIsBuildingDisable(true);
+        setValue('building', obj!.label);
+      } else setIsBuildingDisable(false);
+      if (data.length >= 5) {
+        const obj = findObjectByValues(filter.location, data as number[]);
+        setIsFloorDisable(true);
+        setValue('floor', Number(obj!.label));
+      } else setIsFloorDisable(false);
+    }
   };
 
   return (
@@ -129,13 +138,14 @@ export default function Index() {
               <Controller
                 control={control}
                 name="building"
-                render={({ field }) => (
+                render={() => (
                   <FormControl fullWidth required>
                     <div
                       className={'flex'}
                       style={{ alignItems: 'center' }}
                     >
                       <Cascader
+                        changeOnSelect
                         multiple={false}
                         placeholder="Location"
                         options={option}
@@ -154,7 +164,7 @@ export default function Index() {
               <div>
                 <TextField
                   {...register('building')}
-                  label={'Building'}
+                  label={getValues('building') ? '' : 'Building'}
                   sx={{
                     marginTop: '20px',
                     width: '90%',
@@ -167,7 +177,7 @@ export default function Index() {
                 <Controller
                   control={control}
                   name="floor"
-                  render={({ field }) => (
+                  render={() => (
                     <FormControl fullWidth required>
                       <div
                         className={'flex'}
@@ -178,6 +188,10 @@ export default function Index() {
                           sx={{ width: '70%' }}
                           type="number"
                           disabled={isFloorDisable}
+                          value={getValues('floor')}
+                          onChange={(e) => {
+                            setValue('floor', Number(e.target.value));
+                          }}
                         />
                         <LayersOutlinedIcon />
                       </div>
@@ -312,3 +326,34 @@ export default function Index() {
     </>
   );
 }
+
+const findObjectByValues = (
+  data: FilterDataType[],
+  valuesToFind: number[],
+): FilterDataType | null => {
+  if (
+    !data ||
+    !Array.isArray(data) ||
+    data.length === 0 ||
+    valuesToFind.length === 0
+  ) {
+    return null;
+  }
+
+  const valueToFind: number = valuesToFind[0];
+  for (const item of data) {
+    if (item.value === valueToFind) {
+      if (
+        valuesToFind.length === 1 ||
+        !item.children ||
+        item.children.length === 0
+      ) {
+        return item;
+      } else {
+        return findObjectByValues(item.children, valuesToFind.slice(1));
+      }
+    }
+  }
+
+  return null;
+};
