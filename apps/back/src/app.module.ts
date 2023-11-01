@@ -38,6 +38,7 @@ import { UserModule } from './module/user/user.module';
         logging: configService.get<boolean>('DB_LOG') ? true : false,
         ssl: configService.get<boolean>('DB_SSL'),
         migrationsRun: false,
+        autoLoadEntities: true,
         entities: [
           BuildingEntity,
           CityEntity,

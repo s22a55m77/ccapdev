@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CommentEntity } from '../../model/comment.entity';
 import { Repository } from 'typeorm';
 import { GetCommentDetailVo } from './vo/get-comment-detail.vo';

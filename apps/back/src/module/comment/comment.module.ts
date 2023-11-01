@@ -9,12 +9,19 @@ import { UserEntity } from 'src/model/user.entity';
 import { AuthController } from '../auth/auth.controller';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { RestroomEntity } from '../../model/restroom.entity';
+import { RestroomService } from '../restroom/restroom.service';
+import { EntitiesModule } from '../entity/entities.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([CommentEntity, VoteEntity, UserEntity]),
-  ],
+  imports: [EntitiesModule],
   controllers: [CommentController],
-  providers: [CommentService, UserService, AuthService, JwtService],
+  providers: [
+    CommentService,
+    UserService,
+    AuthService,
+    JwtService,
+    RestroomService,
+  ],
 })
 export class CommentModule {}

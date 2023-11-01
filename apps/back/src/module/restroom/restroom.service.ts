@@ -512,7 +512,6 @@ export class RestroomService {
         gender: gender.toLowerCase(),
       });
 
-    console.log(typeof availability);
     if (availability)
       filterQB.andWhere('rt.tagId IN (:...tags)', { tags: availability });
 
@@ -551,5 +550,29 @@ export class RestroomService {
       });
     else data = rawResult;
     return data;
+  }
+
+  async getRestroomTitle(id: number): Promise<string> {
+    const info = await this.restroomRepo
+      .createQueryBuilder('r')
+      .select([
+        'r.gender AS gender',
+        'r2.name AS region',
+        'p.name AS province',
+        'c.name AS city',
+        'b.name AS building',
+        'f.floor AS floor',
+      ])
+      .leftJoin(FloorEntity, 'f', 'f.id=r."floorId"')
+      .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
+      .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
+      .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
+      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
+      .where('r.id = :id', { id })
+      .getRawOne();
+
+    const title = `${info.building} - ${info.floor} - ${info.gender} - ${info.city} - ${info.province} - ${info.region}`;
+
+    return title;
   }
 }

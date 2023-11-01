@@ -16,6 +16,8 @@ import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from '../../model/user.entity';
 import { AuthUser } from '../auth/auth-user';
 import { ResponseVo } from '../../common/response.vo';
+import { GetUserProfileVo } from './vo/get-user-profile.vo';
+import { retry } from 'rxjs';
 
 @Controller('user')
 export class UserController {
@@ -45,10 +47,13 @@ export class UserController {
 
   // GET /user/:id/profile
   @Get(':id/profile')
-  @Auth([RoleType.USER, RoleType.ADMIN])
-  getUserProfile(@Param('id') id: string, @AuthUser() user: UserEntity) {
-    // TODO
-    return id;
+  // @Auth([RoleType.USER, RoleType.ADMIN])
+  async getUserProfile(
+    @Param('id') id: number,
+    @AuthUser() user: UserEntity,
+  ): Promise<ResponseVo<GetUserProfileVo>> {
+    const userProfile = await this.userService.getUserProfile(id);
+    return ResponseVo.success(userProfile);
   }
 
   // GET /user:id/profile/pic

@@ -60,7 +60,7 @@ export class AuthController {
   @Get('me')
   @Auth([RoleType.USER, RoleType.ADMIN])
   me(@AuthUser() user: UserEntity) {
-    return ResponseVo.success({ user });
+    return ResponseVo.success({ ...user });
   }
 
   //GET /auth/refresh

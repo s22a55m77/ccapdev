@@ -1,22 +1,24 @@
-type UserHistory = {
-  id: string;
+import { RoleType } from '../../../model/user.entity';
+
+export type UserHistory = {
+  id: number;
   title: string;
   content: string;
   rating?: number;
-  commentTo?: string; // comment ID to which it comments to
+  commentTo?: number; // comment ID to which it comments to
   commentToUser?: string; // username
-  commentByUserId: string; // userId
+  commentByUserId: number; // userId
   commentBy?: string; // username
   type: 'Reply' | 'Submit' | 'Review';
 };
 
 export class GetUserProfileVo {
-  id: string;
+  id: number;
   username: string;
   reviews: number;
-  dateRegistered: number;
+  dateRegistered: string;
   description: string;
-  role: 'USER' | 'ADMIN';
-  profilePicId: string;
+  role: RoleType;
+  profilePicId: number;
   history: UserHistory[];
 }
