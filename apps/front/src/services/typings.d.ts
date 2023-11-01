@@ -120,7 +120,7 @@ declare namespace API {
   type CreateRestroomReviewParams = {
     rating?: number;
     restroomId: number;
-    commentTo?: string; // comment ID to which it comments to
+    commentTo?: number; // comment ID to which it comments to
     content?: string;
   };
 
@@ -174,7 +174,7 @@ declare namespace API {
     isUpVoted: boolean;
     isDownVoted: boolean;
     isAdmin: boolean;
-    childComments: string[];
+    childComments: number[];
   };
 
   type GetCommentDetailResponse = BaseResponse<CommentDetailData>;

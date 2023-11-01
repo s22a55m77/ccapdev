@@ -233,7 +233,7 @@ export function updateRestroomReview({
 
 // DELETE / restroom/:id/review/
 export function deleteRestroomReview(
-  restroomId: string,
+  restroomId: number,
 ): Promise<API.RestroomData> {
   return APIClient.delete<API.DeleteRestroomReviewResponse>(
     `/restroom/${restroomId}/review`,
@@ -320,7 +320,7 @@ export function changeReportStatus({
 
 // GET /comment/:id
 export function getCommentDetail(
-  id: string,
+  id: number,
 ): Promise<API.CommentDetailData> {
   return APIClient.get<API.GetCommentDetailResponse>(`/comment/${id}`, {
     headers: {

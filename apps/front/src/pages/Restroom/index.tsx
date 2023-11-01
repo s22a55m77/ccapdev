@@ -234,7 +234,7 @@ export default function Restroom() {
         {restroomData?.commentsIds.map((commentId) => (
           <ReplyCard
             key={commentId}
-            restroomId={restroomId || ''}
+            restroomId={Number(restroomId) || 0}
             commentId={commentId}
             isParent={true}
           />

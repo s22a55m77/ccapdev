@@ -30,7 +30,7 @@ import { useUserStore } from '../../Login/user.store.ts';
 import { Link } from 'react-router-dom';
 
 type ReplyCardProps = {
-  restroomId: string;
+  restroomId: number;
   isParent: boolean;
   commentId: number;
 };
