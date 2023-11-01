@@ -26,8 +26,9 @@ import { VoteEntity, VoteType } from 'src/model/vote.entity';
 import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
-import { UserEntity } from 'src/model/user.entity';
+import { RoleType, UserEntity } from 'src/model/user.entity';
 import { CommentService } from '../comment/comment.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class RestroomService {
@@ -56,6 +57,7 @@ export class RestroomService {
     private readonly voteRepo: Repository<VoteEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    private readonly userService: UserService,
   ) {}
 
   async getFilterOptions(): Promise<GetFilterOptionsVo> {
@@ -374,8 +376,9 @@ export class RestroomService {
     // TODO insert完需要再查出返回数据
     const { rating, commentTo, content } = createRestroomReviewDto;
 
+    let commentEntity: CommentEntity = null;
     if (rating !== null) {
-      const commentEntity: CommentEntity = this.commentRepo.create({
+      commentEntity = this.commentRepo.create({
         rating,
         commentById: currentUserId,
         content,
@@ -385,7 +388,7 @@ export class RestroomService {
       this.commentRepo.save(commentEntity);
     }
     if (commentTo !== null) {
-      const commentEntity: CommentEntity = this.commentRepo.create({
+      commentEntity = this.commentRepo.create({
         commentToId: commentTo,
         commentById: currentUserId,
         content,
@@ -397,7 +400,73 @@ export class RestroomService {
 
     const createRestroomReviewVo: CreateRestroomReviewVo =
       new CreateRestroomReviewVo();
-    // todo
+    const getCommentEntity: CommentEntity = await this.commentRepo.findOne(
+      { where: { id: commentEntity.id } },
+    );
+    createRestroomReviewVo.id = getCommentEntity.id;
+    createRestroomReviewVo.content = getCommentEntity.content;
+    createRestroomReviewVo.rating = getCommentEntity.rating;
+    createRestroomReviewVo.commentTo = getCommentEntity.commentToId;
+
+    // comment to user
+    const commentToInfo: CommentEntity = await this.commentRepo.findOne({
+      where: { id: getCommentEntity.commentToId },
+    });
+    createRestroomReviewVo.commentToUser = (
+      await this.userService.getUserById(commentToInfo.commentById)
+    ).username;
+    createRestroomReviewVo.commentToUserId = commentToInfo.commentById;
+
+    // comment by user
+    createRestroomReviewVo.commentByUserId = getCommentEntity.commentById;
+    createRestroomReviewVo.commentBy = (
+      await this.userService.getUserById(getCommentEntity.commentById)
+    ).username;
+
+    // comment at
+    createRestroomReviewVo.commentAt =
+      getCommentEntity.commentAt.toString();
+
+    // downvote and upvote
+    const votingEntities: VoteEntity[] = await this.voteRepo.find({
+      where: { voteToId: getCommentEntity.commentById },
+    });
+    createRestroomReviewVo.isUpVoted = false;
+    createRestroomReviewVo.isDownVoted = false;
+    let downVoteCount = 0;
+    let upVoteCount = 0;
+    votingEntities.forEach((vote) => {
+      if (vote.type === VoteType.UPVOTE) {
+        upVoteCount += 1;
+        if (vote.voteById === currentUserId)
+          createRestroomReviewVo.isUpVoted = true;
+      }
+      if (vote.type === VoteType.DOWNVOTE) {
+        downVoteCount += 1;
+        if (vote.voteById === currentUserId)
+          createRestroomReviewVo.isDownVoted = true;
+      }
+    });
+    createRestroomReviewVo.upVote = upVoteCount;
+    createRestroomReviewVo.downVote = downVoteCount;
+
+    // is admin
+    if (
+      (await this.userService.getUserById(currentUserId)).role ===
+      RoleType.ADMIN
+    )
+      createRestroomReviewVo.isAdmin = true;
+    else createRestroomReviewVo.isAdmin = false;
+
+    // child comments
+    const childComments: number[] = [];
+    const commentEntities: CommentEntity[] = await this.commentRepo.find({
+      where: { commentToId: getCommentEntity.id },
+    });
+    commentEntities.forEach((comment) => {
+      childComments.push(comment.id);
+    });
+    createRestroomReviewVo.childComments = childComments;
 
     return createRestroomReviewVo;
   }

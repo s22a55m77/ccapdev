@@ -14,6 +14,7 @@ import { VoteEntity } from 'src/model/vote.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { UserEntity } from 'src/model/user.entity';
+import { UserService } from '../user/user.service';
 
 @Module({
   imports: [
@@ -33,6 +34,6 @@ import { UserEntity } from 'src/model/user.entity';
     ]),
   ],
   controllers: [RestroomController],
-  providers: [RestroomService],
+  providers: [RestroomService, UserService],
 })
 export class RestroomModule {}
