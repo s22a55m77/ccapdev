@@ -149,24 +149,24 @@ export class RestroomController {
     @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<UpdateRestroomReviewVo>> {
-    const review = await this.restroomService.updateRestroomReview(
+    const review = await this.restroomService.findReviewById(id);
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+    if (user.id !== review.commentById) {
+      throw new ForbiddenException(
+        'You are not authorized to update this review.',
+      );
+    }
+
+    const updatedReview = await this.restroomService.updateRestroomReview(
       user.id,
       id,
       updateRestroomReviewDto,
     );
 
-    if (!review) {
-      throw new NotFoundException('Review not found');
-    }
-
-    // FIXME 在这里判断来不及了，review已经被修改了
-    if (user.id !== review.id) {
-      throw new ForbiddenException(
-        'You are not authorized to delete this review.',
-      );
-    }
-
-    return ResponseVo.success(review);
+    return ResponseVo.success(updatedReview);
   }
 
   // DELETE /restroom/:id/review/

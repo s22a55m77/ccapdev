@@ -565,4 +565,12 @@ export class RestroomService {
       },
     });
   }
+
+  async findReviewById(
+    reviewId: number,
+  ): Promise<CommentEntity | undefined> {
+    return await this.commentRepo.findOne({
+      where: { id: reviewId },
+    });
+  }
 }
