@@ -1,0 +1,39 @@
+name: Build and Push Docker Image to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/back/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/back/**'
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Login to Azure Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ccapdev.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and Push
+        working-directory: ./apps/back
+        run: |
+          docker build . -t ccapdev.azurecr.io/back:latest
+          docker push ccapdev.azurecr.io/back:latest
