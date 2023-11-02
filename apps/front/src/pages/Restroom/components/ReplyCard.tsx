@@ -317,7 +317,7 @@ export default function ReplyCard({
               </div>
               <div className={'reply-activity'}>
                 {(currentUser?.id === commentDetail?.commentByUserId ||
-                  currentUser?.role === 'ADMIN') && (
+                  currentUser?.role === 'admin') && (
                   <Button onClick={handleDelete} color={'error'}>
                     Delete
                   </Button>
