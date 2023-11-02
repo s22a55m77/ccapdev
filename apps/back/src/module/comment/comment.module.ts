@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RestroomEntity } from '../../model/restroom.entity';
 import { RestroomService } from '../restroom/restroom.service';
 import { EntitiesModule } from '../entity/entities.module';
+import { UserInterceptor } from '../auth/user.interceptor';
 
 @Module({
   imports: [EntitiesModule],
@@ -22,6 +23,7 @@ import { EntitiesModule } from '../entity/entities.module';
     AuthService,
     JwtService,
     RestroomService,
+    UserInterceptor,
   ],
 })
 export class CommentModule {}

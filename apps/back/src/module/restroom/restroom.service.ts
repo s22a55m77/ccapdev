@@ -373,7 +373,6 @@ export class RestroomService {
   ): Promise<CreateRestroomReviewVo> {
     // TODO insert完需要再查出返回数据
     const { rating, commentTo, content } = createRestroomReviewDto;
-
     let commentEntity: CommentEntity = null;
     if (rating !== null) {
       commentEntity = this.commentRepo.create({
@@ -383,9 +382,8 @@ export class RestroomService {
         restroomId: id,
         type: Type.REVIEW,
       });
-      this.commentRepo.save(commentEntity);
-    }
-    if (commentTo !== null) {
+      commentEntity = await this.commentRepo.save(commentEntity);
+    } else if (commentTo !== null) {
       commentEntity = this.commentRepo.create({
         commentToId: commentTo,
         commentById: currentUserId,
@@ -393,7 +391,7 @@ export class RestroomService {
         restroomId: id,
         type: Type.REVIEW,
       });
-      this.commentRepo.save(commentEntity);
+      commentEntity = await this.commentRepo.save(commentEntity);
     }
 
     const createRestroomReviewVo: CreateRestroomReviewVo =
@@ -422,8 +420,9 @@ export class RestroomService {
     ).username;
 
     // comment at
-    createRestroomReviewVo.commentAt =
-      getCommentEntity.commentAt.toString();
+    createRestroomReviewVo.commentAt = new Date(
+      getCommentEntity.commentAt,
+    ).toDateString();
 
     // downvote and upvote
     const votingEntities: VoteEntity[] = await this.voteRepo.find({

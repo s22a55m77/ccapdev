@@ -1,10 +1,16 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { ResponseVo } from '../../common/response.vo';
 import { GetCommentDetailVo } from './vo/get-comment-detail.vo';
-import { AuthController } from '../auth/auth.controller';
 import { UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
+import { UserInterceptor } from '../auth/user.interceptor';
 
 @Controller('comment')
 export class CommentController {
@@ -12,19 +18,14 @@ export class CommentController {
 
   // GET /comment/:id
   @Get(':id')
+  @UseInterceptors(UserInterceptor)
   async getCommentDetail(
     @Param('id') id: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<GetCommentDetailVo>> {
-    var comment: GetCommentDetailVo = new GetCommentDetailVo();
-    if (user !== null) {
-      comment = await this.commentService.getCommentDetail(id, user.id);
-    } else {
-      comment = await this.commentService.getCommentDetail(
-        id,
-        -1, // fix me: -1 === no user?
-      );
-    }
+    console.log(user);
+    const comment: GetCommentDetailVo =
+      await this.commentService.getCommentDetail(id, user?.id || 0);
 
     return ResponseVo.success(comment);
   }

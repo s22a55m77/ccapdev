@@ -47,7 +47,7 @@ export class CommentEntity {
   @Column({ nullable: true })
   commentToId?: number;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   content: string;
 
   @ManyToOne(() => RestroomEntity, (restroom) => restroom.comments)

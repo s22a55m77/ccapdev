@@ -61,7 +61,9 @@ export class CommentService {
     getCommentDetailVo.commentByUserId = commentByUser.id;
     getCommentDetailVo.commentBy = commentByUser.username;
 
-    getCommentDetailVo.commentAt = commentInfo.commentAt.toString();
+    getCommentDetailVo.commentAt = new Date(
+      commentInfo.commentAt,
+    ).toDateString();
 
     // voting
     var upvoteCount = 0;
