@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Header,
+  NotFoundException,
   Param,
   Patch,
   StreamableFile,
@@ -42,12 +43,14 @@ export class UserController {
   @Patch('profile/pic')
   @Auth([RoleType.USER, RoleType.ADMIN])
   @UseInterceptors(FileInterceptor('file'))
-  updateProfilePic(
+  async updateProfilePic(
     @UploadedFile() file: Express.Multer.File,
     @AuthUser() user: UserEntity,
   ) {
     const image = file.buffer.toString('base64');
-    return this.userService.updateProfilePic(user.id, image);
+    await this.userService.updateProfilePic(user.id, image);
+    const profile = await this.userService.getUserProfile(user.id);
+    return ResponseVo.success(profile);
   }
 
   // GET /user/:id/profile
@@ -64,8 +67,12 @@ export class UserController {
   // GET /user:id/profile/pic
   @Get(':id/profile/pic')
   @Header('Content-Type', 'image/jpeg')
-  async getProfilePic(): Promise<StreamableFile> {
-    const user = await this.userService.getProfilePicById(2);
+  async getProfilePic(@Param('id') id: string): Promise<StreamableFile> {
+    const user = await this.userService.getProfilePicById(Number(id));
+
+    if (!user) {
+      throw new NotFoundException('User does not have profile pic');
+    }
 
     const buffer = Buffer.from(user.profilePicId.toString(), 'base64');
     return new StreamableFile(buffer);

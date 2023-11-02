@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import {
+  getProfilePic,
   getUserProfile,
   updateProfilePic,
   updateUserProfile,
@@ -88,7 +89,7 @@ export default function UserProfile() {
   const { run: updatePic } = useRequest(updateProfilePic, {
     manual: true,
     onSuccess: () => {
-      // TODO MCO2 update the picture
+      window.location.reload();
       setAlertContent({
         isOpen: true,
         message: 'Successfully Edited',
@@ -108,15 +109,7 @@ export default function UserProfile() {
     event: React.KeyboardEvent,
     identifier: string,
   ) => {
-    if (identifier === 'year') {
-      if (event.key === 'Escape') {
-        setYearEdit({ value: undefined, isEditing: false });
-      } else if (event.key === 'Enter') {
-        if (yearEdit?.value) {
-          updateProfile({ yearsInDLSU: Number(yearEdit.value) });
-        }
-      }
-    } else if (identifier === 'desc') {
+    if (identifier === 'desc') {
       if (event.key === 'Escape')
         setDescEdit({ value: undefined, isEditing: false });
       else if (event.key === 'Enter') {
@@ -166,12 +159,11 @@ export default function UserProfile() {
           <div className={'user-profile-card'}>
             <div className={'user-profile-card-content'}>
               <div className={'avatar-container'}>
-                {/*TODO MCO2*/}
                 <Avatar
                   sx={{ width: 100, height: 100 }}
-                  src={data?.profilePicId}
+                  src={getProfilePic(Number(userId) || 0)}
                 />
-                {userId === user?.id && (
+                {userId == user?.id && (
                   <Button
                     component="label"
                     variant={'contained'}
@@ -244,7 +236,7 @@ export default function UserProfile() {
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}
       >
-        {data?.history.length &&
+        {!!data?.history?.length &&
           data?.history.map((history: API.UserHistory, index) => {
             return (
               <Card

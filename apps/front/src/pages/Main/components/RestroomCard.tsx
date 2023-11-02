@@ -8,7 +8,7 @@ import {
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import './RestroomCard.css';
 import { Link } from 'react-router-dom';
-import { getImage } from '../../../services/api.ts';
+import { getImage, getProfilePic } from '../../../services/api.ts';
 
 type RestroomCardProps = Omit<
   API.RestroomListData[0],
@@ -22,6 +22,7 @@ export default function RestroomCard({
   rating,
   restroomImageIds,
   createdByUser,
+  createdByUserId,
   createdAt,
   totalComments,
   location,
@@ -33,7 +34,7 @@ export default function RestroomCard({
           <Card sx={{ maxWidth: '100%' }} className={'card'}>
             {/*TODO MCO2 */}
             <CardHeader
-              avatar={<Avatar />}
+              avatar={<Avatar src={getProfilePic(createdByUserId)} />}
               title={createdByUser}
               subheader={createdAt}
             />
@@ -49,7 +50,6 @@ export default function RestroomCard({
               />
               <div className={'card-content'}> {location} </div>
               <div className={'restroom-card-image-container'}>
-                {/*TODO MCO2*/}
                 {restroomImageIds?.map((id, index) => {
                   return (
                     <img

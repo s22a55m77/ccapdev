@@ -7,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../../pages/Login/user.store.ts';
-import { logout } from '../../services/api.ts';
+import { getProfilePic, logout } from '../../services/api.ts';
 
 export default function Navbar() {
   const { user, isLogin } = useUserStore();
@@ -78,7 +78,7 @@ export default function Navbar() {
         ) : (
           <div>
             <Button id="basic-button" onClick={handleAvatarClick}>
-              <Avatar></Avatar>
+              <Avatar src={getProfilePic(user?.id || 0)}></Avatar>
             </Button>
           </div>
         )}

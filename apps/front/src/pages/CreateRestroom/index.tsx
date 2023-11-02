@@ -29,8 +29,8 @@ type SubmitRestroomForm = {
   vending: boolean;
   baghook: boolean;
   hand: boolean;
-  locationImage: FileList[];
-  restroomImage: FileList[];
+  locationImage: FileList;
+  restroomImage: FileList;
 };
 
 type LocationInfo = {

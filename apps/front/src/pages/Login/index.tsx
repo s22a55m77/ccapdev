@@ -8,6 +8,7 @@ import { useUserStore } from './user.store.ts';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { AxiosError } from 'axios';
 
 type LoginForm = API.LoginParams & {
   rememberMe?: boolean;
@@ -50,7 +51,10 @@ export default function LoginPage() {
         localStorage.setItem('lastLoginTime', new Date().toDateString());
       navigate('/');
     } catch (error) {
-      setErrMsg('Err Msg');
+      const msg = (
+        (error as AxiosError).response!.data as API.BaseResponse<null>
+      ).msg;
+      setErrMsg(msg || 'Unknown Error');
     }
   };
 

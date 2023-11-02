@@ -92,7 +92,7 @@ export function updateUserProfile({
 // PATCH /user/profile/pic
 export function updateProfilePic(
   file: File,
-): Promise<API.UpdateProfilePicData> {
+): Promise<API.UserProfileData> {
   return APIClient.patch<API.UpdateProfilePicResponse>(
     '/user/profile/pic',
     { file },
@@ -336,4 +336,9 @@ export function getCommentDetail(
 export function getImage(id: number) {
   const baseURL = APIClient.defaults.baseURL;
   return `${baseURL}/restroom/${id}/image`;
+}
+
+export function getProfilePic(id: number) {
+  const baseURL = APIClient.defaults.baseURL;
+  return `${baseURL}/user/${id}/profile/pic`;
 }

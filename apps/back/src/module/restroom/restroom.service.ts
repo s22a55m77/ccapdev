@@ -125,7 +125,6 @@ export class RestroomService {
   async getRestroomDetail(
     id: number,
   ): Promise<GetRestroomDetailVo | null> {
-    // TODO
     const restroomInfo = await this.restroomRepo.findOne({
       where: {
         id,
@@ -238,6 +237,7 @@ export class RestroomService {
     restroomDetail.totalComments = totalComments;
     restroomDetail.gender = restroomInfo.gender;
     restroomDetail.createdByUser = createdByUser.username;
+    restroomDetail.createdByUserId = createdByUser.id;
     restroomDetail.createdAt = restroomInfo.createdAt.toDateString();
 
     return restroomDetail;
@@ -471,7 +471,7 @@ export class RestroomService {
   }): Promise<GetRestroomListVo[]> {
     const filterQB = this.restroomRepo
       .createQueryBuilder('r')
-      .select('r.id AS id')
+      .select('DISTINCT r.id AS id')
       .leftJoin(RestroomTagEntity, 'rt', 'r.id=rt.restroomId')
       .leftJoin(FloorEntity, 'f', 'f.id=r."floorId"')
       .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
@@ -499,29 +499,35 @@ export class RestroomService {
 
     if (floor) filterQB.andWhere('f.id IN (:...floor)', { floor });
 
-    const ids = await filterQB.execute();
+    const filteredRestroomIds = await filterQB.execute();
 
-    const rawResult: GetRestroomListVo[] = [];
+    const restroomIds = filteredRestroomIds.map((id) => id.id);
 
-    for (const id of ids) {
-      const detail = await this.getRestroomDetail(id.id);
+    const restroomDetailsPromises = restroomIds.map((id) =>
+      this.getRestroomDetail(id),
+    );
+
+    const restroomDetails = await Promise.all(restroomDetailsPromises);
+
+    // Remove unnecessary properties
+    restroomDetails.forEach((detail) => {
       delete detail.commentsIds;
       delete detail.locationImageIds;
-      rawResult.push(detail);
+      detail.restroomImageIds = detail.restroomImageIds.slice(0, 3);
+    });
+
+    // Sort the results based on the chosen sort option
+    if (sort === 'RATING') {
+      restroomDetails.sort((a, b) => b.rating - a.rating);
+    } else if (sort === 'NEW') {
+      restroomDetails.sort(
+        (a, b) =>
+          new Date(b.createdAt).valueOf() -
+          new Date(a.createdAt).valueOf(),
+      );
     }
 
-    let data: GetRestroomListVo[];
-    if (sort === 'RATING')
-      data = rawResult.sort((a, b) => b.rating - a.rating);
-    else if (sort === 'NEW')
-      data = rawResult.sort((a, b) => {
-        const dateA: Date = new Date(a.createdAt);
-        const dateB: Date = new Date(b.createdAt);
-
-        return dateB.valueOf() - dateA.valueOf();
-      });
-    else data = rawResult;
-    return data;
+    return restroomDetails;
   }
 
   async getRestroomTitle(id: number): Promise<string> {

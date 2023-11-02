@@ -201,6 +201,7 @@ export default function Main() {
                   rating={restroom.rating}
                   restroomImageIds={restroom.restroomImageIds}
                   createdByUser={restroom.createdByUser}
+                  createdByUserId={restroom.createdByUserId}
                   createdAt={restroom.createdAt}
                   totalComments={restroom.totalComments}
                   location={restroom.location}

@@ -8,6 +8,7 @@ import { useUserStore } from '../Login/user.store.ts';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import { AxiosError } from 'axios';
 
 type RegisterFormValues = {
   username: string;
@@ -51,7 +52,10 @@ export default function RegisterPage() {
       setUser(userData);
       navigate('/');
     } catch (error) {
-      setErrMsg('Error registering, please try again.');
+      const msg = (
+        (error as AxiosError).response!.data as API.BaseResponse<null>
+      ).msg;
+      setErrMsg(msg || 'Unknown Error');
     }
   };
 

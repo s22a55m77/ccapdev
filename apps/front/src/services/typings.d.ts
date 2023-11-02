@@ -87,6 +87,7 @@ declare namespace API {
     totalComments: number;
     gender: 'MALE' | 'FEMALE';
     createdByUser: string;
+    createdByUserId: number;
     createdAt: string;
   };
 
@@ -114,11 +115,7 @@ declare namespace API {
 
   type RateRestroomResponse = BaseResponse<RestroomData>;
 
-  type UpdateProfilePicData = {
-    id: number;
-  };
-
-  type UpdateProfilePicResponse = BaseResponse<UpdateProfilePicData>;
+  type UpdateProfilePicResponse = BaseResponse<UserProfileData>;
 
   type CreateRestroomReviewParams = {
     rating?: number;
@@ -227,7 +224,7 @@ declare namespace API {
 
   type FilterDataType = {
     label: string;
-    value: number;
+    value: number | string;
     children?: FilterDataType[];
   };
 

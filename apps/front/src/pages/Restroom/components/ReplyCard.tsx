@@ -23,6 +23,7 @@ import {
   createRestroomReview,
   deleteRestroomReview,
   getCommentDetail,
+  getProfilePic,
   updateRestroomReview,
 } from '../../../services/api.ts';
 import { AlertContent } from '../../../declaration';
@@ -207,10 +208,13 @@ export default function ReplyCard({
           sx={{ maxWidth: '100%' }}
           className={`reply-card ${isParent ? '' : 'reply-border-blue'}`}
         >
-          {/*fix me */}
           {isParent && (
             <CardHeader
-              avatar={<Avatar />}
+              avatar={
+                <Avatar
+                  src={getProfilePic(commentDetail?.commentByUserId || 0)}
+                />
+              }
               title={
                 <>
                   <Link to={`/user/${commentDetail?.commentByUserId}`}>

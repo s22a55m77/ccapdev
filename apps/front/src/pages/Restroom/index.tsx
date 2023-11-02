@@ -19,6 +19,7 @@ import { useRequest } from 'ahooks';
 import {
   createRestroomReview,
   getImage,
+  getProfilePic,
   getRestroomDetail,
   reportRestroom,
 } from '../../services/api.ts';
@@ -118,9 +119,12 @@ export default function Restroom() {
       >
         <div id={'cards'}>
           <Card sx={{ maxWidth: '100%' }} className={'restroom'}>
-            {/*fix me */}
             <CardHeader
-              avatar={<Avatar />}
+              avatar={
+                <Avatar
+                  src={getProfilePic(restroomData?.createdByUserId || 0)}
+                />
+              }
               title={restroomData?.createdByUser}
               subheader={restroomData?.createdAt}
             />

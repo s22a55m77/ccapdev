@@ -14,5 +14,6 @@ export class GetRestroomDetailVo {
   totalComments: number;
   gender: GenderType;
   createdByUser: string;
+  createdByUserId: number;
   createdAt: string;
 }
