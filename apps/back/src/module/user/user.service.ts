@@ -8,6 +8,8 @@ import { CommentService } from '../comment/comment.service';
 import { RestroomEntity } from '../../model/restroom.entity';
 import { GetUserProfileVo, UserHistory } from './vo/get-user-profile.vo';
 import { RestroomService } from '../restroom/restroom.service';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
+import { UpdateUserProfileVo } from './vo/update-user-profile.vo';
 
 @Injectable()
 export class UserService {
@@ -57,6 +59,20 @@ export class UserService {
       .then((res) => res.identifiers[0].id as number);
 
     return this.getUserById(id);
+  }
+
+  async updateProfile(
+    id: number,
+    updateUserProfileDto: UpdateUserProfileDto,
+  ): Promise<UpdateUserProfileVo> {
+    const entity = new UserEntity();
+    entity.id = id;
+    entity.description = updateUserProfileDto.description;
+    await this.userRepo.save(entity);
+    const userProfile = (await this.getUserProfile(
+      id,
+    )) as UpdateUserProfileVo;
+    return userProfile;
   }
 
   async updateProfilePic(id: number, image: string): Promise<UserEntity> {

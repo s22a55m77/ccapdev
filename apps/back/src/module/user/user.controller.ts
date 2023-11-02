@@ -18,6 +18,7 @@ import { AuthUser } from '../auth/auth-user';
 import { ResponseVo } from '../../common/response.vo';
 import { GetUserProfileVo } from './vo/get-user-profile.vo';
 import { retry } from 'rxjs';
+import { UpdateUserProfileVo } from './vo/update-user-profile.vo';
 
 @Controller('user')
 export class UserController {
@@ -26,11 +27,15 @@ export class UserController {
   //PATCH /user/profile
   @Patch('profile')
   @Auth([RoleType.USER, RoleType.ADMIN])
-  updateUserProfile(
+  async updateUserProfile(
     @Body() updateUserProfileDto: UpdateUserProfileDto,
     @AuthUser() user: UserEntity,
-  ) {
-    // TODO
+  ): Promise<ResponseVo<UpdateUserProfileVo>> {
+    const userProfile = await this.userService.updateProfile(
+      user.id,
+      updateUserProfileDto,
+    );
+    return ResponseVo.success(userProfile);
   }
 
   // PATCH /user/profile/pic
