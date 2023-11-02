@@ -13,6 +13,7 @@ import { CommentEntity } from '../../model/comment.entity';
 import { RestroomEntity } from '../../model/restroom.entity';
 import { RestroomService } from '../restroom/restroom.service';
 import { EntitiesModule } from '../entity/entities.module';
+import { CommentService } from '../comment/comment.service';
 
 @Module({
   imports: [
@@ -31,6 +32,12 @@ import { EntitiesModule } from '../entity/entities.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JwtStrategy, RestroomService],
+  providers: [
+    AuthService,
+    UserService,
+    JwtStrategy,
+    RestroomService,
+    CommentService,
+  ],
 })
 export class AuthModule {}

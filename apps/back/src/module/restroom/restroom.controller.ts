@@ -146,8 +146,8 @@ export class RestroomController {
     @Body() updateRestroomReviewDto: UpdateRestroomReviewDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<UpdateRestroomReviewVo>> {
-    // TODO 判断是不是本人修改，不是返回403 not sure
     const review = await this.restroomService.updateRestroomReview(
+      user.id,
       id,
       updateRestroomReviewDto,
     );
@@ -156,6 +156,7 @@ export class RestroomController {
       throw new NotFoundException('Review not found');
     }
 
+    // FIXME 在这里判断来不及了，review已经被修改了
     if (user.id !== review.id) {
       throw new ForbiddenException(
         'You are not authorized to delete this review.',

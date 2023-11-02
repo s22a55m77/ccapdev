@@ -13,5 +13,5 @@ export class GetCommentDetailVo {
   isUpVoted: boolean;
   isDownVoted: boolean;
   isAdmin: boolean;
-  childComments: string[]; // contents? or ids?
+  childComments: number[]; // contents? or ids?
 }

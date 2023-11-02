@@ -73,18 +73,27 @@ export class RestroomEntity {
   @Column('text')
   description: string;
 
-  @OneToMany(() => CommentEntity, (comment) => comment.restroom)
+  @OneToMany(() => CommentEntity, (comment) => comment.restroom, {
+    onDelete: 'CASCADE',
+  })
   comments: CommentEntity[];
 
-  @OneToMany(() => ImageEntity, (image) => image.restroom)
+  @OneToMany(() => ImageEntity, (image) => image.restroom, {
+    onDelete: 'CASCADE',
+  })
   images: ImageEntity[];
 
-  @OneToMany(() => ReportEntity, (report) => report.restroom)
+  @OneToMany(() => ReportEntity, (report) => report.restroom, {
+    onDelete: 'CASCADE',
+  })
   reports: ReportEntity[];
 
   @OneToMany(
     () => RestroomTagEntity,
     (restroomTag) => restroomTag.restroom,
+    {
+      onDelete: 'CASCADE',
+    },
   )
   tags: RestroomTagEntity[];
 }

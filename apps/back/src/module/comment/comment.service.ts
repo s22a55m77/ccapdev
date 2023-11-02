@@ -102,7 +102,7 @@ export class CommentService {
     }
 
     // childComments
-    const childComments: string[] = [];
+    const childComments: number[] = [];
     const childCommentEntities = await this.commentRepo.find({
       where: {
         commentToId: id,
@@ -110,7 +110,7 @@ export class CommentService {
     });
 
     childCommentEntities.forEach((childCommentEntity) => {
-      childComments.push(childCommentEntity.content);
+      childComments.push(childCommentEntity.id);
     });
     getCommentDetailVo.childComments = childComments;
 

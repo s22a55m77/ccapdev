@@ -15,25 +15,12 @@ import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { UserEntity } from 'src/model/user.entity';
 import { UserService } from '../user/user.service';
+import { CommentService } from '../comment/comment.service';
+import { EntitiesModule } from '../entity/entities.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      RegionEntity,
-      TagEntity,
-      RestroomTagEntity,
-      RestroomEntity,
-      ImageEntity,
-      BuildingEntity,
-      ProvinceEntity,
-      FloorEntity,
-      CityEntity,
-      CommentEntity,
-      VoteEntity,
-      UserEntity,
-    ]),
-  ],
+  imports: [EntitiesModule],
   controllers: [RestroomController],
-  providers: [RestroomService, UserService],
+  providers: [RestroomService, UserService, CommentService],
 })
 export class RestroomModule {}

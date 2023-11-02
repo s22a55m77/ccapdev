@@ -21,7 +21,6 @@ import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
 import { UpdateRestroomReviewVo } from './vo/update-restroom-review.vo';
 import { RestroomEntity, StatusType } from '../../model/restroom.entity';
 import { ChangeVoteStatusVo } from './vo/change-vote-status.vo';
-import { GetAdminReportListVo } from './vo/get-admin-report-list.vo';
 import { VoteEntity, VoteType } from 'src/model/vote.entity';
 import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
@@ -29,6 +28,7 @@ import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { GetRestroomListVo } from './vo/get-restroom-list.vo';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { UserService } from '../user/user.service';
+import { CommentService } from '../comment/comment.service';
 
 @Injectable()
 export class RestroomService {
@@ -58,6 +58,7 @@ export class RestroomService {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
     private readonly userService: UserService,
+    private readonly commentService: CommentService,
   ) {}
 
   async getFilterOptions(): Promise<GetFilterOptionsVo> {
@@ -464,16 +465,23 @@ export class RestroomService {
   }
 
   async updateRestroomReview(
+    userId: number,
     id: number,
     updateRestroomReviewDto: UpdateRestroomReviewDto,
   ): Promise<UpdateRestroomReviewVo> {
-    // TODO
-
-    return null;
+    const comment = new CommentEntity();
+    comment.id = id;
+    comment.content = updateRestroomReviewDto.content;
+    await this.commentRepo.save(comment);
+    const commentDetail = (await this.commentService.getCommentDetail(
+      id,
+      userId,
+    )) as UpdateRestroomReviewVo;
+    return commentDetail;
   }
 
   async deleteRestroomReview(id): Promise<DeleteResult> {
-    // FIXME FK问题
+    // TODO test if cascade is working
     return this.restroomRepo.delete({ id });
   }
 
