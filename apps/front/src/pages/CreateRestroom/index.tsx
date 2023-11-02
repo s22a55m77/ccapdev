@@ -33,6 +33,12 @@ type SubmitRestroomForm = {
   restroomImage: FileList[];
 };
 
+type LocationInfo = {
+  region: number;
+  province: number;
+  city: number;
+};
+
 export default function Index() {
   const { register, handleSubmit, setValue, control, getValues } =
     useForm<SubmitRestroomForm>({
@@ -51,6 +57,7 @@ export default function Index() {
   const [option, setOption] = useState<API.FilterDataType[]>();
   const [isBuildingDisable, setIsBuildingDisable] = useState(false);
   const [isFloorDisable, setIsFloorDisable] = useState(false);
+  const [locationInfo, setLocationInfo] = useState<LocationInfo>();
 
   const { data: filter } = useRequest(getFilterOptions);
 
@@ -78,15 +85,17 @@ export default function Index() {
 
   const onSubmit = (data: SubmitRestroomForm) => {
     let tags: string[] = [];
-    if (data.hand) tags.push('hand');
-    if (data.vending) tags.push('vending');
-    if (data.baghook) tags.push('baghook');
-
+    if (data.hand) tags.push('Hand Sanitizer');
+    if (data.vending) tags.push('Vending Machine');
+    if (data.baghook) tags.push('Bag Hook');
     create({
       location: data.description,
+      region: locationInfo?.region || 0,
+      province: locationInfo?.province || 0,
+      city: locationInfo?.city || 0,
       building: data.building,
       floor: data.floor,
-      gender: data.gender,
+      gender: data.gender.toLowerCase() as 'male' | 'female',
       tags: tags,
       locationImages: data.locationImage,
       restroomImages: data.restroomImage,
@@ -94,6 +103,11 @@ export default function Index() {
   };
 
   const handleFilterChange = (data: (number | string)[]) => {
+    setLocationInfo({
+      region: data[0] as number,
+      province: data[1] as number,
+      city: data[2] as number,
+    });
     if (filter?.location) {
       if (data.length >= 4) {
         const obj = findObjectByValues(
@@ -102,6 +116,7 @@ export default function Index() {
         );
         setIsBuildingDisable(true);
         setValue('building', obj!.label);
+        console.log(data);
       } else setIsBuildingDisable(false);
       if (data.length >= 5) {
         const obj = findObjectByValues(filter.location, data as number[]);
@@ -237,53 +252,29 @@ export default function Index() {
               <p className={'restroom-form-p'}>Availability:</p>
               <div className="availbox">
                 <div className="availability">
-                  <Controller
-                    control={control}
+                  <input
+                    {...register('vending')}
+                    type="checkbox"
                     name="vending"
-                    render={() => (
-                      <>
-                        <input
-                          {...register('vending')}
-                          type="checkbox"
-                          name="avail"
-                          id="vending"
-                        />
-                        <label htmlFor="vending">Vending Machine</label>
-                      </>
-                    )}
+                    id="vending"
                   />
+                  <label htmlFor="vending">Vending Machine</label>
 
-                  <Controller
-                    control={control}
+                  <input
+                    {...register('baghook')}
+                    type="checkbox"
                     name="baghook"
-                    render={() => (
-                      <>
-                        <input
-                          {...register('baghook')}
-                          type="checkbox"
-                          name="avail"
-                          id="baghook"
-                        />
-                        <label htmlFor="baghook">Bag Hook</label>
-                      </>
-                    )}
+                    id="baghook"
                   />
+                  <label htmlFor="baghook">Bag Hook</label>
 
-                  <Controller
-                    control={control}
+                  <input
+                    {...register('hand')}
+                    type="checkbox"
                     name="hand"
-                    render={() => (
-                      <>
-                        <input
-                          {...register('hand')}
-                          type="checkbox"
-                          name="avail"
-                          id="hand"
-                        />
-                        <label htmlFor="hand">Hand Sanitizer</label>
-                      </>
-                    )}
+                    id="hand"
                   />
+                  <label htmlFor="hand">Hand Sanitizer</label>
                 </div>
               </div>
             </form>

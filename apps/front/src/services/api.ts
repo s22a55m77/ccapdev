@@ -161,30 +161,34 @@ export function createRestroom({
   location,
   locationImages,
   restroomImages,
+  region,
+  province,
+  city,
   building,
   floor,
   gender,
   tags,
 }: API.CreateRestroomParams): Promise<API.RestroomData> {
   // TODO need test on MCO2
-  return APIClient.post<API.CreateRestroomResponse>(
-    '/restroom',
-    {
-      location,
-      building,
-      floor,
-      gender,
-      tags,
-      locationImages,
-      restroomImages,
+  const data = new FormData();
+  if (locationImages)
+    for (const file of locationImages) data.append('locationImages', file);
+  if (restroomImages)
+    for (const file of restroomImages) data.append('restroomImages', file);
+  data.append('location', location);
+  data.append('region', region.toString());
+  data.append('province', province.toString());
+  data.append('city', city.toString());
+  data.append('building', building);
+  data.append('floor', floor.toString());
+  data.append('gender', gender);
+  data.append('tags', JSON.stringify(tags));
+  return APIClient.post<API.CreateRestroomResponse>('/restroom', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    },
-  ).then((res) => res.data.data);
+  }).then((res) => res.data.data);
 }
 
 // POST /restroom/:id/review

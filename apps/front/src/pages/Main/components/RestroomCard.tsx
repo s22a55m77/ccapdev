@@ -8,6 +8,7 @@ import {
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import './RestroomCard.css';
 import { Link } from 'react-router-dom';
+import { getImage } from '../../../services/api.ts';
 
 type RestroomCardProps = Omit<
   API.RestroomListData[0],
@@ -54,7 +55,7 @@ export default function RestroomCard({
                     <img
                       key={id + index}
                       style={{ marginTop: 10 }}
-                      src={id.toString()}
+                      src={getImage(id)}
                       alt={'img'}
                       width={'30%'}
                     />

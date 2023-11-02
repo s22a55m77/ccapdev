@@ -257,14 +257,14 @@ export class RestroomService {
     const provinceEntity: ProvinceEntity = await this.provinceRepo.findOne(
       {
         where: {
-          name: province,
+          id: province,
         },
       },
     );
 
     const cityEntity: CityEntity = await this.cityRepo.findOne({
       where: {
-        name: city,
+        id: city,
         provinceId: provinceEntity.id,
       },
     });
@@ -314,17 +314,19 @@ export class RestroomService {
 
     // insert restroomTagRepo
 
-    for (const tag of tags) {
-      const tagEntity: TagEntity = await this.tagRepo.findOne({
-        where: {
-          name: tag,
-        },
-      });
-      const restroomTagEntity = this.restroomTagRepo.create({
-        restroomId: restroomEntity.id,
-        tagId: tagEntity.id,
-      });
-      await this.restroomTagRepo.save(restroomTagEntity);
+    if (tags) {
+      for (const tag of tags) {
+        const tagEntity: TagEntity = await this.tagRepo.findOne({
+          where: {
+            name: tag,
+          },
+        });
+        const restroomTagEntity = this.restroomTagRepo.create({
+          restroomId: restroomEntity.id,
+          tagId: tagEntity.id,
+        });
+        await this.restroomTagRepo.save(restroomTagEntity);
+      }
     }
 
     // insert imageRepo
@@ -340,12 +342,15 @@ export class RestroomService {
       await this.imageRepo.save(imageEntity);
     };
 
-    for (const file of files.locationImages) {
-      await saveImage(ImageType.LOCATION_IMG, file);
-    }
-    for (const file of files.restroomImages) {
-      await saveImage(ImageType.RESTROOM_IMG, file);
-    }
+    if (files.locationImages)
+      for (const file of files.locationImages) {
+        await saveImage(ImageType.LOCATION_IMG, file);
+      }
+
+    if (files.restroomImages)
+      for (const file of files.restroomImages) {
+        await saveImage(ImageType.RESTROOM_IMG, file);
+      }
 
     // query
     const createRestroomVo: CreateRestroomVo = new CreateRestroomVo();
@@ -582,5 +587,16 @@ export class RestroomService {
     const title = `${info.building} - ${info.floor} - ${info.gender} - ${info.city} - ${info.province} - ${info.region}`;
 
     return title;
+  }
+
+  async getImage(id: number): Promise<ImageEntity> {
+    return this.imageRepo.findOne({
+      select: {
+        image: true,
+      },
+      where: {
+        id,
+      },
+    });
   }
 }

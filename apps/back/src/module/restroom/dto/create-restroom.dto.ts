@@ -2,11 +2,11 @@ import { GenderType } from 'src/model/restroom.entity';
 
 export class CreateRestroomDto {
   location: string;
-  region: string;
-  province: string;
-  city: string;
+  region: number;
+  province: number;
+  city: number;
   building: string;
   floor: number;
   gender: GenderType;
-  tags: string[];
+  tags: string; // front use JSON.stringify, original type is string[]
 }

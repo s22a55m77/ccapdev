@@ -4,11 +4,13 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Header,
   NotFoundException,
   Param,
   Patch,
   Post,
   Query,
+  StreamableFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -112,7 +114,8 @@ export class RestroomController {
       restroomImages: Express.Multer.File[];
     },
     @AuthUser() user: UserEntity,
-  ) {
+  ): Promise<ResponseVo<CreateRestroomVo>> {
+    createRestroomDto.tags = JSON.parse(createRestroomDto.tags);
     const restroom = await this.restroomService.createRestroom(
       createRestroomDto,
       files,
@@ -199,7 +202,10 @@ export class RestroomController {
   // TODO 返回图片 https://docs.nestjs.com/techniques/streaming-files
   // GET /restroom/:id/image
   @Get(':id/image')
-  async getImage() {
-    return;
+  @Header('Content-Type', 'image/jpeg')
+  async getImage(@Param('id') id: string) {
+    const entity = await this.restroomService.getImage(Number(id));
+    const buffer = Buffer.from(entity.image.toString(), 'base64');
+    return new StreamableFile(buffer);
   }
 }
