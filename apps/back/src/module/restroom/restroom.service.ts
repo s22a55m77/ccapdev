@@ -26,7 +26,7 @@ import { ProvinceEntity } from 'src/model/province.entity';
 import { CityEntity } from 'src/model/city.entity';
 import { RestroomTagEntity } from 'src/model/restroom-tag.entity';
 import { GetRestroomListVo } from './vo/get-restroom-list.vo';
-import { RoleType, UserEntity } from 'src/model/user.entity';
+import { UserEntity } from 'src/model/user.entity';
 import { UserService } from '../user/user.service';
 import { CommentService } from '../comment/comment.service';
 
@@ -179,6 +179,7 @@ export class RestroomService {
     const comments: CommentEntity[] = await this.commentRepo.find({
       where: {
         restroomId: id,
+        type: Type.REVIEW,
       },
     });
 
@@ -374,7 +375,7 @@ export class RestroomService {
     // TODO insert完需要再查出返回数据
     const { rating, commentTo, content } = createRestroomReviewDto;
     let commentEntity: CommentEntity = null;
-    if (rating !== null) {
+    if (rating) {
       commentEntity = this.commentRepo.create({
         rating,
         commentById: currentUserId,
@@ -383,89 +384,25 @@ export class RestroomService {
         type: Type.REVIEW,
       });
       commentEntity = await this.commentRepo.save(commentEntity);
-    } else if (commentTo !== null) {
+      return this.commentService.getCommentDetail(
+        commentEntity.id,
+        currentUserId,
+      );
+    } else if (commentTo) {
       commentEntity = this.commentRepo.create({
         commentToId: commentTo,
         commentById: currentUserId,
         content,
         restroomId: id,
-        type: Type.REVIEW,
+        type: Type.REPLY,
       });
       commentEntity = await this.commentRepo.save(commentEntity);
+      return this.commentService.getCommentDetail(
+        commentTo,
+        currentUserId,
+      );
     }
-
-    const createRestroomReviewVo: CreateRestroomReviewVo =
-      new CreateRestroomReviewVo();
-    const getCommentEntity: CommentEntity = await this.commentRepo.findOne(
-      { where: { id: commentEntity.id } },
-    );
-    createRestroomReviewVo.id = getCommentEntity.id;
-    createRestroomReviewVo.content = getCommentEntity.content;
-    createRestroomReviewVo.rating = getCommentEntity.rating;
-    createRestroomReviewVo.commentTo = getCommentEntity.commentToId;
-
-    // comment to user
-    const commentToInfo: CommentEntity = await this.commentRepo.findOne({
-      where: { id: getCommentEntity.commentToId },
-    });
-    createRestroomReviewVo.commentToUser = (
-      await this.userService.getUserById(commentToInfo.commentById)
-    ).username;
-    createRestroomReviewVo.commentToUserId = commentToInfo.commentById;
-
-    // comment by user
-    createRestroomReviewVo.commentByUserId = getCommentEntity.commentById;
-    createRestroomReviewVo.commentBy = (
-      await this.userService.getUserById(getCommentEntity.commentById)
-    ).username;
-
-    // comment at
-    createRestroomReviewVo.commentAt = new Date(
-      getCommentEntity.commentAt,
-    ).toDateString();
-
-    // downvote and upvote
-    const votingEntities: VoteEntity[] = await this.voteRepo.find({
-      where: { voteToId: getCommentEntity.commentById },
-    });
-    createRestroomReviewVo.isUpVoted = false;
-    createRestroomReviewVo.isDownVoted = false;
-    let downVoteCount = 0;
-    let upVoteCount = 0;
-    votingEntities.forEach((vote) => {
-      if (vote.type === VoteType.UPVOTE) {
-        upVoteCount += 1;
-        if (vote.voteById === currentUserId)
-          createRestroomReviewVo.isUpVoted = true;
-      }
-      if (vote.type === VoteType.DOWNVOTE) {
-        downVoteCount += 1;
-        if (vote.voteById === currentUserId)
-          createRestroomReviewVo.isDownVoted = true;
-      }
-    });
-    createRestroomReviewVo.upVote = upVoteCount;
-    createRestroomReviewVo.downVote = downVoteCount;
-
-    // is admin
-    if (
-      (await this.userService.getUserById(currentUserId)).role ===
-      RoleType.ADMIN
-    )
-      createRestroomReviewVo.isAdmin = true;
-    else createRestroomReviewVo.isAdmin = false;
-
-    // child comments
-    const childComments: number[] = [];
-    const commentEntities: CommentEntity[] = await this.commentRepo.find({
-      where: { commentToId: getCommentEntity.id },
-    });
-    commentEntities.forEach((comment) => {
-      childComments.push(comment.id);
-    });
-    createRestroomReviewVo.childComments = childComments;
-
-    return createRestroomReviewVo;
+    return null;
   }
 
   async updateRestroomReview(
@@ -485,18 +422,41 @@ export class RestroomService {
   }
 
   async deleteRestroomReview(id): Promise<DeleteResult> {
-    // TODO test if cascade is working
-    return this.restroomRepo.delete({ id });
+    return this.commentRepo.delete(id);
   }
 
   async changeVoteStatus(
     id: number,
     newStatus: number,
+    userId: number,
   ): Promise<ChangeVoteStatusVo> {
-    // TODO 改完再select出来
-    this.voteRepo.update(id, { type: VoteType.DOWNVOTE }); // fix this
+    const vote = await this.voteRepo.findOne({
+      where: {
+        voteById: userId,
+        voteToId: id,
+      },
+    });
+    if (vote) {
+      if (newStatus !== 0) {
+        this.voteRepo.update(vote.id, {
+          type: newStatus === 1 ? VoteType.UPVOTE : VoteType.DOWNVOTE,
+        });
+        return this.commentService.getCommentDetail(id, userId);
+      }
+      if (newStatus === 0) {
+        await this.voteRepo.delete(vote.id);
+        return this.commentService.getCommentDetail(id, userId);
+      }
+    }
 
-    return null;
+    let voteEntity = new VoteEntity();
+    voteEntity.voteToId = id;
+    voteEntity.voteById = userId;
+    voteEntity.type =
+      newStatus === 1 ? VoteType.UPVOTE : VoteType.DOWNVOTE;
+
+    await this.voteRepo.save(voteEntity);
+    return this.commentService.getCommentDetail(id, userId);
   }
 
   async getRestroomList({

@@ -49,6 +49,7 @@ export default function ReplyCard({
   const [edit, setEdit] = useState<Edit>({ isEdit: false });
   const [replyEdit, setReplyEdit] = useState<string>();
   const open = Boolean(anchorEl);
+  const [isMount, setIsMount] = useState(true);
   const [alertContent, setAlertContent] = useState<AlertContent>({
     isOpen: false,
     message: 'default message',
@@ -109,6 +110,9 @@ export default function ReplyCard({
         message: 'Successfully Deleted',
         severity: 'success',
       });
+      setTimeout(() => {
+        setIsMount(false);
+      }, 1000);
     },
     onError: () => {
       setAlertContent({
@@ -176,8 +180,10 @@ export default function ReplyCard({
   };
 
   const handleDelete = () => {
-    deleteReview(restroomId);
+    if (commentDetail?.id) deleteReview(commentDetail.id);
   };
+
+  if (!isMount) return null;
 
   return (
     <div id={'cards'} className={'card-container'}>

@@ -190,11 +190,15 @@ export class RestroomController {
   @Post('review/:id/vote')
   @Auth([RoleType.USER, RoleType.ADMIN])
   async changeVoteStatus(
-    @Param('id') id: number,
-    @Body() status: number,
+    @Param('id') id: string,
+    @Body('status') status: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<ChangeVoteStatusVo>> {
-    const review = await this.restroomService.changeVoteStatus(id, status);
+    const review = await this.restroomService.changeVoteStatus(
+      Number(id),
+      status,
+      user.id,
+    );
 
     return ResponseVo.success(review);
   }
