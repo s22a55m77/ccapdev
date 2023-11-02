@@ -24,8 +24,10 @@ export class UserInterceptor implements NestInterceptor {
     if (token) {
       token = token.replaceAll('Bearer ', '');
       let decoded = this.jwtService.decode(token) as Record<string, any>;
-      const user = this.userService.getUserById(decoded.userId);
-      setValue('user', user);
+      try {
+        const user = this.userService.getUserById(decoded.userId);
+        setValue('user', user);
+      } catch {}
     }
 
     return next.handle();
