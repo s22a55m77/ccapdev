@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin-table',
-        element: <RequireAuth allowedRoles={['ADMIN']} />,
+        element: <RequireAuth allowedRoles={['admin']} />,
         children: [
           {
             index: true,

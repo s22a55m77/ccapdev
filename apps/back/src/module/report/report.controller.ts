@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ReportService } from './report.service';
 import { ResponseVo } from '../../common/response.vo';
 import { GetReportDetailVo } from './vo/get-report-detail.vo';
@@ -39,10 +47,26 @@ export class ReportController {
   @Auth([RoleType.USER, RoleType.ADMIN])
   async changeReportStatus(
     @Param('id') id: number,
-    @Body() status: ReportType,
+    @Body('status') status: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<ChangeReportStatusVo>> {
-    const report = await this.reportService.changeReportStatus(id, status);
+    const report = await this.reportService.changeReportStatus(
+      id,
+      status,
+      user.id,
+    );
     return ResponseVo.success(report);
+  }
+
+  // POST /report/:id
+  @Post(':id')
+  @Auth([RoleType.USER, RoleType.ADMIN])
+  async report(
+    @Param('id') id: number,
+    @AuthUser() user: UserEntity,
+  ): Promise<ResponseVo<{ success: true }>> {
+    const report = await this.reportService.report(id, user.id);
+    if (report) return ResponseVo.success({ success: true });
+    throw new InternalServerErrorException('Unknown Error');
   }
 }

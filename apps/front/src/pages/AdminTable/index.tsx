@@ -38,12 +38,15 @@ export default function AdminTable() {
             <TableBody>
               {data?.map((restroom) => (
                 <AdminTableRow
-                  key={restroom.id}
-                  id={restroom.id}
-                  title={restroom.title}
-                  building={restroom.building}
-                  floor={restroom.floor}
-                  status={restroom.status}
+                  key={restroom?.id}
+                  id={restroom?.id}
+                  title={restroom?.title}
+                  region={restroom?.region}
+                  province={restroom?.province}
+                  city={restroom?.city}
+                  building={restroom?.building}
+                  floor={restroom?.floor}
+                  status={restroom?.status}
                 />
               ))}
             </TableBody>

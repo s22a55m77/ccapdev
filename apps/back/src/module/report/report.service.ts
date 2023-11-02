@@ -8,19 +8,20 @@ import { UserService } from '../user/user.service';
 import { RestroomService } from '../restroom/restroom.service';
 import { GetRestroomDetailVo } from '../restroom/vo/get-restroom-detail.vo';
 import { GetAdminReportListVo } from '../restroom/vo/get-admin-report-list.vo';
-import { RestroomTagEntity } from '../../model/restroom-tag.entity';
 import { FloorEntity } from '../../model/floor.entity';
 import { BuildingEntity } from '../../model/building.entity';
 import { CityEntity } from '../../model/city.entity';
 import { ProvinceEntity } from '../../model/province.entity';
 import { RegionEntity } from '../../model/region.entity';
-import { RestroomEntity } from '../../model/restroom.entity';
+import { RestroomEntity, StatusType } from '../../model/restroom.entity';
 
 @Injectable()
 export class ReportService {
   constructor(
     @InjectRepository(ReportEntity)
     private readonly reportRepo: Repository<ReportEntity>,
+    @InjectRepository(RestroomEntity)
+    private readonly restroomRepo: Repository<RestroomEntity>,
     private readonly userService: UserService,
     private readonly restroomService: RestroomService,
   ) {}
@@ -53,19 +54,53 @@ export class ReportService {
     getReportDetailVo.createdByUser = (
       await this.userService.getUserById(reportEntity.reportedById)
     ).username;
-    getReportDetailVo.createdAt = reportEntity.reportedAt.toString();
+    getReportDetailVo.createdAt = new Date(
+      reportEntity.reportedAt,
+    ).toDateString();
     getReportDetailVo.status = reportEntity.status;
     return getReportDetailVo;
   }
 
   async changeReportStatus(
     id: number,
-    status: ReportType,
+    status: number,
+    adminId: number,
   ): Promise<ChangeReportStatusVo> {
-    // TODO
-
-    // update
-    await this.reportRepo.update(id, { status });
+    if (status === 1) {
+      const returning = await this.reportRepo
+        .createQueryBuilder()
+        .update()
+        .set({
+          status: ReportType.CLOSED,
+          processById: adminId,
+        })
+        .where('id = :id', { id })
+        .returning('"restroomId"')
+        .execute();
+      await this.restroomRepo.update(
+        { id: returning.raw[0].restroomId },
+        {
+          status: StatusType.APPROVED,
+        },
+      );
+    } else if (status === 0) {
+      const returning = await this.reportRepo
+        .createQueryBuilder()
+        .update()
+        .set({
+          status: ReportType.RESOLVED,
+          processById: adminId,
+        })
+        .where('id = :id', { id })
+        .returning('"restroomId"')
+        .execute();
+      await this.restroomRepo.update(
+        { id: returning.raw[0].restroomId },
+        {
+          status: StatusType.DISAPPROVED,
+        },
+      );
+    }
 
     // query
     const changeReportStatusVo: ChangeReportStatusVo =
@@ -98,7 +133,9 @@ export class ReportService {
     changeReportStatusVo.createdByUser = (
       await this.userService.getUserById(reportEntity.reportedById)
     ).username;
-    changeReportStatusVo.createdAt = reportEntity.reportedAt.toString();
+    changeReportStatusVo.createdAt = new Date(
+      reportEntity.reportedAt,
+    ).toDateString();
     changeReportStatusVo.status = reportEntity.status;
 
     return changeReportStatusVo;
@@ -137,8 +174,17 @@ export class ReportService {
       vo.floor = raw.floor;
       vo.status = raw.status;
       vo.gender = raw.gender;
+      return vo;
     });
 
     return result;
+  }
+
+  async report(id: number, userId: number) {
+    const reportEntity = new ReportEntity();
+    reportEntity.status = ReportType.OPEN;
+    reportEntity.reportedById = userId;
+    reportEntity.restroomId = id;
+    return this.reportRepo.save(reportEntity);
   }
 }

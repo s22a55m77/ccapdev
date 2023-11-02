@@ -56,6 +56,13 @@ export default function Restroom() {
 
   const { run: report } = useRequest(reportRestroom, {
     manual: true,
+    onSuccess: () => {
+      setAlertContent({
+        isOpen: true,
+        message: 'Successfully Reported',
+        severity: 'success',
+      });
+    },
   });
 
   const handleReport = () => {
@@ -187,7 +194,6 @@ export default function Restroom() {
                     variant="contained"
                     color="error"
                     style={{ boxShadow: 'none' }}
-                    disabled={true}
                     className={'vote-button'}
                     size="small"
                     onClick={handleReport}

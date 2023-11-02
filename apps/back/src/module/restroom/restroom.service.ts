@@ -477,7 +477,8 @@ export class RestroomService {
       .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
       .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
       .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
-      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"');
+      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
+      .andWhere('r.status = :status', { status: StatusType.APPROVED });
 
     if (gender)
       filterQB.where('r.gender = :gender', {

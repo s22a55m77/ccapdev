@@ -20,7 +20,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { getReportDetail } from '../../../services/api';
+import { getImage, getReportDetail } from '../../../services/api';
 import { AlertContent } from '../../../declaration';
 import { useRequest } from 'ahooks';
 import { changeReportStatus } from '../../../services/api.ts';
@@ -127,9 +127,9 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            {adminRestroomData?.status === 1 ? (
+            {adminRestroomData?.status === 'closed' ? (
               <CheckCircleIcon color="success" fontSize={'medium'} />
-            ) : adminRestroomData?.status === 0 ? (
+            ) : adminRestroomData?.status === 'resolved' ? (
               <CancelIcon color="error" fontSize={'medium'} />
             ) : (
               <AccessTimeFilledOutlinedIcon
@@ -144,7 +144,7 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
             variant="contained"
             color={'green'}
             onClick={handleReject}
-            disabled={adminRestroomData?.status === 1}
+            disabled={adminRestroomData?.status === 'closed'}
             style={{
               marginRight: 5,
             }}
@@ -156,7 +156,7 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
             variant="contained"
             color={'error'}
             onClick={handleDelete}
-            disabled={adminRestroomData?.status === 0}
+            disabled={adminRestroomData?.status === 'resolved'}
           >
             Remove
           </Button>
@@ -218,12 +218,11 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
           <h3 className={'drawer-h3'}>Location Image</h3>
         </motion.div>
         <div className={'image-container'}>
-          {adminRestroomData?.locationImageIds.map((imageId, index) => {
+          {adminRestroomData?.locationImageIds?.map((imageId, index) => {
             return (
-              // TODO MCO2
               <img
                 key={imageId + index}
-                src={imageId}
+                src={getImage(imageId)}
                 alt="toilet"
                 style={{ width: '20vw' }}
               />
@@ -239,10 +238,9 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
         <div className={'image-container'}>
           {adminRestroomData?.restroomImageIds.map((imageId, index) => {
             return (
-              // TODO MCO2
               <img
                 key={imageId + index}
-                src={imageId}
+                src={getImage(imageId)}
                 alt="toilet"
                 style={{ width: '20vw' }}
               />

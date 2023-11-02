@@ -34,7 +34,7 @@ declare namespace API {
     reviews: number;
     dateRegistered: number;
     description: string;
-    role: 'USER' | 'ADMIN';
+    role: 'user' | 'admin';
     profilePicId: number;
   };
 
@@ -144,7 +144,7 @@ declare namespace API {
   type ChangeVoteStatusResponse = BaseResponse<CommentDetailData>;
 
   type ChangeReportStatusParams = {
-    newStatus: number; // 0-disapproved, 1-approved, 2-pending
+    newStatus: number; // 0-remove, 1-reject
     reportId: number;
   };
 
@@ -156,7 +156,7 @@ declare namespace API {
     | 'downVote'
     | 'rating'
     | 'tags'
-  > & { status: number };
+  > & { status: string };
   type ChangeRestroomStatusResponse = BaseResponse<AdminReportData>;
 
   type CommentDetailData = {

@@ -295,7 +295,7 @@ export function getAdminReportList(): Promise<API.AdminReportListData> {
 }
 
 // GET  /report/:id
-export function getReportDetail(id: string): Promise<API.AdminReportData> {
+export function getReportDetail(id: number): Promise<API.AdminReportData> {
   return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -308,7 +308,7 @@ export function changeReportStatus({
   newStatus,
   reportId,
 }: API.ChangeReportStatusParams): Promise<API.AdminReportData> {
-  return APIClient.post<API.ChangeRestroomStatusResponse>(
+  return APIClient.patch<API.ChangeRestroomStatusResponse>(
     `/report/${reportId}`,
     {
       status: newStatus,

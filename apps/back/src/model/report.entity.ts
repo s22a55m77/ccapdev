@@ -59,6 +59,6 @@ export class ReportEntity {
   })
   processBy: UserEntity;
 
-  @Column()
+  @Column({ nullable: true })
   processById: number;
 }

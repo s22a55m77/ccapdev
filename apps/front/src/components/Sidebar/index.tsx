@@ -15,7 +15,7 @@ export default function Sidebar() {
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    if (user && user.role === 'ADMIN') {
+    if (user && user.role === 'admin') {
       setIsAdmin(true);
     }
   }, [user]);
