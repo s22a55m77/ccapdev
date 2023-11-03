@@ -126,121 +126,215 @@ export class RestroomService {
     id: number,
   ): Promise<GetRestroomDetailVo | null> {
     const restroomInfo = await this.restroomRepo.findOne({
+      select: {
+        id: true,
+        gender: true,
+        createdAt: true,
+        createdBy: {
+          id: true,
+          username: true,
+        },
+        description: true,
+        comments: {
+          rating: true,
+          type: true,
+          id: true,
+        },
+        tags: {
+          id: true,
+          tag: {
+            name: true,
+          },
+        },
+        images: {
+          id: true,
+          type: true,
+        },
+        floor: {
+          floor: true,
+          building: {
+            name: true,
+            city: {
+              name: true,
+              province: {
+                name: true,
+                region: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      relations: {
+        createdBy: true,
+        comments: true,
+        tags: {
+          tag: true,
+        },
+        images: true,
+        floor: {
+          building: {
+            city: {
+              province: {
+                region: true,
+              },
+            },
+          },
+        },
+      },
       where: {
         id,
       },
     });
 
-    if (restroomInfo == null) return null;
-
-    const gender: string = restroomInfo.gender.toString();
-
-    const locationInfo = await this.floorRepo
-      .createQueryBuilder('f')
-      .select([
-        'r2.name AS region',
-        'p.name AS province',
-        'c.name AS city',
-        'b.name AS building',
-        'f.floor AS floor',
-      ])
-      .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
-      .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
-      .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
-      .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
-      .where('f.id = :id', { id: restroomInfo.floorId })
-      .getRawOne();
-
-    const title = `${locationInfo.building} - ${locationInfo.floor} - ${gender} - ${locationInfo.city} - ${locationInfo.province} - ${locationInfo.region}`;
-
-    // location
-    const locationImageIds: number[] = [];
-    const restroomImageIds: number[] = [];
-
-    const images: ImageEntity[] = await this.imageRepo.find({
-      where: {
-        restroomId: id,
-      },
-    });
-    images.forEach((image) => {
-      if (image.type === ImageType.LOCATION_IMG)
-        locationImageIds.push(image.id);
-      if (image.type === ImageType.RESTROOM_IMG)
-        restroomImageIds.push(image.id);
-    });
-
-    // rating & comment
-    let rating: number = 0;
-    let ratingCount: number = 0;
-    const commentsIds: number[] = [];
-    let totalComments: number = 0;
-
-    const comments: CommentEntity[] = await this.commentRepo.find({
-      where: {
-        restroomId: id,
-        type: Type.REVIEW,
-      },
-    });
-
-    comments.forEach((comment) => {
-      if (comment.type !== Type.SUBMIT) {
-        if (comment.type === Type.REVIEW) {
-          if (comment.rating != null) {
-            rating += comment.rating;
-            ratingCount += 1;
-          }
-        }
-        commentsIds.push(comment.id);
-        totalComments += 1;
+    const vo = new GetRestroomDetailVo();
+    vo.id = restroomInfo.id;
+    vo.title = `${restroomInfo.floor.building.name} - ${restroomInfo.floor.floor} - ${restroomInfo.gender} - ${restroomInfo.floor.building.city.name} - ${restroomInfo.floor.building.city.province.name} - ${restroomInfo.floor.building.city.province.region.name}`;
+    vo.building = restroomInfo.floor.building.name;
+    vo.floor = restroomInfo.floor.floor;
+    vo.location = restroomInfo.description;
+    // rating
+    let rating = 0;
+    let count = 0;
+    restroomInfo.comments.forEach((comment) => {
+      if (comment.type === Type.REVIEW && comment.rating) {
+        rating += comment.rating;
+        count += 1;
       }
     });
-    if (ratingCount !== 0) {
-      rating = rating / ratingCount;
-    }
 
-    // tags
-    const tagnames: string[] = [];
-    const tags: RestroomTagEntity[] = await this.restroomTagRepo.find({
-      where: {
-        restroomId: id,
-      },
-    });
-    const tagPromises = tags.map(async (restroomTag) => {
-      const tag: TagEntity = await this.tagRepo.findOne({
-        where: {
-          id: restroomTag.tagId,
-        },
-      });
-      return tag.name;
-    });
+    if (count) rating = rating / count;
+    vo.rating = rating;
 
-    tagnames.push(...(await Promise.all(tagPromises)));
+    vo.tags = restroomInfo.tags
+      ? restroomInfo.tags.map((tag) => tag.tag.name)
+      : [];
+    vo.locationImageIds = restroomInfo.images
+      .filter((image) => image.type === ImageType.LOCATION_IMG)
+      .map((image) => image.id);
+    vo.restroomImageIds = restroomInfo.images
+      .filter((image) => image.type === ImageType.RESTROOM_IMG)
+      .map((image) => image.id);
+    vo.commentsIds = restroomInfo.comments.map((comment) => comment.id);
+    vo.totalComments = restroomInfo.comments.length;
+    vo.gender = restroomInfo.gender;
+    vo.createdByUser = restroomInfo.createdBy.username;
+    vo.createdByUserId = restroomInfo.createdBy.id;
+    vo.createdAt = new Date(restroomInfo.createdAt).toDateString();
 
-    // createdByUser
-    const createdByUser: UserEntity = await this.userRepo.findOne({
-      where: {
-        id: restroomInfo.createdById,
-      },
-    });
+    return vo;
 
-    const restroomDetail = new GetRestroomDetailVo();
-    restroomDetail.id = restroomInfo.id;
-    restroomDetail.title = title;
-    restroomDetail.building = locationInfo.building;
-    restroomDetail.floor = locationInfo.floor;
-    restroomDetail.location = restroomInfo.description;
-    restroomDetail.rating = rating;
-    restroomDetail.tags = tagnames;
-    restroomDetail.locationImageIds = locationImageIds;
-    restroomDetail.restroomImageIds = restroomImageIds;
-    restroomDetail.commentsIds = commentsIds;
-    restroomDetail.totalComments = totalComments;
-    restroomDetail.gender = restroomInfo.gender;
-    restroomDetail.createdByUser = createdByUser.username;
-    restroomDetail.createdByUserId = createdByUser.id;
-    restroomDetail.createdAt = restroomInfo.createdAt.toDateString();
-
-    return restroomDetail;
+    // if (restroomInfo == null) return null;
+    //
+    // const gender: string = restroomInfo.gender.toString();
+    //
+    // const locationInfo = await this.floorRepo
+    //   .createQueryBuilder('f')
+    //   .select([
+    //     'r2.name AS region',
+    //     'p.name AS province',
+    //     'c.name AS city',
+    //     'b.name AS building',
+    //     'f.floor AS floor',
+    //   ])
+    //   .leftJoin(BuildingEntity, 'b', 'b.id=f."buildingId"')
+    //   .leftJoin(CityEntity, 'c', 'c.id=b."cityId"')
+    //   .leftJoin(ProvinceEntity, 'p', 'p.id=c."provinceId"')
+    //   .leftJoin(RegionEntity, 'r2', 'r2.id=p."regionId"')
+    //   .where('f.id = :id', { id: restroomInfo.floorId })
+    //   .getRawOne();
+    //
+    // const title = `${locationInfo.building} - ${locationInfo.floor} - ${gender} - ${locationInfo.city} - ${locationInfo.province} - ${locationInfo.region}`;
+    //
+    // // location
+    // const locationImageIds: number[] = [];
+    // const restroomImageIds: number[] = [];
+    //
+    // const images: ImageEntity[] = await this.imageRepo.find({
+    //   where: {
+    //     restroomId: id,
+    //   },
+    // });
+    // images.forEach((image) => {
+    //   if (image.type === ImageType.LOCATION_IMG)
+    //     locationImageIds.push(image.id);
+    //   if (image.type === ImageType.RESTROOM_IMG)
+    //     restroomImageIds.push(image.id);
+    // });
+    //
+    // // rating & comment
+    // let rating: number = 0;
+    // let ratingCount: number = 0;
+    // const commentsIds: number[] = [];
+    // let totalComments: number = 0;
+    //
+    // const comments: CommentEntity[] = await this.commentRepo.find({
+    //   where: {
+    //     restroomId: id,
+    //     type: Type.REVIEW,
+    //   },
+    // });
+    //
+    // comments.forEach((comment) => {
+    //   if (comment.type !== Type.SUBMIT) {
+    //     if (comment.type === Type.REVIEW) {
+    //       if (comment.rating != null) {
+    //         rating += comment.rating;
+    //         ratingCount += 1;
+    //       }
+    //     }
+    //     commentsIds.push(comment.id);
+    //     totalComments += 1;
+    //   }
+    // });
+    // if (ratingCount !== 0) {
+    //   rating = rating / ratingCount;
+    // }
+    //
+    // // tags
+    // const tagnames: string[] = [];
+    // const tags: RestroomTagEntity[] = await this.restroomTagRepo.find({
+    //   where: {
+    //     restroomId: id,
+    //   },
+    // });
+    // const tagPromises = tags.map(async (restroomTag) => {
+    //   const tag: TagEntity = await this.tagRepo.findOne({
+    //     where: {
+    //       id: restroomTag.tagId,
+    //     },
+    //   });
+    //   return tag.name;
+    // });
+    //
+    // tagnames.push(...(await Promise.all(tagPromises)));
+    //
+    // // createdByUser
+    // const createdByUser: UserEntity = await this.userRepo.findOne({
+    //   where: {
+    //     id: restroomInfo.createdById,
+    //   },
+    // });
+    //
+    // const restroomDetail = new GetRestroomDetailVo();
+    // restroomDetail.id = restroomInfo.id;
+    // restroomDetail.title = title;
+    // restroomDetail.building = locationInfo.building;
+    // restroomDetail.floor = locationInfo.floor;
+    // restroomDetail.location = restroomInfo.description;
+    // restroomDetail.rating = rating;
+    // restroomDetail.tags = tagnames;
+    // restroomDetail.locationImageIds = locationImageIds;
+    // restroomDetail.restroomImageIds = restroomImageIds;
+    // restroomDetail.commentsIds = commentsIds;
+    // restroomDetail.totalComments = totalComments;
+    // restroomDetail.gender = restroomInfo.gender;
+    // restroomDetail.createdByUser = createdByUser.username;
+    // restroomDetail.createdByUserId = createdByUser.id;
+    // restroomDetail.createdAt = restroomInfo.createdAt.toDateString();
+    //
+    // return restroomDetail;
   }
 
   async createRestroom(
