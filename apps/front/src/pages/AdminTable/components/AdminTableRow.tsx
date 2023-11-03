@@ -1,6 +1,5 @@
 import {
   Alert,
-  Breadcrumbs,
   Button,
   Drawer,
   IconButton,
@@ -100,26 +99,9 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
           </div>
         </TableCell>
         <TableCell>
-          <Tooltip
-            title={
-              <Breadcrumbs
-                style={{
-                  height: '10px',
-                  color: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontSize: '10px',
-                }}
-              >
-                <span>MUI</span>
-                <span>MUI</span>
-              </Breadcrumbs>
-            }
-          >
-            <Typography noWrap fontSize={'inherit'}>
-              Location Location
-            </Typography>
-          </Tooltip>
+          <Typography noWrap fontSize={'inherit'}>
+            {adminRestroomData?.location}
+          </Typography>
         </TableCell>
         <TableCell>
           <motion.div
@@ -180,7 +162,7 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
           <Table>
             <TableBody>
               <TableRow>
-                <TableCell>Location</TableCell>
+                <TableCell>Description</TableCell>
                 <TableCell>{adminRestroomData?.location}</TableCell>
               </TableRow>
               <TableRow>
