@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegionEntity } from '../../model/region.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Equal, In, Repository } from 'typeorm';
 import { renameKey } from '../../common/utils';
 import {
   FilterDataType,
@@ -587,7 +587,26 @@ export class RestroomService {
     if (province)
       filterQB.andWhere('p.id IN (:...province)', { province });
 
-    if (city) filterQB.andWhere('c.id IN (:...city)', { city });
+    if (city)
+      filterQB.andWhere(
+        `c.id IN (:...city) OR c.id IN (
+            SELECT c.id
+            WHERE c."provinceId" IN (:...province) AND c.id NOT IN (:...city) AND c."provinceId" IN (
+              SELECT distinct c."provinceId"  
+              FROM city c
+              WHERE c.id NOT IN (:...city) and c."provinceId" in (:...province)
+              AND c."provinceId" NOT IN (
+                  SELECT DISTINCT c2."provinceId" 
+                  FROM city c2 
+                  WHERE c2.id IN (:...city)
+                )
+              ) 
+            )`,
+        {
+          city,
+          province,
+        },
+      );
 
     if (building)
       filterQB.andWhere('b.id IN (:...building)', { building });
