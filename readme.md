@@ -1,6 +1,10 @@
-# Azure Link
-front = https://ccapdev.azurewebsites.net/
-
+# Deployment
+- front = https://ccapdev.azurewebsites.net/
+  - this deployment is in dev mode
+- front = https://ccapdev-front.vercel.app/
+  - this deployment is in prod mode
+- back = https://ccapdev-back.azurewebsites.net
+  - this deployment is in prod mode
 # Start Project
 1. install nodejs and pnpm
     - `npm install -g pnpm`
