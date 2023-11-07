@@ -61,6 +61,9 @@ export class UserController {
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<GetUserProfileVo>> {
     const userProfile = await this.userService.getUserProfile(id);
+
+    if (!userProfile) throw new NotFoundException('User does not exist');
+
     return ResponseVo.success(userProfile);
   }
 
