@@ -216,7 +216,9 @@ export class RestroomService {
     vo.restroomImageIds = restroomInfo.images
       .filter((image) => image.type === ImageType.RESTROOM_IMG)
       .map((image) => image.id);
-    vo.commentsIds = restroomInfo.comments.map((comment) => comment.id);
+    vo.commentsIds = restroomInfo.comments
+      .filter((comment) => comment.type === Type.REVIEW)
+      .map((comment) => comment.id);
     vo.totalComments = restroomInfo.comments.length;
     vo.gender = restroomInfo.gender;
     vo.createdByUser = restroomInfo.createdBy.username;
