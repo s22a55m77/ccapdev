@@ -45,6 +45,8 @@ export default function Restroom() {
     severity: 'success',
   });
 
+  const [isReportDisable, setIsReportDisable] = useState(false);
+
   const navigate = useNavigate();
 
   const { data: restroomData, run } = useRequest(getRestroomDetail, {
@@ -65,11 +67,10 @@ export default function Restroom() {
     },
   });
 
-  const handleReport = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleReport = () => {
     if (restroomId) report({ id: Number(restroomId) });
-    event.currentTarget.disabled = true;
+
+    setIsReportDisable(true);
   };
 
   const handleRateClick = (value: number | null) => {
@@ -204,6 +205,7 @@ export default function Restroom() {
                     className={'vote-button'}
                     size="small"
                     onClick={handleReport}
+                    disabled={isReportDisable}
                   >
                     <FlagIcon />
                   </Button>
