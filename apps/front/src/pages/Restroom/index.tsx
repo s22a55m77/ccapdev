@@ -13,7 +13,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import FlagIcon from '@mui/icons-material/Flag';
 import './index.css';
 import ReplyCard from './components/ReplyCard.tsx';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import {
@@ -23,7 +23,7 @@ import {
   getRestroomDetail,
   reportRestroom,
 } from '../../services/api.ts';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { AlertContent } from '../../declaration';
 import { AxiosError } from 'axios';
 
@@ -135,7 +135,11 @@ export default function Restroom() {
                   src={getProfilePic(restroomData?.createdByUserId || 0)}
                 />
               }
-              title={restroomData?.createdByUser}
+              title={
+                <Link to={`/user/${restroomData?.createdByUserId || 0}`}>
+                  {restroomData?.createdByUser}
+                </Link>
+              }
               subheader={restroomData?.createdAt}
             />
             <CardContent>
