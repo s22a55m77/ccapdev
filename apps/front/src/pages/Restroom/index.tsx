@@ -65,8 +65,11 @@ export default function Restroom() {
     },
   });
 
-  const handleReport = () => {
+  const handleReport = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     if (restroomId) report({ id: Number(restroomId) });
+    event.currentTarget.disabled = true;
   };
 
   const handleRateClick = (value: number | null) => {
