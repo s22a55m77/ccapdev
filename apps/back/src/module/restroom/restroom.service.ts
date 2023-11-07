@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegionEntity } from '../../model/region.entity';
 import { DeleteResult, Equal, In, Repository } from 'typeorm';
@@ -187,6 +187,9 @@ export class RestroomService {
         id,
       },
     });
+
+    if (!restroomInfo)
+      throw new NotFoundException('Restroom does not exist');
 
     const vo = new GetRestroomDetailVo();
     vo.id = restroomInfo.id;
