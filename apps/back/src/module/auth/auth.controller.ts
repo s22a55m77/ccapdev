@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { ResponseVo } from '../../common/response.vo';
@@ -43,10 +51,13 @@ export class AuthController {
     user.email = registerDto.email;
     user.password = registerDto.password;
 
-    // TODO 重复注册 unique constraint报错
-    const insertedUser: UserEntity = await this.userService.insertUser(
-      user,
-    );
+    const insertedUser: UserEntity = await this.userService
+      .insertUser(user)
+      .catch((e) => {
+        if (e.constraint === 'UQ_78a916df40e02a9deb1c4b75edb')
+          throw new ConflictException('User already exist');
+        else throw new InternalServerErrorException();
+      });
 
     const token = await this.authService.createAccessToken({
       userId: insertedUser.id,
