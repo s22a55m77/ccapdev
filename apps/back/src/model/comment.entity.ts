@@ -36,7 +36,9 @@ export class CommentEntity {
   @Column()
   commentById: number;
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.receivedComments)
+  @ManyToOne(() => CommentEntity, (comment) => comment.receivedComments, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'commentToId',
     foreignKeyConstraintName: 'comment_commentToId_commentTo_id',

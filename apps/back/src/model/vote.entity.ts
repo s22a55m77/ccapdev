@@ -29,7 +29,9 @@ export class VoteEntity {
   @Column()
   voteById: number;
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.votings)
+  @ManyToOne(() => CommentEntity, (comment) => comment.votings, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'voteToId',
     foreignKeyConstraintName: 'vote_voteToId_voteTo_id',
