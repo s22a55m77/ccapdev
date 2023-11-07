@@ -140,7 +140,7 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
             onClick={handleDelete}
             disabled={adminRestroomData?.status === 'resolved'}
           >
-            Remove
+            Accept
           </Button>
         </TableCell>
       </TableRow>
