@@ -12,6 +12,7 @@ import { useUserStore } from '../../pages/Login/user.store.ts';
 export default function Sidebar() {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(false);
+  const isLogin = useUserStore((state) => state.isLogin);
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
@@ -70,19 +71,24 @@ export default function Sidebar() {
                 Toilet
               </div>
             </Link>
-            <Link to="/submit-restroom" className={'link-style'}>
-              <div
-                className={`flex item ${
-                  location.pathname === '/submit-restroom' ? 'active' : ''
-                }`}
-              >
-                <EditNoteIcon
-                  fontSize={'inherit'}
-                  className={'v-center'}
-                />
-                Submit
-              </div>
-            </Link>
+            {isLogin && (
+              <Link to="/submit-restroom" className={'link-style'}>
+                <div
+                  className={`flex item ${
+                    location.pathname === '/submit-restroom'
+                      ? 'active'
+                      : ''
+                  }`}
+                >
+                  <EditNoteIcon
+                    fontSize={'inherit'}
+                    className={'v-center'}
+                  />
+                  Submit
+                </div>
+              </Link>
+            )}
+
             {isAdmin && (
               <Link to="/admin-table" className={'link-style'}>
                 <div
