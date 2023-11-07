@@ -37,7 +37,7 @@ export class ReportService {
     if (reportEntity === null) return null;
 
     getReportDetailVo.id = reportEntity.id;
-
+    getReportDetailVo.restroomId = reportEntity.restroomId;
     // title, building, floor .... gender
     const restroomEntity: GetRestroomDetailVo =
       await this.restroomService.getRestroomDetail(

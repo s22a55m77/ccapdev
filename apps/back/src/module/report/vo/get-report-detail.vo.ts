@@ -3,6 +3,7 @@ import { GenderType } from 'src/model/restroom.entity';
 
 export class GetReportDetailVo {
   id: number;
+  restroomId: number;
   title: string;
   building: string;
   floor: number;

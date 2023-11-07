@@ -75,6 +75,7 @@ declare namespace API {
 
   type RestroomData = {
     id: number;
+    restroomId: number;
     title: string;
     building: string;
     floor: number;

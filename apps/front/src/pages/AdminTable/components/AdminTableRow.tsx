@@ -188,7 +188,7 @@ export function AdminTableRow({ id: reportId }: AdminTableRowProps) {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <Link to={`/restroom/${adminRestroomData?.id}`}>
+          <Link to={`/restroom/${adminRestroomData?.restroomId}`}>
             <Button color="green">To the Post</Button>
           </Link>
         </motion.div>
