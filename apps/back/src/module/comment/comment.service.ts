@@ -95,13 +95,8 @@ export class CommentService {
 
     // isAdmin
     getCommentDetailVo.isAdmin = false;
-    const currentUser: UserEntity = await this.userService.getUserById(
-      currentUserId,
-    );
-    if (currentUser !== null) {
-      if (currentUser.role === RoleType.ADMIN)
-        getCommentDetailVo.isAdmin = false;
-    }
+    if (commentByUser.role === RoleType.ADMIN)
+      getCommentDetailVo.isAdmin = true;
 
     // childComments
     const childComments: number[] = [];
