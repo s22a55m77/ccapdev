@@ -75,7 +75,6 @@ declare namespace API {
 
   type RestroomData = {
     id: number;
-    restroomId: number;
     title: string;
     building: string;
     floor: number;
@@ -157,7 +156,10 @@ declare namespace API {
     | 'downVote'
     | 'rating'
     | 'tags'
-  > & { status: string };
+  > & {
+    status: string;
+    restroomId: number;
+  };
   type ChangeRestroomStatusResponse = BaseResponse<AdminReportData>;
 
   type CommentDetailData = {
