@@ -12,7 +12,7 @@ import {
 import './index.css';
 import EditIcon from '@mui/icons-material/Edit';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRequest } from 'ahooks';
 import {
@@ -56,12 +56,16 @@ export default function UserProfile() {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  let { data, mutate } = useRequest(getUserProfile, {
+  let { data, mutate, run } = useRequest(getUserProfile, {
     defaultParams: [userId || '0'],
     onError: (e) => {
       if ((e as AxiosError).response?.status === 404) navigate('/404');
     },
   });
+
+  useEffect(() => {
+    if (userId) run(userId);
+  }, [userId]);
 
   const { run: updateProfile } = useRequest(updateUserProfile, {
     manual: true,
