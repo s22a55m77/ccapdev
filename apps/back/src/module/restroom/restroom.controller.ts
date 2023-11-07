@@ -171,7 +171,7 @@ export class RestroomController {
 
   // DELETE /restroom/:id/review/
   @Delete(':id/review')
-  @Auth([RoleType.USER, RoleType.USER])
+  @Auth([RoleType.USER, RoleType.ADMIN])
   async deleteRestroomReview(
     @Param('id') id: string,
     @AuthUser() user: UserEntity,
