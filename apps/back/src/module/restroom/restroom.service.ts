@@ -628,6 +628,10 @@ export class RestroomService {
     // Remove unnecessary properties
     restroomDetails.forEach((detail) => {
       delete detail.commentsIds;
+      detail.restroomImageIds = [
+        ...detail.restroomImageIds,
+        ...detail.locationImageIds,
+      ];
       delete detail.locationImageIds;
       detail.restroomImageIds = detail.restroomImageIds.slice(0, 3);
     });
