@@ -29,6 +29,7 @@ import {
 import { AlertContent } from '../../../declaration';
 import { useUserStore } from '../../Login/user.store.ts';
 import { Link } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 type ReplyCardProps = {
   restroomId: number;
@@ -94,13 +95,13 @@ export default function ReplyCard({
         severity: 'success',
       });
     },
-    onError: () => {
-      // TODO 如果返回的是409，需要展示后端的msg
-      setAlertContent({
-        isOpen: true,
-        message: 'Error Occurred',
-        severity: 'error',
-      });
+    onError: (error) => {
+      if (error instanceof AxiosError)
+        setAlertContent({
+          isOpen: true,
+          message: error.response?.data.msg,
+          severity: 'error',
+        });
     },
   });
 

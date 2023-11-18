@@ -65,7 +65,14 @@ export default function Restroom() {
         severity: 'success',
       });
     },
-    // TODO 如果返回的是409，需要展示后端的msg
+    onError: (error) => {
+      if (error instanceof AxiosError)
+        setAlertContent({
+          isOpen: true,
+          message: error.response?.data.msg,
+          severity: 'error',
+        });
+    },
   });
 
   const handleReport = () => {
@@ -101,12 +108,13 @@ export default function Restroom() {
             severity: 'success',
           });
         })
-        .catch(() => {
-          setAlertContent({
-            isOpen: true,
-            message: 'Error Occurred',
-            severity: 'error',
-          });
+        .catch((e) => {
+          if (e instanceof AxiosError)
+            setAlertContent({
+              isOpen: true,
+              message: e.response?.data.msg,
+              severity: 'error',
+            });
         });
   };
 
