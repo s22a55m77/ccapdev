@@ -352,7 +352,6 @@ export class RestroomService {
   ): Promise<CreateRestroomVo> {
     const { building, floor, gender, tags, city, province, location } =
       createRestroomDto;
-    // TODO 需要insert到多个table
     // insert buildingRepo (if not exist)
     const provinceEntity: ProvinceEntity = await this.provinceRepo.findOne(
       {
@@ -471,7 +470,6 @@ export class RestroomService {
     createRestroomReviewDto: CreateRestroomReviewDto,
     currentUserId: number,
   ): Promise<CreateRestroomReviewVo> {
-    // TODO insert完需要再查出返回数据
     const { rating, commentTo, content } = createRestroomReviewDto;
     let commentEntity: CommentEntity = null;
     if (rating) {
@@ -558,6 +556,7 @@ export class RestroomService {
     return this.commentService.getCommentDetail(id, userId);
   }
 
+  // TODO add paging
   async getRestroomList({
     sort,
     gender,

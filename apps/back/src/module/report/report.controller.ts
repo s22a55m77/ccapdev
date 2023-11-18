@@ -44,7 +44,7 @@ export class ReportController {
 
   // PATCH /report/:id
   @Patch(':id')
-  @Auth([RoleType.USER, RoleType.ADMIN])
+  @Auth([RoleType.ADMIN])
   async changeReportStatus(
     @Param('id') id: number,
     @Body('status') status: number,
@@ -65,6 +65,7 @@ export class ReportController {
     @Param('id') id: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<{ success: true }>> {
+    // TODO 用户对每个restroom只能report一次，返回409 conflict 如果重复了。
     const report = await this.reportService.report(id, user.id);
     if (report) return ResponseVo.success({ success: true });
     throw new InternalServerErrorException('Unknown Error');

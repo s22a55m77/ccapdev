@@ -48,7 +48,6 @@ export class RestroomController {
     return ResponseVo.success(filter);
   }
 
-  // TODO 需要更多数据来测试
   // GET /restroom
   @Get()
   async getRestroomList(
@@ -96,7 +95,6 @@ export class RestroomController {
     return ResponseVo.success(restroomDetail);
   }
 
-  // TODO 需要接收图片 https://docs.nestjs.com/techniques/file-upload, 可以参考我在user controller做的
   // POST /restroom
   @Post()
   @UseInterceptors(
@@ -132,6 +130,7 @@ export class RestroomController {
     @Body() createRestroomReviewDto: CreateRestroomReviewDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<CreateRestroomReviewVo>> {
+    // TODO user在每个restroom只能有一个review。回复不管多少。所以要判断user有没有review过了，如果有返回409 conflict
     const review = await this.restroomService.createRestroomReview(
       id,
       createRestroomReviewDto,
@@ -181,7 +180,6 @@ export class RestroomController {
       await this.restroomService.deleteRestroomReview(id);
       return ResponseVo.success({ success: true });
     } catch (e) {
-      // TODO 处理报错;
       throw new NotFoundException('Review Not Found');
     }
   }
@@ -203,7 +201,6 @@ export class RestroomController {
     return ResponseVo.success(review);
   }
 
-  // TODO 返回图片 https://docs.nestjs.com/techniques/streaming-files
   // GET /restroom/:id/image
   @Get(':id/image')
   @Header('Content-Type', 'image/jpeg')

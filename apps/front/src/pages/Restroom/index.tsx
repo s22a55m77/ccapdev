@@ -65,6 +65,7 @@ export default function Restroom() {
         severity: 'success',
       });
     },
+    // TODO 如果返回的是409，需要展示后端的msg
   });
 
   const handleReport = () => {
@@ -157,7 +158,6 @@ export default function Restroom() {
               <div className={'restroom-content'}>
                 {restroomData?.location}
               </div>
-              {/*TODO MCO2*/}
               <div className={'restroom-image-container'}>
                 {restroomData?.restroomImageIds.map((id, index) => {
                   return (

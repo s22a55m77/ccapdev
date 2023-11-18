@@ -25,11 +25,8 @@ export enum StatusType {
   DISAPPROVED = 'disapproved',
 }
 
-// TODO 地点相关的ID需要unique
-// Example @Unique(['barangayId', 'floorId'])
 @Entity('restroom')
 export class RestroomEntity {
-  //   TODO
   @PrimaryGeneratedColumn()
   id: number;
 

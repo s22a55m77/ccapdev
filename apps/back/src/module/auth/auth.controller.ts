@@ -13,8 +13,6 @@ import { ResponseVo } from '../../common/response.vo';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { RoleType, UserEntity } from '../../model/user.entity';
-import { RolesGuard } from './roles.guard';
-import { AuthGuard } from './auth.guard';
 import { Auth } from './auth';
 import { AuthUser } from './auth-user';
 import { LoginVo } from './vo/login.vo';
@@ -49,6 +47,7 @@ export class AuthController {
     user.role = RoleType.USER;
     user.username = registerDto.username;
     user.email = registerDto.email;
+    // TODO encrypt password using bcrypt
     user.password = registerDto.password;
 
     const insertedUser: UserEntity = await this.userService

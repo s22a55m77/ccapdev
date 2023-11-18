@@ -27,7 +27,6 @@ export class ReportService {
   ) {}
 
   async getReportDetail(id: number): Promise<GetReportDetailVo> {
-    // TODO
     const getReportDetailVo: GetReportDetailVo = new GetReportDetailVo();
     const reportEntity: ReportEntity = await this.reportRepo.findOne({
       where: {

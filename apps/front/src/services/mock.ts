@@ -242,9 +242,6 @@
 // };
 //
 // const getAdminRestroomList = (): API.AdminRestroomListData => {
-//   /* TODO 从restrooms拿到基本的数据 然后转换成 API.AdminRestroomListData 的格式
-//               记得要加一些待审核的
-//   */
 //   return restrooms.map((restroom) => {
 //     return {
 //       id: restroom.id,
@@ -665,7 +662,6 @@
 //       if (result) {
 //         const id = result[1];
 //
-//         // TODO 想办法从restrooms或getAdminRestroomList()拼凑出需要的数据
 //         const index = restrooms.findIndex(
 //           (restroom) => restroom.id === id,
 //         );
@@ -711,7 +707,6 @@
 //       if (result) {
 //         const id = result[1];
 //
-//         // TODO 修改restrooms中的status并返回
 //         const index = restrooms.findIndex(
 //           (restroom) => restroom.id === id,
 //         );
@@ -746,7 +741,6 @@
 //       const result = config.url.match(/^\/user\/(\d+)\/profile/);
 //       if (result) {
 //         const id = result[1];
-//         // TODO 找出user和他以前给过的review
 //         const user = users.find((user) => user.id === id);
 //         if (!user) return [404];
 //

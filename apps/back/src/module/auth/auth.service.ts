@@ -35,7 +35,7 @@ export class AuthService {
       throw new NotFoundException('User does not exist');
     }
 
-    // FIXME MCO3 compare with encrypted password
+    // TODO MCO3 compare with encrypted password
     const isPasswordValid = loginDto.password === user.password;
 
     if (!isPasswordValid) {

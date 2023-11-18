@@ -22,7 +22,6 @@ export class CommentService {
     id: number,
     currentUserId: number,
   ): Promise<GetCommentDetailVo> {
-    // TODO
     const getCommentDetailVo: GetCommentDetailVo =
       new GetCommentDetailVo();
 

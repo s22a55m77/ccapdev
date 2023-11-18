@@ -11,7 +11,6 @@ import { RestroomEntity } from './restroom.entity';
 
 @Entity('floor')
 export class FloorEntity {
-  // TODO
   @PrimaryGeneratedColumn()
   id: number;
 

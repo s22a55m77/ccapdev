@@ -169,7 +169,6 @@ export function createRestroom({
   gender,
   tags,
 }: API.CreateRestroomParams): Promise<API.RestroomData> {
-  // TODO need test on MCO2
   const data = new FormData();
   if (locationImages)
     for (const file of locationImages) data.append('locationImages', file);
