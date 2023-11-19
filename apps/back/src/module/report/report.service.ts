@@ -186,4 +186,14 @@ export class ReportService {
     reportEntity.restroomId = id;
     return this.reportRepo.save(reportEntity);
   }
+
+  async isReported(id: number, userId: number) {
+    const reportEntity = await this.reportRepo.findOne({
+      where: {
+        restroomId: id,
+        reportedById: userId,
+      },
+    });
+    return reportEntity !== null;
+  }
 }

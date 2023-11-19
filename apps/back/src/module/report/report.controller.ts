@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  ConflictException,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { ResponseVo } from '../../common/response.vo';
@@ -66,6 +67,10 @@ export class ReportController {
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<{ success: true }>> {
     // TODO 用户对每个restroom只能report一次，返回409 conflict 如果重复了。
+    const isReported = await this.reportService.isReported(id, user.id);
+
+    if (isReported) throw new ConflictException('Already Reported');
+
     const report = await this.reportService.report(id, user.id);
     if (report) return ResponseVo.success({ success: true });
     throw new InternalServerErrorException('Unknown Error');
