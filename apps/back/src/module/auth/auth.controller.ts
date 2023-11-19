@@ -19,7 +19,7 @@ import { LoginVo } from './vo/login.vo';
 import { RegisterVo } from './vo/register.vo';
 import { MeVo } from './vo/me.vo';
 import { RefreshTokenVo } from './vo/refresh-token.vo';
-
+import * as bcrypt from 'bcrypt';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -48,7 +48,11 @@ export class AuthController {
     user.username = registerDto.username;
     user.email = registerDto.email;
     // TODO encrypt password using bcrypt
-    user.password = registerDto.password;
+
+    const salt = await bcrypt.genSalt();
+
+    const hashedPassword = await bcrypt.hash(registerDto.password, salt);
+    user.password = hashedPassword;
 
     const insertedUser: UserEntity = await this.userService
       .insertUser(user)
