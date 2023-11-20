@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   ForbiddenException,
@@ -131,6 +132,10 @@ export class RestroomController {
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<CreateRestroomReviewVo>> {
     // TODO user在每个restroom只能有一个review。回复不管多少。所以要判断user有没有review过了，如果有返回409 conflict
+    const hasReview = await this.restroomService.hasReview(id, user.id);
+
+    if (hasReview) throw new ConflictException('Already Reviewed');
+
     const review = await this.restroomService.createRestroomReview(
       id,
       createRestroomReviewDto,

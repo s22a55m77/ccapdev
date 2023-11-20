@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegionEntity } from '../../model/region.entity';
-import { DeleteResult, Equal, In, Repository } from 'typeorm';
+import { DeleteResult, Equal, In, IsNull, Not, Repository } from 'typeorm';
 import { renameKey } from '../../common/utils';
 import {
   FilterDataType,
@@ -693,5 +693,17 @@ export class RestroomService {
     return await this.commentRepo.findOne({
       where: { id: reviewId },
     });
+  }
+
+  async hasReview(id: number, userId: number) {
+    const commentEntity = await this.commentRepo.findOne({
+      where: {
+        restroomId: id,
+        commentById: userId,
+        type: Type.REVIEW,
+      },
+    });
+
+    return commentEntity !== null;
   }
 }
