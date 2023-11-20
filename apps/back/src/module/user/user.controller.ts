@@ -32,7 +32,6 @@ export class UserController {
     @Body() updateUserProfileDto: UpdateUserProfileDto,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<UpdateUserProfileVo>> {
-    // TODO 判断是不是本人修改
     const userProfile = await this.userService.updateProfile(
       user.id,
       updateUserProfileDto,
@@ -48,7 +47,6 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
     @AuthUser() user: UserEntity,
   ) {
-    // TODO 判断是不是本人修改
     const image = file.buffer.toString('base64');
     await this.userService.updateProfilePic(user.id, image);
     const profile = await this.userService.getUserProfile(user.id);
