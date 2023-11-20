@@ -136,7 +136,8 @@ export default function RegisterPage() {
                     },
                     minLength: {
                       value: 6,
-                      message: 'The minimum length is 6',
+                      message:
+                        'Password should have a minimum length of 6',
                     },
                   })}
                   type="password"
