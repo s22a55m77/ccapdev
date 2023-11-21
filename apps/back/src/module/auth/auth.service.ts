@@ -37,19 +37,21 @@ export class AuthService {
     return this.tokenMap.get(userId) === token;
   }
 
-  async validateUser(loginDto: LoginDto): Promise<UserEntity> {
+  async validateUser({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }): Promise<UserEntity> {
     const user: UserEntity | null =
-      await this.userService.getUserByUsername(loginDto.username);
+      await this.userService.getUserByUsername(username);
 
     if (!user) {
       throw new NotFoundException('User does not exist');
     }
 
-    // TODO MCO3 compare with encrypted password
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      user.password,
-    );
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new BadRequestException('Invalid Password');

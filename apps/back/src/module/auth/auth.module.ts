@@ -14,11 +14,13 @@ import { RestroomEntity } from '../../model/restroom.entity';
 import { RestroomService } from '../restroom/restroom.service';
 import { EntitiesModule } from '../entity/entities.module';
 import { CommentService } from '../comment/comment.service';
+import { LocalStrategy } from './local.strategy';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
   imports: [
     EntitiesModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'local' }),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         privateKey: configService.get<string>('JWT_PRIVATE_KEY'),
@@ -35,9 +37,11 @@ import { CommentService } from '../comment/comment.service';
   providers: [
     AuthService,
     UserService,
+    LocalStrategy,
     JwtStrategy,
     RestroomService,
     CommentService,
+    SessionSerializer,
   ],
 })
 export class AuthModule {}

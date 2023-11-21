@@ -26,12 +26,14 @@ const removeJwtToken = () => {
 export function login({
   username,
   password,
+  rememberMe,
 }: API.LoginParams): Promise<API.LoginData> {
   return APIClient.post<API.LoginResponse>(
     '/auth/login',
     {
       username,
       password,
+      rememberMe,
     },
     {
       headers: {
@@ -85,9 +87,9 @@ export function register({
 //GET /auth/me
 export function me(): Promise<API.UserData> {
   return APIClient.get<API.MeResponse>('/auth/me', {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${getJwtToken()}`,
+    // },
   }).then((res) => res.data.data);
 }
 

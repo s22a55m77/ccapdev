@@ -7,9 +7,10 @@ import {
 import { Reflector } from '@nestjs/core';
 import { RoleType, UserEntity } from '../../model/user.entity';
 import { setValue } from 'express-ctx';
+import { LoggedInGuard } from './logged-in-guard.guard';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class RolesGuard implements LoggedInGuard {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -22,7 +23,7 @@ export class RolesGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user = <UserEntity>request.user;
+    const user = <UserEntity>request.session.passport.user;
     setValue('user', user);
 
     return roles.includes(user.role);

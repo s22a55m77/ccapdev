@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const APIClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
 });
 
 // let mock: MockAdapter;
@@ -15,5 +16,4 @@ const APIClient = axios.create({
 //
 //   configureMock(mock);
 // }
-
 export default APIClient;

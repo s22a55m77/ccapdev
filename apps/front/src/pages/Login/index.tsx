@@ -10,9 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import { AxiosError } from 'axios';
 
-type LoginForm = API.LoginParams & {
-  rememberMe?: boolean;
-};
+type LoginForm = API.LoginParams;
 
 export default function LoginPage() {
   const [name, setName] = useState('');
@@ -44,7 +42,11 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      await login({ username: data.username, password: data.password });
+      await login({
+        username: data.username,
+        password: data.password,
+        rememberMe: data.rememberMe,
+      });
       const userData = await me();
       setUser(userData);
       if (data.rememberMe)
