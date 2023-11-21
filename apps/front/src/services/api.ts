@@ -66,7 +66,10 @@ export function refreshToken(): Promise<API.RefreshTokenData> {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  }).then((res) => res.data.data);
+  }).then((res) => {
+    localStorage.setItem('token', res.data.data.token);
+    return res.data.data;
+  });
 }
 
 //PATCH /user/profile
