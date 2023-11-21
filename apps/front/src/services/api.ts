@@ -1,5 +1,27 @@
 import APIClient from './APIClient.ts';
 
+const setJwtToken = (token: string) => {
+  document.cookie = `jwtToken=${token}; path=/; SameSite=Strict`;
+};
+
+const getJwtToken = () => {
+  const cookies = document.cookie.split('; ');
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.split('=');
+    if (name === 'jwtToken') {
+      return value;
+    }
+  }
+
+  return null;
+};
+
+const removeJwtToken = () => {
+  document.cookie =
+    'jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+};
+
 // POST /auth/login
 export function login({
   username,
@@ -17,28 +39,23 @@ export function login({
       },
     },
   ).then((res) => {
-    localStorage.setItem('token', res.data.data.token);
+    setJwtToken(res.data.data.token);
     return res.data.data;
   });
 }
 
-export function logout(): void {
-  APIClient.post(
+export async function logout() {
+  await APIClient.post(
     '/auth/logout',
     {},
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
-  )
-    .then((res) => res.data.data)
-    .then((success) => {
-      if (success) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('lastLoginTime');
-      }
-    });
+  );
+  removeJwtToken();
+  localStorage.removeItem('lastLoginTime');
 }
 
 // POST /auth/register
@@ -60,7 +77,7 @@ export function register({
       },
     },
   ).then((res) => {
-    localStorage.setItem('token', res.data.data.token);
+    setJwtToken(res.data.data.token);
     return res.data.data;
   });
 }
@@ -69,7 +86,7 @@ export function register({
 export function me(): Promise<API.UserData> {
   return APIClient.get<API.MeResponse>('/auth/me', {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -78,7 +95,7 @@ export function me(): Promise<API.UserData> {
 export function refreshToken(): Promise<API.RefreshTokenData> {
   return APIClient.get<API.RefreshTokenResponse>('/auth/refresh', {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => {
     localStorage.setItem('token', res.data.data.token);
@@ -100,7 +117,7 @@ export function updateUserProfile({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -116,7 +133,7 @@ export function updateProfilePic(
     {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -172,7 +189,7 @@ export function getRestroomList({
 export function getRestroomDetail(id: string): Promise<API.RestroomData> {
   return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -206,7 +223,7 @@ export function createRestroom({
   return APIClient.post<API.CreateRestroomResponse>('/restroom', data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -228,7 +245,7 @@ export function createRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -249,7 +266,7 @@ export function updateRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -263,7 +280,7 @@ export function deleteRestroomReview(
     `/restroom/${restroomId}/review`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -282,7 +299,7 @@ export function changeVoteStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -297,7 +314,7 @@ export function reportRestroom({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -309,7 +326,7 @@ export function reportRestroom({
 export function getAdminReportList(): Promise<API.AdminReportListData> {
   return APIClient.get<API.GetAdminReportListResponse>('/report', {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -318,7 +335,7 @@ export function getAdminReportList(): Promise<API.AdminReportListData> {
 export function getReportDetail(id: number): Promise<API.AdminReportData> {
   return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -336,7 +353,7 @@ export function changeReportStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -348,7 +365,7 @@ export function getCommentDetail(
 ): Promise<API.CommentDetailData> {
   return APIClient.get<API.GetCommentDetailResponse>(`/comment/${id}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
