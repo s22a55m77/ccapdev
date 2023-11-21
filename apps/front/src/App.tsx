@@ -1,6 +1,6 @@
 import './App.css';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import {
   createTheme,
@@ -89,6 +89,11 @@ function App() {
             </div>
           </Grid>
         </Grid>
+      </div>
+      <div className={'about'}>
+        <Link to={'/about'} style={{ color: '#595959' }}>
+          About
+        </Link>
       </div>
     </ThemeProvider>
   );

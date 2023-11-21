@@ -10,6 +10,7 @@ import UserProfile from './pages/UserProfile';
 import AdminTable from './pages/AdminTable';
 import Error404 from './pages/Error/Error404.tsx';
 import RequireAuth from './RequireAuth.tsx';
+import About from './pages/About';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             element: <AdminTable />,
           },
         ],
+      },
+      {
+        path: '/about',
+        element: <About />,
       },
     ],
   },
