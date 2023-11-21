@@ -17,14 +17,24 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
+  tokenMap = new Map();
+
   async createAccessToken(data: {
     role: RoleType;
     userId: number;
   }): Promise<string> {
-    return this.jwtService.signAsync({
+    const token = await this.jwtService.signAsync({
       userId: data.userId,
       role: data.role,
     });
+
+    this.tokenMap.set(data.userId, token);
+
+    return token;
+  }
+
+  validateToken(userId: number, token: string): boolean {
+    return this.tokenMap.get(userId) === token;
   }
 
   async validateUser(loginDto: LoginDto): Promise<UserEntity> {
@@ -46,5 +56,9 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  logout(userId: number) {
+    this.tokenMap.delete(userId);
   }
 }

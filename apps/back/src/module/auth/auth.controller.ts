@@ -70,6 +70,14 @@ export class AuthController {
     return ResponseVo.success({ token });
   }
 
+  // POST /auth/logout
+  @Post('logout')
+  @Auth([RoleType.USER, RoleType.ADMIN])
+  async logout(@AuthUser() user: UserEntity) {
+    this.authService.logout(user.id);
+    return ResponseVo.success({ success: true });
+  }
+
   // GET /auth/me
   @Get('me')
   @Auth([RoleType.USER, RoleType.ADMIN])

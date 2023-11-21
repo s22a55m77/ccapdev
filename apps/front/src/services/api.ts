@@ -23,8 +23,22 @@ export function login({
 }
 
 export function logout(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('lastLoginTime');
+  APIClient.post(
+    '/auth/logout',
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  )
+    .then((res) => res.data.data)
+    .then((success) => {
+      if (success) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('lastLoginTime');
+      }
+    });
 }
 
 // POST /auth/register
