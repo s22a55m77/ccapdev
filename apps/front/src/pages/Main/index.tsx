@@ -55,6 +55,14 @@ export default function Main() {
     }
   }, [filter]);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   const resetPagination = () => {
     setRestroomList([]);
     setOriginalList([]);
@@ -217,6 +225,9 @@ export default function Main() {
           onScroll={onScroll}
           itemHeight={350}
           height={600}
+          style={{
+            paddingTop: 20,
+          }}
         >
           {(restroom) => (
             <motion.div
