@@ -53,23 +53,24 @@ const theme = createTheme({
 function App() {
   const { setUser, setUserLoginState } = useUserStore();
 
+  const isLastTab = () => {
+    return localStorage.getItem('tabCount') === '-1';
+  };
+
   window.onload = function () {
     const tabCount = localStorage.getItem('tabCount') || '0';
     const count = parseInt(tabCount) + 1;
     localStorage.setItem('tabCount', count.toString());
   };
 
-  window.onbeforeunload = function () {
+  window.onbeforeunload = async function () {
     const tabCount = localStorage.getItem('tabCount') || '0';
     const count = parseInt(tabCount) - 1;
     localStorage.setItem('tabCount', count.toString());
     if (document.visibilityState === 'hidden') {
-      if (isLastTab() && !localStorage.getItem('lastLoginTime')) logout();
+      if (isLastTab() && !localStorage.getItem('lastLoginTime'))
+        await logout();
     }
-  };
-
-  const isLastTab = () => {
-    return localStorage.getItem('tabCount') === '-1';
   };
 
   useEffect(() => {
