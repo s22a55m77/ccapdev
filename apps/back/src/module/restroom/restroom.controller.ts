@@ -36,6 +36,7 @@ import { Auth } from '../auth/auth';
 import { RoleType, UserEntity } from 'src/model/user.entity';
 import { AuthUser } from '../auth/auth-user';
 import { GetRestroomListVo } from './vo/get-restroom-list.vo';
+import { GetRestroomListQueryDto } from './dto/get-restroom-list.dto';
 
 @Controller('restroom')
 export class RestroomController {
@@ -52,17 +53,21 @@ export class RestroomController {
   // GET /restroom
   @Get()
   async getRestroomList(
-    @Query('sort') sort: 'RATING' | 'NEW',
-    @Query('current') current: number,
-    @Query('pageSize') pageSize: number,
-    @Query('region') region?: string,
-    @Query('province') province?: string,
-    @Query('city') city?: string,
-    @Query('building') building?: string,
-    @Query('floor') floor?: string,
-    @Query('gender') gender?: 'MALE' | 'FEMALE',
-    @Query('availability') availability?: string,
+    @Query() query: GetRestroomListQueryDto,
   ): Promise<ResponseVo<GetRestroomListVo[]>> {
+    let {
+      city,
+      region,
+      province,
+      building,
+      floor,
+      availability,
+      sort,
+      gender,
+      current,
+      pageSize,
+    } = query;
+
     if (city) city = JSON.parse(city);
     if (region) region = JSON.parse(region);
     if (province) province = JSON.parse(province);
