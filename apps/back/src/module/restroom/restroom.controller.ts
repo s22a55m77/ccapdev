@@ -53,6 +53,8 @@ export class RestroomController {
   @Get()
   async getRestroomList(
     @Query('sort') sort: 'RATING' | 'NEW',
+    @Query('current') current: number,
+    @Query('pageSize') pageSize: number,
     @Query('region') region?: string,
     @Query('province') province?: string,
     @Query('city') city?: string,
@@ -70,6 +72,8 @@ export class RestroomController {
 
     const data = await this.restroomService.getRestroomList({
       sort,
+      current,
+      pageSize,
       gender,
       availability,
       region,

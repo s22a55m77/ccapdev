@@ -559,6 +559,8 @@ export class RestroomService {
   // TODO add paging
   async getRestroomList({
     sort,
+    current,
+    pageSize,
     gender,
     availability,
     region,
@@ -616,6 +618,9 @@ export class RestroomService {
       filterQB.andWhere('b.id IN (:...building)', { building });
 
     if (floor) filterQB.andWhere('f.id IN (:...floor)', { floor });
+
+    filterQB.limit(pageSize || 10);
+    filterQB.offset((current - 1) * pageSize || 0);
 
     const filteredRestroomIds = await filterQB.execute();
 

@@ -132,6 +132,8 @@ export function getRestroomList({
   gender,
   availability,
   sort,
+  current,
+  pageSize,
 }: API.RestroomListQuery): Promise<API.RestroomListData> {
   return APIClient.get<API.RestroomListResponse>('/restroom', {
     params: {
@@ -143,6 +145,8 @@ export function getRestroomList({
       gender,
       availability,
       sort,
+      current,
+      pageSize,
     },
   }).then((res) => res.data.data);
 }

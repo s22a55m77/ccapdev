@@ -9,11 +9,14 @@ import { getFilterOptions, getRestroomList } from '../../services/api.ts';
 import { useRequest } from 'ahooks';
 import { useRestroomList } from './restroom-list.store.ts';
 import { Cascader } from 'antd';
+import VirtualList from 'rc-virtual-list';
 
 export default function Main() {
   // this control the params of getRestroomList
   const [query, setQuery] = useState<API.RestroomListQuery>({
     sort: 'NEW',
+    current: 1,
+    pageSize: 10,
   });
 
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -27,6 +30,8 @@ export default function Main() {
   );
   const [option, setOption] = useState<API.FilterDataType[]>();
   const [filterOpen, setFilterOpen] = useState(false);
+
+  const [isPaginationEnd, setIsPaginationEnd] = useState(false);
 
   const { data: filter } = useRequest(getFilterOptions);
 
@@ -50,14 +55,20 @@ export default function Main() {
     }
   }, [filter]);
 
+  const resetPagination = () => {
+    setRestroomList([]);
+    setOriginalList([]);
+    setIsPaginationEnd(false);
+  };
+
   const { run, error } = useRequest(getRestroomList, {
     defaultParams: [query],
     onSuccess: (data) => {
-      setRestroomList(data);
-      setOriginalList(data);
+      if (data.length < query.pageSize) setIsPaginationEnd(true);
+      setRestroomList(restroomList.concat(data));
+      setOriginalList(restroomList.concat(data));
     },
   });
-
   const handleFilterChange = (data: Record<any, any>[]) => {
     if (data.length === 0) setIsFilterActive(false);
     else setIsFilterActive(true);
@@ -100,11 +111,21 @@ export default function Main() {
       availability: availabilities.length
         ? JSON.stringify(availabilities)
         : undefined,
+      current: 1,
     });
+    resetPagination();
+  };
+
+  const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
+    if (
+      e.currentTarget.scrollHeight - e.currentTarget.scrollTop === 600 &&
+      !isPaginationEnd
+    ) {
+      setQuery({ ...query, current: query.current + 1 });
+    }
   };
 
   useEffect(() => {
-    console.log(query);
     run(query);
   }, [query]);
 
@@ -159,7 +180,10 @@ export default function Main() {
             className={`tab-button ${
               query.sort === 'NEW' ? 'tab-button-active' : ''
             }`}
-            onClick={() => setQuery({ ...query, sort: 'NEW' })}
+            onClick={() => {
+              setQuery({ ...query, sort: 'NEW' });
+              resetPagination();
+            }}
           >
             <div style={{ display: 'flex' }}>
               <AccessTimeIcon
@@ -173,7 +197,10 @@ export default function Main() {
             className={`tab-button ${
               query.sort === 'RATING' ? 'tab-button-active' : ''
             }`}
-            onClick={() => setQuery({ ...query, sort: 'RATING' })}
+            onClick={() => {
+              setQuery({ ...query, sort: 'RATING' });
+              resetPagination();
+            }}
           >
             <div style={{ display: 'flex' }}>
               <CallMadeIcon
@@ -184,31 +211,59 @@ export default function Main() {
             </div>
           </button>
         </div>
-
-        {restroomList &&
-          restroomList.map((restroom) => {
-            return (
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                key={restroom.id}
-                layoutId={restroom.id.toString()}
-              >
-                <RestroomCard
-                  id={restroom.id}
-                  title={restroom.title}
-                  tags={restroom.tags}
-                  rating={restroom.rating}
-                  restroomImageIds={restroom.restroomImageIds}
-                  createdByUser={restroom.createdByUser}
-                  createdByUserId={restroom.createdByUserId}
-                  createdAt={restroom.createdAt}
-                  totalComments={restroom.totalComments}
-                  location={restroom.location}
-                />
-              </motion.div>
-            );
-          })}
+        <VirtualList
+          data={restroomList}
+          itemKey="id"
+          onScroll={onScroll}
+          itemHeight={350}
+          height={600}
+        >
+          {(restroom) => (
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              key={restroom.id}
+              layoutId={restroom.id.toString()}
+            >
+              <RestroomCard
+                id={restroom.id}
+                title={restroom.title}
+                tags={restroom.tags}
+                rating={restroom.rating}
+                restroomImageIds={restroom.restroomImageIds}
+                createdByUser={restroom.createdByUser}
+                createdByUserId={restroom.createdByUserId}
+                createdAt={restroom.createdAt}
+                totalComments={restroom.totalComments}
+                location={restroom.location}
+              />
+            </motion.div>
+          )}
+        </VirtualList>
+        {/*{restroomList &&*/}
+        {/*  restroomList.map((restroom) => {*/}
+        {/*    return (*/}
+        {/*      <motion.div*/}
+        {/*        initial={{ opacity: 0, x: -50 }}*/}
+        {/*        whileInView={{ opacity: 1, x: 0 }}*/}
+        {/*        key={restroom.id}*/}
+        {/*        layoutId={restroom.id.toString()}*/}
+        {/*      >*/}
+        {/*        <RestroomCard*/}
+        {/*          id={restroom.id}*/}
+        {/*          title={restroom.title}*/}
+        {/*          tags={restroom.tags}*/}
+        {/*          rating={restroom.rating}*/}
+        {/*          restroomImageIds={restroom.restroomImageIds}*/}
+        {/*          createdByUser={restroom.createdByUser}*/}
+        {/*          createdByUserId={restroom.createdByUserId}*/}
+        {/*          createdAt={restroom.createdAt}*/}
+        {/*          totalComments={restroom.totalComments}*/}
+        {/*          location={restroom.location}*/}
+        {/*        />*/}
+        {/*      </motion.div>*/}
+        {/*    );*/}
+        {/*  })}*/}
         {error && <span>Something go wrong</span>}
       </motion.div>
     </div>

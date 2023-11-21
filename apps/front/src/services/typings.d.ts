@@ -66,6 +66,8 @@ declare namespace API {
     city?: string;
     building?: string;
     sort: 'RATING' | 'NEW';
+    current: number;
+    pageSize: number;
     floor?: string;
     gender?: 'MALE' | 'FEMALE';
     availability?: string;
