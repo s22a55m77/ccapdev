@@ -189,7 +189,7 @@ export default function Main() {
               query.sort === 'NEW' ? 'tab-button-active' : ''
             }`}
             onClick={() => {
-              setQuery({ ...query, sort: 'NEW' });
+              setQuery({ ...query, sort: 'NEW', current: 1 });
               resetPagination();
             }}
           >
@@ -206,7 +206,7 @@ export default function Main() {
               query.sort === 'RATING' ? 'tab-button-active' : ''
             }`}
             onClick={() => {
-              setQuery({ ...query, sort: 'RATING' });
+              setQuery({ ...query, sort: 'RATING', current: 1 });
               resetPagination();
             }}
           >
