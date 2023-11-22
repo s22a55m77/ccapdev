@@ -252,17 +252,6 @@ export default function About() {
       <a
         target="_blank"
         className={'about-title'}
-        href={'https://www.npmjs.com/package/@nestjs/jwt'}
-      >
-        {'@nestjs/jwt'}
-        <div>
-          Nest - modern, fast, powerful node.js web framework (@jwt)
-        </div>
-      </a>
-
-      <a
-        target="_blank"
-        className={'about-title'}
         href={'https://www.npmjs.com/package/@nestjs/mapped-types'}
       >
         {'@nestjs/mapped-types'}
@@ -318,15 +307,6 @@ export default function About() {
       <a
         target="_blank"
         className={'about-title'}
-        href={'https://www.npmjs.com/package/@types/passport-jwt'}
-      >
-        {'@types/passport-jwt'}
-        <div>This package contains type definitions for passport-jwt</div>
-      </a>
-
-      <a
-        target="_blank"
-        className={'about-title'}
         href={'https://www.npmjs.com/package/bcrypt'}
       >
         {'bcrypt'}
@@ -377,15 +357,6 @@ export default function About() {
       <a
         target="_blank"
         className={'about-title'}
-        href={'https://www.npmjs.com/package/passport-jwt'}
-      >
-        {'passport-jwt'}
-        <div>Passport authentication strategy using JSON Web Tokens</div>
-      </a>
-
-      <a
-        target="_blank"
-        className={'about-title'}
         href={'https://www.npmjs.com/package/pg'}
       >
         {'pg'}
@@ -422,6 +393,44 @@ export default function About() {
           Data-Mapper ORM for TypeScript, ES7, ES6, ES5. Supports MySQL,
           PostgreSQL, MariaDB, SQLite, MS SQL Server, Oracle, MongoDB
           databases.
+        </div>
+      </a>
+
+      <a
+        target="_blank"
+        className={'about-title'}
+        href={'https://www.npmjs.com/package/@types/express-session'}
+      >
+        {'@types/express-session'}
+        <div>TypeScript definitions for express-session</div>
+      </a>
+
+      <a
+        target="_blank"
+        className={'about-title'}
+        href={'https://www.npmjs.com/package/@types/passport-local'}
+      >
+        {'@types/passport-local'}
+        <div>TypeScript definitions for passport-local</div>
+      </a>
+
+      <a
+        target="_blank"
+        className={'about-title'}
+        href={'https://www.npmjs.com/package/express-session'}
+      >
+        {'express-session'}
+        <div>Simple session middleware for Express</div>
+      </a>
+
+      <a
+        target="_blank"
+        className={'about-title'}
+        href={'https://www.npmjs.com/package/passport-local'}
+      >
+        {'passport-local:'}
+        <div>
+          Local username and password authentication strategy for Passport.
         </div>
       </a>
     </div>
