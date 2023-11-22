@@ -12,7 +12,7 @@ declare namespace API {
   };
 
   type LoginData = {
-    token: string;
+    success: boolean;
   };
 
   type LoginResponse = BaseResponse<LoginData>;
@@ -24,7 +24,7 @@ declare namespace API {
   };
 
   type RegisterData = {
-    token: string;
+    success: boolean;
   };
 
   type RegisterResponse = BaseResponse<RegisterData>;

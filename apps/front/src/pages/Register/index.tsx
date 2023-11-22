@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { me, register as registerUser } from '../../services/api.ts';
-import { useUserStore } from '../Login/user.store.ts';
+import { register as registerUser } from '../../services/api.ts';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -24,7 +23,6 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormValues>();
   const [errMsg, setErrMsg] = useState('');
-  const { setUser } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,14 +41,12 @@ export default function RegisterPage() {
     }
 
     try {
-      await registerUser({
+      const result = await registerUser({
         email: data.email,
         username: data.username,
         password: data.password1,
       });
-      const userData = await me();
-      setUser(userData);
-      navigate('/');
+      if (result.success) navigate('/login');
     } catch (error) {
       const msg = (
         (error as AxiosError).response!.data as API.BaseResponse<null>

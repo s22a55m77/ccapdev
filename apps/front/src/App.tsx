@@ -10,7 +10,7 @@ import {
 import Sidebar from './components/Sidebar';
 import { useEffect } from 'react';
 import { useUserStore } from './pages/Login/user.store.ts';
-import { logout, me, refreshToken } from './services/api.ts';
+import { me } from './services/api.ts';
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
@@ -53,26 +53,6 @@ const theme = createTheme({
 function App() {
   const { setUser, setUserLoginState } = useUserStore();
 
-  const isLastTab = () => {
-    return localStorage.getItem('tabCount') === '-1';
-  };
-
-  window.onload = function () {
-    const tabCount = localStorage.getItem('tabCount') || '0';
-    const count = parseInt(tabCount) + 1;
-    localStorage.setItem('tabCount', count.toString());
-  };
-
-  window.onbeforeunload = async function () {
-    const tabCount = localStorage.getItem('tabCount') || '0';
-    const count = parseInt(tabCount) - 1;
-    localStorage.setItem('tabCount', count.toString());
-    if (document.visibilityState === 'hidden') {
-      if (isLastTab() && !localStorage.getItem('lastLoginTime'))
-        await logout();
-    }
-  };
-
   useEffect(() => {
     document.title = 'toiletToPick';
 
@@ -80,16 +60,6 @@ function App() {
       .then((userData) => {
         setUserLoginState(true);
         setUser(userData);
-
-        const lastLoginTime = localStorage.getItem('lastLoginTime');
-        if (lastLoginTime)
-          if (new Date().toDateString() > lastLoginTime) {
-            localStorage.setItem(
-              'lastLoginTime',
-              new Date().toDateString(),
-            );
-            refreshToken();
-          }
       })
       .catch(() => {
         setUserLoginState(false);

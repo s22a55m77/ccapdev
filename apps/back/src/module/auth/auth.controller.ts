@@ -47,16 +47,12 @@ export class AuthController {
 
     req.session.save();
 
-    const token = await this.authService.createAccessToken({
-      userId: user.id,
-      role: user.role,
-    });
-    return ResponseVo.success({ token });
+    return ResponseVo.success({ success: true });
   }
 
   // POST /auth/register
+  // @UseGuards(LocalGuard)
   @Post('register')
-  @UseGuards(LocalGuard)
   async register(
     @Body() registerDto: RegisterDto,
   ): Promise<ResponseVo<RegisterVo>> {
@@ -64,8 +60,8 @@ export class AuthController {
     user.role = RoleType.USER;
     user.username = registerDto.username;
     user.email = registerDto.email;
-    // TODO encrypt password using bcrypt
 
+    // encrypt password using bcrypt
     const salt = await bcrypt.genSalt();
 
     const hashedPassword = await bcrypt.hash(registerDto.password, salt);
@@ -79,16 +75,11 @@ export class AuthController {
         else throw new InternalServerErrorException();
       });
 
-    const token = await this.authService.createAccessToken({
-      userId: insertedUser.id,
-      role: user.role,
-    });
-
-    return ResponseVo.success({ token });
+    return ResponseVo.success({ success: true });
   }
 
   // POST /auth/logout
-  @UseGuards(LocalGuard)
+  // @UseGuards(LocalGuard)
   @Post('logout')
   @Auth([RoleType.USER, RoleType.ADMIN])
   async logout(@Req() req) {
@@ -103,26 +94,4 @@ export class AuthController {
   me(@AuthUser() user: UserEntity) {
     return ResponseVo.success({ ...user });
   }
-
-  //GET /auth/refresh
-  // @Get('refresh')
-  // @Auth([RoleType.USER, RoleType.ADMIN])
-  // async refreshToken(
-  //   @AuthUser() user: UserEntity,
-  //   @Req() req,
-  // ): Promise<ResponseVo<RefreshTokenVo>> {
-  //   if (req.session.cookie.originalMaxAge) {
-  //     const day = 21 * 24 * 60 * 60 * 1000;
-  //     req.session.cookie.expires = new Date(Date.now() + day);
-  //     req.session.cookie.maxAge = day;
-  //   }
-  //   req.session.save();
-  //
-  //   const newToken = await this.authService.createAccessToken({
-  //     userId: user.id,
-  //     role: user.role,
-  //   });
-  //
-  //   return ResponseVo.success({ token: newToken });
-  // }
 }

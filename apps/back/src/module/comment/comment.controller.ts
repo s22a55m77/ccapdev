@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  NotFoundException,
   Param,
   UseGuards,
   UseInterceptors,
@@ -23,9 +24,10 @@ export class CommentController {
     @Param('id') id: number,
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<GetCommentDetailVo>> {
-    console.log(user);
     const comment: GetCommentDetailVo =
       await this.commentService.getCommentDetail(id, user?.id || 0);
+
+    if (!comment) throw new NotFoundException('Comment is not exist');
 
     return ResponseVo.success(comment);
   }

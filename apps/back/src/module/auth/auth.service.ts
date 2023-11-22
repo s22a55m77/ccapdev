@@ -3,39 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { RoleType, UserEntity } from '../../model/user.entity';
-import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
+import { UserEntity } from '../../model/user.entity';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly userService: UserService,
-  ) {}
-
-  tokenMap = new Map();
-
-  async createAccessToken(data: {
-    role: RoleType;
-    userId: number;
-  }): Promise<string> {
-    const token = await this.jwtService.signAsync({
-      userId: data.userId,
-      role: data.role,
-    });
-
-    this.tokenMap.set(data.userId, token);
-
-    return token;
-  }
-
-  validateToken(userId: number, token: string): boolean {
-    return this.tokenMap.get(userId) === token;
-  }
+  constructor(private readonly userService: UserService) {}
 
   async validateUser({
     username,
@@ -58,9 +31,5 @@ export class AuthService {
     }
 
     return user;
-  }
-
-  logout(userId: number) {
-    this.tokenMap.delete(userId);
   }
 }

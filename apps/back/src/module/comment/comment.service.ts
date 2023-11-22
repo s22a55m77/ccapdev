@@ -31,6 +31,8 @@ export class CommentService {
       },
     });
 
+    if (!commentInfo) return null;
+
     getCommentDetailVo.id = commentInfo.id;
     getCommentDetailVo.content = commentInfo.content;
     if (commentInfo.rating !== null)

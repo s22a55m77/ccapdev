@@ -1,27 +1,5 @@
 import APIClient from './APIClient.ts';
 
-const setJwtToken = (token: string) => {
-  document.cookie = `jwtToken=${token}; path=/; SameSite=Strict`;
-};
-
-const getJwtToken = () => {
-  const cookies = document.cookie.split('; ');
-
-  for (const cookie of cookies) {
-    const [name, value] = cookie.split('=');
-    if (name === 'jwtToken') {
-      return value;
-    }
-  }
-
-  return null;
-};
-
-const removeJwtToken = () => {
-  document.cookie =
-    'jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-};
-
 // POST /auth/login
 export function login({
   username,
@@ -41,23 +19,12 @@ export function login({
       },
     },
   ).then((res) => {
-    setJwtToken(res.data.data.token);
     return res.data.data;
   });
 }
 
 export async function logout() {
-  await APIClient.post(
-    '/auth/logout',
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${getJwtToken()}`,
-      },
-    },
-  );
-  removeJwtToken();
-  localStorage.removeItem('lastLoginTime');
+  await APIClient.post('/auth/logout');
 }
 
 // POST /auth/register
@@ -79,7 +46,6 @@ export function register({
       },
     },
   ).then((res) => {
-    setJwtToken(res.data.data.token);
     return res.data.data;
   });
 }
@@ -94,16 +60,13 @@ export function me(): Promise<API.UserData> {
 }
 
 //GET /auth/refresh
-export function refreshToken(): Promise<API.RefreshTokenData> {
-  return APIClient.get<API.RefreshTokenResponse>('/auth/refresh', {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
-  }).then((res) => {
-    localStorage.setItem('token', res.data.data.token);
-    return res.data.data;
-  });
-}
+// export function refreshToken(): Promise<API.RefreshTokenData> {
+//   return APIClient.get<API.RefreshTokenResponse>('/auth/refresh', {
+//   }).then((res) => {
+//     localStorage.setItem('token', res.data.data.token);
+//     return res.data.data;
+//   });
+// }
 
 //PATCH /user/profile
 export function updateUserProfile({
@@ -119,7 +82,6 @@ export function updateUserProfile({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -135,7 +97,6 @@ export function updateProfilePic(
     {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -189,11 +150,9 @@ export function getRestroomList({
 
 // GET /restroom/:id
 export function getRestroomDetail(id: string): Promise<API.RestroomData> {
-  return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`, {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
-  }).then((res) => res.data.data);
+  return APIClient.get<API.RestroomDetailResponse>(`/restroom/${id}`).then(
+    (res) => res.data.data,
+  );
 }
 
 // POST /restroom
@@ -225,7 +184,6 @@ export function createRestroom({
   return APIClient.post<API.CreateRestroomResponse>('/restroom', data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${getJwtToken()}`,
     },
   }).then((res) => res.data.data);
 }
@@ -247,7 +205,6 @@ export function createRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -268,7 +225,6 @@ export function updateRestroomReview({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -280,11 +236,6 @@ export function deleteRestroomReview(
 ): Promise<API.RestroomData> {
   return APIClient.delete<API.DeleteRestroomReviewResponse>(
     `/restroom/${restroomId}/review`,
-    {
-      headers: {
-        Authorization: `Bearer ${getJwtToken()}`,
-      },
-    },
   ).then((res) => res.data.data);
 }
 
@@ -301,7 +252,6 @@ export function changeVoteStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -316,7 +266,6 @@ export function reportRestroom({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -326,20 +275,16 @@ export function reportRestroom({
 
 // GET /report
 export function getAdminReportList(): Promise<API.AdminReportListData> {
-  return APIClient.get<API.GetAdminReportListResponse>('/report', {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
-  }).then((res) => res.data.data);
+  return APIClient.get<API.GetAdminReportListResponse>('/report').then(
+    (res) => res.data.data,
+  );
 }
 
 // GET  /report/:id
 export function getReportDetail(id: number): Promise<API.AdminReportData> {
-  return APIClient.get<API.GetAdminReportDetailResponse>(`/report/${id}`, {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
-  }).then((res) => res.data.data);
+  return APIClient.get<API.GetAdminReportDetailResponse>(
+    `/report/${id}`,
+  ).then((res) => res.data.data);
 }
 
 // PATCH /report/:id
@@ -355,7 +300,6 @@ export function changeReportStatus({
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwtToken()}`,
       },
     },
   ).then((res) => res.data.data);
@@ -365,11 +309,9 @@ export function changeReportStatus({
 export function getCommentDetail(
   id: number,
 ): Promise<API.CommentDetailData> {
-  return APIClient.get<API.GetCommentDetailResponse>(`/comment/${id}`, {
-    headers: {
-      Authorization: `Bearer ${getJwtToken()}`,
-    },
-  }).then((res) => res.data.data);
+  return APIClient.get<API.GetCommentDetailResponse>(
+    `/comment/${id}`,
+  ).then((res) => res.data.data);
 }
 
 export function getImage(id: number) {

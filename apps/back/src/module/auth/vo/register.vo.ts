@@ -1,3 +1,3 @@
 export class RegisterVo {
-  token: string;
+  success: boolean;
 }
