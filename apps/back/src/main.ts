@@ -14,8 +14,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173',
       'localhost',
-      'https://ccapdev-front.vercel.app/',
-      'https://ccapdev.azurewebsites.net/',
+      'https://ccapdev-front.vercel.app',
+      'https://ccapdev.azurewebsites.net',
     ],
     credentials: true,
   });
