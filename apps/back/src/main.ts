@@ -6,9 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import * as passport from 'passport';
 import * as session from 'express-session';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(middleware);
   app.enableCors({
     origin: [
@@ -35,6 +36,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.set('trust proxy', 1);
   app.use(passport.initialize());
   app.use(passport.session());
   const port = configService.get<number>('PORT');
