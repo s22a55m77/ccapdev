@@ -29,6 +29,10 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       rolling: true,
+      cookie: {
+        sameSite: 'none',
+        secure: true,
+      },
     }),
   );
   app.use(passport.initialize());
