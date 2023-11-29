@@ -35,6 +35,8 @@ export default function Main() {
 
   const { data: filter } = useRequest(getFilterOptions);
 
+  const HEIGHT = window.innerHeight;
+
   useEffect(() => {
     if (filter) {
       const options = [
@@ -126,7 +128,8 @@ export default function Main() {
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (
-      e.currentTarget.scrollHeight - e.currentTarget.scrollTop === 600 &&
+      e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
+        HEIGHT &&
       !isPaginationEnd
     ) {
       setQuery({ ...query, current: query.current + 1 });
@@ -224,7 +227,7 @@ export default function Main() {
           itemKey="id"
           onScroll={onScroll}
           itemHeight={350}
-          height={600}
+          height={HEIGHT}
           style={{
             paddingTop: 20,
           }}
