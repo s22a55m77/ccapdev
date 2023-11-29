@@ -35,7 +35,7 @@ export default function Main() {
 
   const { data: filter } = useRequest(getFilterOptions);
 
-  const HEIGHT = window.innerHeight;
+  const [HEIGHT, setHEIGHT] = useState(window.outerHeight);
 
   useEffect(() => {
     if (filter) {
@@ -56,6 +56,21 @@ export default function Main() {
       setOption(options);
     }
   }, [filter]);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      const pixelRatio = window.devicePixelRatio || 1;
+      const length = restroomList.length <= 10 ? 20 : restroomList.length;
+      setHEIGHT((length * 65) / pixelRatio);
+    };
+
+    updateHeight();
+
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [restroomList]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -128,8 +143,8 @@ export default function Main() {
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (
-      e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
-        HEIGHT &&
+      e.currentTarget.scrollHeight - e.currentTarget.scrollTop - HEIGHT <
+        1 &&
       !isPaginationEnd
     ) {
       setQuery({ ...query, current: query.current + 1 });
@@ -254,30 +269,6 @@ export default function Main() {
             </motion.div>
           )}
         </VirtualList>
-        {/*{restroomList &&*/}
-        {/*  restroomList.map((restroom) => {*/}
-        {/*    return (*/}
-        {/*      <motion.div*/}
-        {/*        initial={{ opacity: 0, x: -50 }}*/}
-        {/*        whileInView={{ opacity: 1, x: 0 }}*/}
-        {/*        key={restroom.id}*/}
-        {/*        layoutId={restroom.id.toString()}*/}
-        {/*      >*/}
-        {/*        <RestroomCard*/}
-        {/*          id={restroom.id}*/}
-        {/*          title={restroom.title}*/}
-        {/*          tags={restroom.tags}*/}
-        {/*          rating={restroom.rating}*/}
-        {/*          restroomImageIds={restroom.restroomImageIds}*/}
-        {/*          createdByUser={restroom.createdByUser}*/}
-        {/*          createdByUserId={restroom.createdByUserId}*/}
-        {/*          createdAt={restroom.createdAt}*/}
-        {/*          totalComments={restroom.totalComments}*/}
-        {/*          location={restroom.location}*/}
-        {/*        />*/}
-        {/*      </motion.div>*/}
-        {/*    );*/}
-        {/*  })}*/}
         {error && <span>Something go wrong</span>}
       </motion.div>
     </div>
