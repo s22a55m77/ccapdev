@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -123,7 +124,12 @@ export class RestroomController {
     },
     @AuthUser() user: UserEntity,
   ): Promise<ResponseVo<CreateRestroomVo>> {
-    createRestroomDto.tags = JSON.parse(createRestroomDto.tags);
+    try {
+      createRestroomDto.tags = JSON.parse(createRestroomDto.tags);
+    } catch {
+      throw new BadRequestException('Tags must be a JSON Array');
+    }
+
     const restroom = await this.restroomService.createRestroom(
       createRestroomDto,
       files,
