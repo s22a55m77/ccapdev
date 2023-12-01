@@ -72,6 +72,8 @@ export class AuthController {
       .catch((e) => {
         if (e.constraint === 'UQ_78a916df40e02a9deb1c4b75edb')
           throw new ConflictException('User already exist');
+        if (e.constraint === 'UQ_e12875dfb3b1d92d7d7c5377e22')
+          throw new ConflictException('Email already exist');
         else throw new InternalServerErrorException();
       });
 
