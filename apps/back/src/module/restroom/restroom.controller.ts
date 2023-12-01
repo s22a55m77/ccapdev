@@ -12,9 +12,11 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   StreamableFile,
   UploadedFiles,
   UseInterceptors,
+  Headers,
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
@@ -123,7 +125,13 @@ export class RestroomController {
       restroomImages: Express.Multer.File[];
     },
     @AuthUser() user: UserEntity,
+    @Headers() headers: Headers,
   ): Promise<ResponseVo<CreateRestroomVo>> {
+    if (!headers['content-type'].includes('multipart/form-data'))
+      throw new BadRequestException(
+        'Content type should be multipart/form-data',
+      );
+
     try {
       createRestroomDto.tags = JSON.parse(createRestroomDto.tags);
     } catch {

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegionEntity } from '../../model/region.entity';
 import { DeleteResult, Equal, In, IsNull, Not, Repository } from 'typeorm';
@@ -361,12 +365,16 @@ export class RestroomService {
       },
     );
 
+    if (!provinceEntity) throw new BadRequestException('Invalid location');
+
     const cityEntity: CityEntity = await this.cityRepo.findOne({
       where: {
         id: city,
         provinceId: provinceEntity.id,
       },
     });
+
+    if (!cityEntity) throw new BadRequestException('Invalid location');
 
     let buildingEntity = await this.buildingRepo.findOne({
       where: {
@@ -424,7 +432,11 @@ export class RestroomService {
           restroomId: restroomEntity.id,
           tagId: tagEntity.id,
         });
-        await this.restroomTagRepo.save(restroomTagEntity);
+        try {
+          await this.restroomTagRepo.save(restroomTagEntity);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
 
