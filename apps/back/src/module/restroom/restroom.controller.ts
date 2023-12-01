@@ -17,6 +17,8 @@ import {
   UploadedFiles,
   UseInterceptors,
   Headers,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { RestroomService } from './restroom.service';
 import { UpdateRestroomReviewDto } from './dto/update-restroom-review.dto';
@@ -131,6 +133,23 @@ export class RestroomController {
       throw new BadRequestException(
         'Content type should be multipart/form-data',
       );
+
+    if (!files.locationImages)
+      throw new BadRequestException('Location images are required');
+
+    if (!files.restroomImages)
+      throw new BadRequestException('Restroom images are required');
+
+    files.locationImages.forEach((file) => {
+      if (
+        !(
+          file.mimetype === 'image/png' ||
+          file.mimetype === 'image/jpeg' ||
+          file.mimetype === 'image/webp'
+        )
+      )
+        throw new BadRequestException('Invalid image format');
+    });
 
     try {
       createRestroomDto.tags = JSON.parse(createRestroomDto.tags);
