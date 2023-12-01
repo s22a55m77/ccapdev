@@ -1,5 +1,5 @@
 // modified from https://github.com/NarHakobyan/awesome-nest-boilerplate/blob/main/src/modules/auth/auth.module.ts
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
@@ -9,6 +9,7 @@ import { EntitiesModule } from '../entity/entities.module';
 import { CommentService } from '../comment/comment.service';
 import { LocalStrategy } from './local.strategy';
 import { SessionSerializer } from './session.serializer';
+import { AuthValidationMiddleware } from './authValidationMiddleWare';
 
 @Module({
   imports: [
@@ -25,4 +26,10 @@ import { SessionSerializer } from './session.serializer';
     SessionSerializer,
   ],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthValidationMiddleware)
+      .forRoutes({ path: 'auth/login', method: RequestMethod.POST });
+  }
+}
