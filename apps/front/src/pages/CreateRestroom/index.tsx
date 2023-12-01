@@ -20,6 +20,7 @@ import { AlertContent } from '../../declaration';
 import { useRequest } from 'ahooks';
 import { Cascader } from 'antd';
 import FilterDataType = API.FilterDataType;
+import { AxiosError } from 'axios';
 
 type SubmitRestroomForm = {
   building: string;
@@ -40,13 +41,19 @@ type LocationInfo = {
 };
 
 export default function Index() {
-  const { register, handleSubmit, setValue, control, getValues } =
-    useForm<SubmitRestroomForm>({
-      defaultValues: {
-        floor: 1,
-        gender: 'MALE',
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm<SubmitRestroomForm>({
+    defaultValues: {
+      floor: 1,
+      gender: 'MALE',
+    },
+  });
 
   const [alertContent, setAlertContent] = useState<AlertContent>({
     isOpen: false,
@@ -58,6 +65,7 @@ export default function Index() {
   const [isBuildingDisable, setIsBuildingDisable] = useState(false);
   const [isFloorDisable, setIsFloorDisable] = useState(false);
   const [locationInfo, setLocationInfo] = useState<LocationInfo>();
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const { data: filter } = useRequest(getFilterOptions);
 
@@ -74,12 +82,13 @@ export default function Index() {
         severity: 'success',
       });
     },
-    onError: () => {
-      setAlertContent({
-        isOpen: true,
-        message: 'Error Occurred',
-        severity: 'error',
-      });
+    onError: (error) => {
+      if (error instanceof AxiosError)
+        setAlertContent({
+          isOpen: true,
+          message: error.response?.data.msg,
+          severity: 'error',
+        });
     },
   });
 
@@ -88,6 +97,10 @@ export default function Index() {
     if (data.hand) tags.push('Hand Sanitizer');
     if (data.vending) tags.push('Vending Machine');
     if (data.baghook) tags.push('Bag Hook');
+
+    setIsSubmit(true);
+    if (!locationInfo?.region) return;
+
     create({
       location: data.description,
       region: locationInfo?.region || 0,
@@ -116,7 +129,6 @@ export default function Index() {
         );
         setIsBuildingDisable(true);
         setValue('building', obj!.label);
-        console.log(data);
       } else setIsBuildingDisable(false);
       if (data.length >= 5) {
         const obj = findObjectByValues(filter.location, data as number[]);
@@ -153,6 +165,9 @@ export default function Index() {
               <Controller
                 control={control}
                 name="building"
+                rules={{
+                  required: true,
+                }}
                 render={() => (
                   <FormControl fullWidth required>
                     <div
@@ -178,7 +193,7 @@ export default function Index() {
               />
               <div>
                 <TextField
-                  {...register('building')}
+                  {...register('building', { required: true })}
                   label={getValues('building') ? '' : 'Building'}
                   sx={{
                     marginTop: '20px',
@@ -243,7 +258,7 @@ export default function Index() {
               </div>
               <div>
                 <TextField
-                  {...register('description')}
+                  {...register('description', { required: true })}
                   label={'Location Description'}
                   multiline
                   sx={{ width: '90%' }}
@@ -282,7 +297,7 @@ export default function Index() {
           <div className="second-column">
             <div className="picturebox">
               <input
-                {...register('locationImage')}
+                {...register('locationImage', { required: true })}
                 type="file"
                 id="picture"
                 required
@@ -294,7 +309,7 @@ export default function Index() {
             </div>
             <div className="picturebox">
               <input
-                {...register('restroomImage')}
+                {...register('restroomImage', { required: true })}
                 type="file"
                 id="picture"
                 required
@@ -303,6 +318,20 @@ export default function Index() {
               <label htmlFor="picture">
                 Upload Restroom Picture <PhotoCameraBackIcon />
               </label>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                color: 'red',
+                margin: '10px',
+              }}
+            >
+              {isSubmit &&
+                !locationInfo?.region &&
+                'Please select a location'}
+              {(errors.locationImage || errors.restroomImage) &&
+                'Images are required'}
             </div>
             <button
               type="submit"
